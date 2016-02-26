@@ -27,7 +27,7 @@ use Jig\Utils\StringUtils;
 // Item themes
 // 'camelCaseId' => 'Name of the theme'
 $itemThemes = array(
-    'themeInvalsi' => 'Invalsi Theme'
+    'themeInvalsi' => 'Theme Invalsi'
 );
 
 // override if required
