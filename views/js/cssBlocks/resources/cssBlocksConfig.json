@@ -1,17 +1,25 @@
 {
   "items": [
     {
-      "class": "prompt-underline",
-      "label": "Line below stem"
+      "class": "center-picture",
+      "label": "Center Picture"
     },
     {
-      "class": "choice-borders",
-      "label": "Border on choices"
+      "class": "choice-interaction-table",
+      "label": "Choice interaction as table"
     },
     {
-      "class": "mathjax-font",
-      "label": "Larger math font"
+      "class": "text-entry-fixed-size",
+      "label": "Text entry fixed size"
+    },
+    {
+      "class": "match-interaction-nowrap",
+      "label": "Match interaction no line break"
+    },
+    {
+      "class": "remove-instructions",
+      "label": "Remove Instructions"
     }
   ],
-  "defaultTheme": "black-on-white"
+  "defaultTheme": "theme-invalsi"
 }
