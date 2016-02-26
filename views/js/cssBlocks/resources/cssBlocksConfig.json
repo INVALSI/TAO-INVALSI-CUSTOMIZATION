@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "class": "prompt-underline",
+      "label": "Line below stem"
+    },
+    {
+      "class": "choice-borders",
+      "label": "Border on choices"
+    },
+    {
+      "class": "mathjax-font",
+      "label": "Larger math font"
+    }
+  ],
+  "defaultTheme": "black-on-white"
+}
