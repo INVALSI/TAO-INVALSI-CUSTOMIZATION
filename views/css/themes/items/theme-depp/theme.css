@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../fonts/roboto-italic-webfont.woff2') format('woff2'), url('../../fonts/roboto-italic-webfont.woff') format('woff'), url('../../fonts/roboto-italic-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../fonts/roboto-bold-webfont.woff2') format('woff2'), url('../../fonts/roboto-bold-webfont.woff') format('woff'), url('../../fonts/roboto-bold-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../fonts/roboto-bolditalic-webfont.woff2') format('woff2'), url('../../fonts/roboto-bolditalic-webfont.woff') format('woff'), url('../../fonts/roboto-bolditalic-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../fonts/roboto-regular-webfont.woff2') format('woff2'), url('../../fonts/roboto-regular-webfont.woff') format('woff'), url('../../fonts/roboto-regular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+html body div.qti-item {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.4rem;
+  color: black;
+  text-align: left;
+}
+html body div.qti-item b, html body div.qti-item .b, html body div.qti-item strong, html body div.qti-item .strong,
+html body div.qti-item .qti-prompt,
+html body div.qti-item div.grid-row:nth-child(1) {
+  font-weight: bold;
+}
+html body div.qti-item i, html body div.qti-item .i, html body div.qti-item em, html body div.qti-item .em {
+  font-style: italic;
+}
+html body div.qti-item div.grid-row:nth-child(1) {
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+  background: #444;
+}
+html body div.qti-item div.grid-row:nth-child(2), html body div.qti-item div.grid-row:nth-child(3) {
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+}
+html body div.qti-item .item-instruction {
+  display: none;
+}
+html body div.qti-item .qti-prompt {
+  font-size: 1.4rem;
+  text-align: left;
+  color: black;
+}
+html body div.qti-item .qti-interaction .solid {
+  border: 1px #dab9c7 solid;
+}
+
+/*# sourceMappingURL=theme.css.map */

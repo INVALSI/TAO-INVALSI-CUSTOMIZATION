@@ -1,0 +1,56 @@
+<?php
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2016 (original work) Open Assessment Technologies SA;
+ *
+ *
+ */
+
+
+// Item themes
+use oat\tao\model\ThemeRegistry;
+use Jig\Utils\StringUtils;
+
+// Item themes
+// 'camelCaseId' => 'Name of the theme'
+$itemThemes = array(
+    'themeInvalsi' => 'Invalsi Theme'
+);
+
+// override if required
+$defaultTheme = 'themeInvalsi';
+
+foreach($itemThemes as $themeName){
+    $pathFragment = StringUtils::removeSpecChars($themeName);
+    $themeId = StringUtils::camelize($pathFragment);
+    ThemeRegistry::getRegistry()->registerTheme(
+        $themeId,
+        $themeName,
+        implode(DIRECTORY_SEPARATOR, array('taoInvalsi', 'views', 'css', 'themes', 'items', $pathFragment, 'theme.css')), array('items')
+    );
+}
+
+ThemeRegistry::getRegistry()->setDefaultTheme('items', $defaultTheme);
+
+// TAO theme would usually be removed from the stack if custom themes are used
+// Make sure another theme has been set to default in this case.
+if($defaultTheme !== 'tao') {    
+    try {
+    ThemeRegistry::getRegistry()->unregisterTheme('tao');
+    } catch(ThemeNotFoundException $e) {
+        // theme was already deleted, nothing to worry about
+    }
+}
