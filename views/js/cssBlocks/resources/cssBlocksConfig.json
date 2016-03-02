@@ -5,6 +5,10 @@
       "label": "Center Picture"
     },
     {
+      "class": "letters-to-checkbox-left",
+      "label": "Letters to checkbox left"
+    },
+    {
       "class": "choice-interaction-table",
       "label": "Choice interaction as table"
     },
