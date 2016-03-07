@@ -25,8 +25,8 @@
 define([
     'jquery',
     'taoQtiItem/qtiCreator/helper/panel',
-    'tpl!taoMp/cssBlocks/tpl/css-blocks',
-    'json!taoMp/cssBlocks/resources/cssBlocksConfig.json'
+    'tpl!taoInvalsi/cssBlocks/tpl/css-blocks',
+    'json!taoInvalsi/cssBlocks/resources/cssBlocksConfig.json'
 ], function($, panelHelper, listingTpl, cssBlocksConfig){
 
     'use strict';
@@ -71,7 +71,7 @@ define([
     var cssBlockHook = {
         init : function(config){
 
-            require(['css!taoMpCss/themes/items/' + cssBlocksConfig.defaultTheme + '/theme.css']);
+            require(['css!taoInvalsiCss/themes/items/' + cssBlocksConfig.defaultTheme + '/theme.css']);
 
             $(document).on('widgetloaded.qticreator', function(e, widget) {
                 manageListing(widget, config.dom.getItemStylePanel());
