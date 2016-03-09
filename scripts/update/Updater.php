@@ -19,13 +19,10 @@
  * 
  */
 
-namespace oat\taoDepp\scripts\update;
+namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
-use oat\tao\model\ThemeRegistry;
-use Jig\Utils\StringUtils;
-
-//use oat\tao\model\ThemeNotFoundException;
+use oat\taoQtiItem\model\HookRegistry;
 
 class Updater extends common_ext_ExtensionUpdater
 {
@@ -36,6 +33,9 @@ class Updater extends common_ext_ExtensionUpdater
      */
     public function update($initialVersion)
     {
-
+        if($this->isVersion('1.0.0')){
+            HookRegistry::getRegistry()->set('taoInvalsiCreator', 'oat\taoInvalsi\model\CreatorHook');
+            $this->setVersion('1.1.0');
+        }
     }
 }
