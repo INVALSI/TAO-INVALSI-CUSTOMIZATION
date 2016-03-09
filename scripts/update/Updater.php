@@ -33,13 +33,9 @@ class Updater extends common_ext_ExtensionUpdater
      */
     public function update($initialVersion)
     {
-        $this->setVersion('1.0.0');
-
         if($this->isVersion('1.0.0')){
             HookRegistry::getRegistry()->set('taoInvalsiCreator', 'oat\taoInvalsi\model\CreatorHook');
             $this->setVersion('1.1.0');
         }
-        return null;
-
     }
 }
