@@ -22,6 +22,8 @@
 namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
+use oat\tao\model\theme\ThemeService;
+use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoQtiItem\model\HookRegistry;
 
 class Updater extends common_ext_ExtensionUpdater
@@ -36,6 +38,14 @@ class Updater extends common_ext_ExtensionUpdater
         if($this->isVersion('1.0.0')){
             HookRegistry::getRegistry()->set('taoInvalsiCreator', 'oat\taoInvalsi\model\CreatorHook');
             $this->setVersion('1.1.0');
+        }
+        if($this->isVersion('1.1.0')){
+            $themeService = $this->getServiceManager()->get(ThemeService::SERVICE_ID);
+
+            $themeService->setTheme(new TaoInvalsiDefaultTheme());
+            $this->getServiceManager()->register(ThemeService::SERVICE_ID, $themeService);
+
+            $this->setVersion('1.2.0');
         }
     }
 }
