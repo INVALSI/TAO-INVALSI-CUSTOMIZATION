@@ -24,6 +24,11 @@
 use oat\tao\model\ThemeRegistry;
 use Jig\Utils\StringUtils;
 
+// Platform themes
+use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
+use oat\oatbox\service\ServiceManager;
+use oat\tao\model\theme\ThemeService;
+
 // Item themes
 // 'camelCaseId' => 'Name of the theme'
 $itemThemes = array(
@@ -54,3 +59,11 @@ if($defaultTheme !== 'tao') {
         // theme was already deleted, nothing to worry about
     }
 }
+
+
+// Platform themes
+$serviceManager = ServiceManager::getServiceManager();
+$themeService = $serviceManager->get(ThemeService::SERVICE_ID);
+
+$themeService->setTheme(new TaoInvalsiDefaultTheme());
+$serviceManager->register(ThemeService::SERVICE_ID, $themeService);

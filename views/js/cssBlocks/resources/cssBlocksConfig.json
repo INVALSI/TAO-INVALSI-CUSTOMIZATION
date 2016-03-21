@@ -6,7 +6,7 @@
     },
     {
       "class": "bullets-to-checkbox-left",
-      "label": "bullets to checkbox left"
+      "label": "Bullets to checkbox left"
     },
     {
       "class": "choice-interaction-table",
@@ -23,7 +23,16 @@
     {
       "class": "remove-instructions",
       "label": "Remove Instructions"
+    },
+    {
+      "class": "bordered-item",
+      "label": "Bordered item"
+    },
+    {
+      "class": "bordered-columns",
+      "label": "Bordered columns"
     }
+
   ],
   "defaultTheme": "theme-invalsi"
 }
