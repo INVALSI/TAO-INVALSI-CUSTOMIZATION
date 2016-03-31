@@ -25,6 +25,7 @@ use \common_ext_ExtensionUpdater;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoQtiItem\model\HookRegistry;
+use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 
 class Updater extends common_ext_ExtensionUpdater
 {
@@ -60,6 +61,16 @@ class Updater extends common_ext_ExtensionUpdater
             $extension->setConfig('testRunner', $config);
 
             $this->setVersion('1.3.0');
+        }
+        
+        if ($this->isVersion('1.3.0')) {
+            $registry = TestRunnerClientConfigRegistry::getRegistry();
+
+            $registry->registerQtiTools('invalsiDisabler', array(
+                'hook' => 'taoInvalsi/actionBar/disabler/disabler'
+            ));
+
+            $this->setVersion('1.4.0');
         }
     }
 }
