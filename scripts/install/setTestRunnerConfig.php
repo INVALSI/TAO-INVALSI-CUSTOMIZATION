@@ -23,9 +23,9 @@
 $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
 $config = $extension->getConfig('testRunner');
 $config['disableExitMessage'] = array(
-    'test' => true,
-    'testPart' => true,
-    'testSection' => true,
+    'test' => false,
+    'testPart' => false,
+    'testSection' => false,
 
 );
 $extension->setConfig('testRunner', $config);
