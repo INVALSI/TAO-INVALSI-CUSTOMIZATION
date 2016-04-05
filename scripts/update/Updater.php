@@ -72,5 +72,18 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.4.0');
         }
+
+        if ($this->isVersion('1.4.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['disableExitMessage'] = array(
+                'test' => false,
+                'testPart' => false,
+                'testSection' => false
+            );
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.5.0');
+        }
     }
 }
