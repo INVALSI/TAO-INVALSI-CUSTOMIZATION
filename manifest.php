@@ -24,7 +24,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.5.2',
+    'version' => '1.6.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
             'taoCe' => '>=1.2.0',
@@ -38,7 +38,8 @@ return array(
     'install' => array(
         'php' => array(
             __DIR__ . '/scripts/install/addHook.php',
-            __DIR__.'/scripts/install/setThemeConfig.php'
+            __DIR__.'/scripts/install/setThemeConfig.php',
+            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner'
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
