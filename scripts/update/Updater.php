@@ -87,9 +87,9 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.5.0');
         }
-        $this->skip('1.5.0','1.5.2');
+        $this->skip('1.5.0','1.5.1');
 
-        if ($this->isVersion('1.5.2')) {
+        if ($this->isVersion('1.5.1')) {
             $setNewTestRunner = new SetNewTestRunner();
             $setNewTestRunner([]);
 
