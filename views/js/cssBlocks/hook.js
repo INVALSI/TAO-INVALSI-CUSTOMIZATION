@@ -25,13 +25,13 @@
 define([
     'jquery',
     'taoQtiItem/qtiCreator/helper/panel',
-    'tpl!taoInvalsi/cssBlocks/tpl/css-blocks',
-    'json!taoInvalsi/cssBlocks/resources/cssBlocksConfig.json'
-], function($, panelHelper, listingTpl, cssBlocksConfig){
+    'taoInvalsi/cssBlocks/cssConfig',
+    'tpl!taoInvalsi/cssBlocks/tpl/css-blocks'
+], function($, panelHelper, cssConfig, listingTpl){
 
     'use strict';
-
-    var classPrefix = '__custom__';
+    
+    var _config = cssConfig.getConfig();
 
     /**
      * Create listing if it doesn't exist and handle events
@@ -46,17 +46,17 @@ define([
         var $sidebarSection = $itemStylePanel.find('#item-editor-custom-css-blocks');
 
         if(!$sidebarSection.length) {
-            $sidebarSection = $(listingTpl(cssBlocksConfig));
+            $sidebarSection = $(listingTpl(_config));
             $itemStylePanel.prepend($sidebarSection);
             panelHelper.initSidebarAccordion($itemStylePanel);
             $sidebarSection.find('._accordion').trigger('click');
         }
 
         $sidebarSection.find('input').on('change', function() {
-            $itemBody.toggleClass(classPrefix + this.name, this.checked);
-            widget.element.toggleClass(classPrefix + this.name, this.checked);
+            $itemBody.toggleClass(this.name, this.checked);
+            widget.element.toggleClass(this.name, this.checked);
         }).each(function(){
-            this.checked = widget.element.hasClass(classPrefix + this.name);
+            this.checked = widget.element.hasClass(this.name);
         });
 
         $sidebarSection.show();
@@ -71,7 +71,14 @@ define([
     var cssBlockHook = {
         init : function(config){
 
-            require(['css!taoInvalsiCss/themes/items/' + cssBlocksConfig.defaultTheme + '/theme.css']);
+            // Happens in dev when all code is installed but the theme is not compiled yet.
+            // No big deal and no reason to let the code fail
+            if(_config.defaultTheme) {
+                require(['css!' + _config.defaultTheme]);
+            }
+            else {
+                console.info('Theme CSS not yet available');
+            }
 
             $(document).on('widgetloaded.qticreator', function(e, widget) {
                 manageListing(widget, config.dom.getItemStylePanel());
