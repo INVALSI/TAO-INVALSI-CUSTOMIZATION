@@ -24,12 +24,12 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.6.0',
+    'version' => '1.6.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=2.16.3',
+            'taoQtiTest' => '>=5.0.0',
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -39,7 +39,8 @@ return array(
         'php' => array(
             __DIR__ . '/scripts/install/addHook.php',
             __DIR__.'/scripts/install/setThemeConfig.php',
-            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner'
+            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
+            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig'
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
