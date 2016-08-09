@@ -1,0 +1,58 @@
+////
+/// TAO CSS SDK
+/// All QTI interactions
+/// @group Item interactions
+////
+
+.qti-interaction {
+    .solid {
+        
+    }
+}
+
+.__custom__center-picture { // we cannot scope on .qti-interaction in case the image appears in a text field
+    .widget-box.widget-inline.widget-img,
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.__custom__remove-instructions .qti-interaction {
+    .instruction-container {
+        display: none;
+    }
+}
+
+.__custom__bordered-item {
+    border: 6px solid #f5f3f2;
+    padding: 10px;
+}
+
+.__custom__bordered-columns {
+
+    .grid-row {
+        border-collapse: collapse;
+        display: table;
+        margin-bottom: 12px;
+
+        .col-6 {
+            display: table-cell;
+            box-sizing: border-box;
+            position: inherit;
+            float: none;
+            width: 50%;
+            border: 6px solid #eee;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .col-12 {
+            border: 6px solid #f5f3f2;
+            padding: 10px;
+            margin: 0;
+        }
+
+    }
+}
