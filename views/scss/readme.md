@@ -1,1 +1,0 @@
-Use https://github.com/oat-sa/theme-toolkit to compile
