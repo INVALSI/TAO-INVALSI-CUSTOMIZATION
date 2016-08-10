@@ -1,9 +1,0 @@
-{    
-    "title": "TAO CSS SDK",
-    "name": "package name of your project",
-    "version": "2.0",
-    "license": "your project’s license",
-    "homepage": "https://github.com/oat-sa/tao-css-sdk",
-    "description": "Tool-set to create custom themes for both items and the TAO platform itself"
-}
-
