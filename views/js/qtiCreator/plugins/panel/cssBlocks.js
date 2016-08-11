@@ -40,22 +40,15 @@ define([
          */
         init : function init(){
             var self = this;
-
-            // var itemCreator = this.getHost();
             var item = this.getHost().getItem();
-
 
             // Happens in dev when all code is installed but the theme is not compiled yet.
             // No big deal and no reason to let the code fail
             if(_config.defaultTheme) {
                 require(['css!' + _config.defaultTheme]);
             }
-            else {
-                console.info('Theme CSS not yet available');
-            }
 
             // create the element
-
             this.$element = $(blockTpl(_config));
 
             this.$element.find('input').on('change' + _ns, function() {
