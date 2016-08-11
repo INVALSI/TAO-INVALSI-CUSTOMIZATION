@@ -38,6 +38,7 @@ return array(
     'install' => array(
         'php' => array(
             __DIR__.'/scripts/install/setThemeConfig.php',
+            __DIR__ . '/scripts/install/addHook.php',
             'oat\\taoInvalsi\\scripts\\install\\SetQtiCreatorConfig',
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig'
