@@ -58,8 +58,8 @@ define([
 
             this.$element = $(blockTpl(_config));
 
-            this.$element.find('input').on('change', function() {
-                self.$element.prop('item-body').toggleClass(this.name, this.checked);
+            this.$element.find('input').on('change' + _ns, function() {
+                self.$itemBody.toggleClass(this.name, this.checked);
                 item.toggleClass(this.name, this.checked);
             }).each(function(){
                 this.checked = item.hasClass(this.name);
@@ -67,7 +67,7 @@ define([
         },
 
         render : function render(){
-            this.$element.prop('item-body', this.getAreaBroker().getContainer().find('.qti-itemBody'));
+            this.$itemBody = this.getAreaBroker().getContainer().find('.qti-itemBody');
             this.getAreaBroker().getItemStylePanelArea().prepend(this.$element);
             panel.initSidebarAccordion(this.$element);
             this.$element.find('._accordion').trigger('click');
