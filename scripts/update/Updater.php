@@ -29,6 +29,7 @@ use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
+use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
 
 class Updater extends common_ext_ExtensionUpdater
 {
@@ -107,5 +108,12 @@ class Updater extends common_ext_ExtensionUpdater
             $this->setVersion('1.6.1');
         }
         $this->skip('1.6.1','1.6.2');
+
+        if ($this->isVersion('1.6.2')) {
+            $registry = QtiCreatorClientConfigRegistry::getRegistry();
+            $registry->registerPlugin('cssBlocks', 'taoInvalsi/qtiCreator/plugins/panel/cssBlocks', 'panel');
+            $this->setVersion('1.6.3');
+        }
+
     }
 }
