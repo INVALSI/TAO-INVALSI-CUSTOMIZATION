@@ -114,6 +114,7 @@ class Updater extends common_ext_ExtensionUpdater
             $registry->registerPlugin('cssBlocks', 'taoInvalsi/qtiCreator/plugins/panel/cssBlocks', 'panel');
             $this->setVersion('1.6.3');
         }
+        $this->skip('1.6.3','1.6.4');
 
     }
 }
