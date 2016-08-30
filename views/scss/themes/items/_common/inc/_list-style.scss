@@ -1,0 +1,18 @@
+
+$list_styles: disc,circle,square,decimal,decimal-leading-zero,lower-roman,upper-roman,lower-greek,lower-latin,upper-latin,armenian,georgian,lower-alpha,upper-alpha,none;
+
+.qti-interaction {
+    &[class^="list-style-"], &[class*=" list-style-"] {
+
+        @for $i from 1 through length($list_styles) {
+            &.list-style-#{nth($list_styles, $i)} {
+                &>p, &>div, &>li {
+                    &::before {
+                        content: normal;
+                    }
+                }
+            }
+        }
+    }
+}
+

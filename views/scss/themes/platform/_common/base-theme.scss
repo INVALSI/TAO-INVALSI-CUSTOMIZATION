@@ -1,0 +1,72 @@
+////
+/// TAO CSS SDK
+/// Generic platform theme
+/// @group Platform themes
+////
+
+html {
+    body {
+
+        /// optional custom loading bar
+        @include custom-loading-bar($loadingBar);
+
+        /// header/footer colors
+        @include header-footer-color-scheme($headerBg, $headerText, $footerBg, $footerText);
+
+        /// navigation
+        @include navigation($menuActiveBg, $menuActiveText);
+
+        /// action bar
+        @include action-bar($actionBarBg, $actionBarText);
+
+        #login-box {
+            width: 420px;
+        }
+
+        .dark-bar {
+            font-family: $regularFont;
+        }
+
+        header {
+            &.dark-bar {
+                font-size: 1.3rem;
+                nav {
+                    li {
+                        & > a, & >.a {
+                            border-top: 5px transparent solid;
+
+                            &:hover {
+                                border-color: $brand-complementary;
+                                -webkit-transition: none;
+                                transition: none;
+                                transition-delay: initial;
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    & > ul > li, & > .settings-menu > ul > li {
+                        &:hover, &.active {
+                            & > a, & >.a {
+                                border-color: $brand-complementary;
+                                -webkit-transition: none;
+                                transition: none;
+                                transition-delay: initial;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // scroll fix in iFrame for iOS
+        #qti-content {
+            -webkit-overflow-scrolling: touch;
+        }
+
+    }
+}
+
+
+/// Media queries also need to be done outside the html scope.
+/// @see ./inc/mediaqueries/template.scss
+@import './inc/mediaqueries/max-width-1024';

@@ -1,0 +1,51 @@
+////
+/// TAO CSS SDK
+/// Feedback pop-ups, all item themes
+/// @group Item feedback
+////
+
+/// all feedbacks in the scope
+[class^="feedback-"], [class*=" feedback-"] {
+    [class^="icon-"], [class*=" icon-"] {
+    }
+}
+
+/// error only
+.feedback-error {
+    border-color: $fbErrorBorder;
+    background-color: $fbErrorBg;
+    color: $fbError !important;
+    .icon-error {
+        color: $fbError !important;
+    }
+}
+
+/// info only
+.feedback-info {
+    border-color: $fbInfoBorder;
+    background-color: $fbInfoBg;
+    color: $fbInfo !important;
+    .icon-info {
+        color: $fbInfoBorder !important;
+    }
+}
+
+/// success only
+.feedback-success {
+    border-color: $fbSuccessBorder;
+    background-color: $fbSuccessBg;
+    color: $fbSuccess !important;
+    .icon-success {
+        color: $fbSuccessBorder !important;
+    }
+}
+
+/// warning only
+.feedback-warning {
+    border-color: $fbWarningBorder;
+    background-color: $fbWarningBg;
+    color: $fbWarning !important;
+    .icon-warning {
+        color: $fbWarning !important;
+    }
+}
