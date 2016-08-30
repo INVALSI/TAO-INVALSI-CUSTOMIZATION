@@ -23,7 +23,7 @@
 		"../../../../scss/themes/items/theme-invalsi/inc/colors/_tables.scss",
 		"../../../../scss/themes/items/theme-invalsi/inc/_font-face.scss",
 		"../../../../scss/themes/items/theme-invalsi/inc/_fonts.scss",
-		"../../../../scss/themes/items/_common/theme.scss",
+		"../../../../scss/themes/items/_common/base-theme.scss",
 		"../../../../scss/themes/items/_common/inc/_font-face.scss",
 		"../../../../scss/themes/items/_common/inc/_generic.scss",
 		"../../../../scss/themes/items/_common/inc/_buttons.scss",
