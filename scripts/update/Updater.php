@@ -27,6 +27,7 @@ use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
+use oat\taoInvalsi\scripts\InitDeliveryCreatedEventListener;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
@@ -115,6 +116,12 @@ class Updater extends common_ext_ExtensionUpdater
             $this->setVersion('1.6.3');
         }
         $this->skip('1.6.3','1.6.4');
+
+        if ($this->isVersion('1.6.4')) {
+            $initDeliveryCreatedEventListener = new InitDeliveryCreatedEventListener();
+            $initDeliveryCreatedEventListener([]);
+            $this->setVersion('1.7.0');
+        }
 
     }
 }
