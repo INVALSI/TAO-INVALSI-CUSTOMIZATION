@@ -116,5 +116,15 @@ class Updater extends common_ext_ExtensionUpdater
         }
         $this->skip('1.6.3','1.6.4');
 
+        if ($this->isVersion('1.6.4')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+
+            $config = $extension->getConfig('testRunner');
+            $config['check-informational'] = true;
+
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.7.0');
+        }
     }
 }

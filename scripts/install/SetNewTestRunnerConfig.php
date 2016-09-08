@@ -8,6 +8,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
     public function __invoke($params)
     {
         $invalsiConfig = array(
+            'check-informational' => true,
             'test-taker-review' => true,
             'test-taker-review-region' => 'left',
             'test-taker-review-force-title' => true,
