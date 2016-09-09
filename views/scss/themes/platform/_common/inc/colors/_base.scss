@@ -1,0 +1,42 @@
+////
+/// TAO CSS SDK
+/// Color definitions, all platform themes
+/// Note: if a value is an empty string ('') no change will occur
+/// @group Platform Colors
+////
+
+@import './varieties';
+@import '../../../../_common/mixins';
+
+
+/// Backgrounds can be either a single color or a list with values for a gradient.
+/// Gradient format: ((color:#000[, position:0%])[,(...)])
+
+/// use these under the assumption that header and footer have identical color schemes...
+$mainBarBg: '';
+$mainBarText: '';
+
+$brand: #3B576D;
+$brand-complementary: #dcab27;
+
+/// ...otherwise set custom values for the header here...
+$headerBg: white;
+$headerText: $brand;
+
+/// ...and for the footer here
+$footerBg: $brand;
+$footerText: #eaeaf0;
+
+
+/// main menu, hover etc. will be computed according to the formulas in _varieties.scss
+$menuActiveBg: rgb(237,235,233);
+$menuActiveText: $headerText;
+
+
+/// action bar
+$actionBarBg: $brand;
+$actionBarText: #ffffff;
+
+
+/// loading bar
+$loadingBar: $brand-complementary;
