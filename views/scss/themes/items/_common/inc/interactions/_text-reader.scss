@@ -5,26 +5,11 @@
 ////
 
 .textReaderInteraction {
-    strong,
-    em,
     span.txt-underline {
         font-weight: normal;
         font-style:normal;
         text-decoration: none;
         padding: 0 5px;
-    }
-
-    strong {
-        background: #FCF949;
-        color: black;
-    }
-
-    em {
-        background: #25C631;
-        color: white;
-    }
-
-    span.txt-underline {
         background: #FF6416;
         color: white;
     }
