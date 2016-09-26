@@ -17,7 +17,7 @@
             }
         }
     }
-    &:hover {
+    &:hover, &.cke_button_on {
         .cke_button_icon {
             &.cke_button__taohighlight_icon {
                 background-position: 0 -15px;
