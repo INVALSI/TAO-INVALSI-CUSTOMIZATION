@@ -8,6 +8,14 @@
     .solid {
         
     }
+    em.txt-highlight {
+        font-weight: normal;
+        font-style:normal;
+        text-decoration: none;
+        padding: 0 5px;
+        background: #FF6416;
+        color: black;
+    }
 }
 
 .__custom__center-picture { // we cannot scope on .qti-interaction in case the image appears in a text field
