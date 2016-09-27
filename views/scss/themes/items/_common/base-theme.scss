@@ -69,7 +69,6 @@ html {
 /// Select2 and maybe other frameworks have some parts that are outside the item,
 /// usually directly attached to the document body
 @import './inc/select2/outside-item-scope';
-@import './inc/cke/outside-item-scope';
 
 /// Media queries also need to be done outside the item scope.
 /// @see ./inc/mediaqueries/template.scss
