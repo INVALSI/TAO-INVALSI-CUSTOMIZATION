@@ -15,7 +15,10 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'test-taker-review-item-title' => 'Item %d', // forced translation
             'test-taker-review-scope' => 'testSection',
             'test-taker-review-prevents-unseen' => true,
-            'test-taker-review-can-collapse' => true
+            'test-taker-review-can-collapse' => true,
+            'force-branchrules' => true,
+            'path-tracking' => true,
+            'always-allow-jumps' => true
         );
 
         $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
