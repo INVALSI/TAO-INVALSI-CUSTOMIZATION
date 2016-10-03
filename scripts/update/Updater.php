@@ -128,5 +128,18 @@ class Updater extends common_ext_ExtensionUpdater
         }
 
         $this->skip('1.7.0', '1.7.2');
+        
+        if ($this->isVersion('1.7.2')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+
+            $config = $extension->getConfig('testRunner');
+            $config['force-branchrules'] = true;
+            $config['path-tracking'] = true;
+            $config['always-allow-jumps'] = true;
+            
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.8.0');
+        }
     }
 }
