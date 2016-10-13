@@ -43,7 +43,7 @@ class InvalsiTestPluginService extends TestPluginService
             'accessibility' => [
                 'label' => __('Accessibility'),
                 'description' => __(''),
-                'pluginsIds' => ['itemThemeSwitcher', ''],
+                'pluginsIds' => ['itemThemeSwitcher', 'disableRightClick', 'zoom'],
                 'isEnabledByDefault' => true
             ]
         ];
