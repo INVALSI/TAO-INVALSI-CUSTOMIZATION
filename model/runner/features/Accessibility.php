@@ -1,8 +1,8 @@
 <?php
 
-namespace oat\taoInvalsi\model\runner\plugins;
+namespace oat\taoInvalsi\model\runner\features;
 
-use oat\taoTests\models\runner\plugins\TestRunnerFeature;
+use oat\taoTests\models\runner\features\TestRunnerFeature;
 
 class Accessibility extends TestRunnerFeature {
 
@@ -19,7 +19,7 @@ class Accessibility extends TestRunnerFeature {
     }
 
     public function getDescription() {
-        return __('xxxx');
+        return __('a bunch of very interesting tools !');
     }
 
     public function isEnabledByDefault() {
