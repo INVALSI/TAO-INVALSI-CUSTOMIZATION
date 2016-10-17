@@ -25,6 +25,7 @@ use \common_ext_ExtensionUpdater;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestPluginService;
+use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
@@ -144,10 +145,11 @@ class Updater extends common_ext_ExtensionUpdater
         }
 
         if ($this->isVersion('1.8.0')) {
-            $registerTestPluginService = new RegisterTestPluginService();
-            $registerTestPluginService([]);
+            $registerTestRunnerFeatures = new RegisterTestRunnerFeatures();
+            $registerTestRunnerFeatures->setServiceLocator($this->getServiceManager());
+            $registerTestRunnerFeatures([]);
 
-            $this->setVersion('1.9.0');
+            //$this->setVersion('1.9.0');
         }
     }
 }

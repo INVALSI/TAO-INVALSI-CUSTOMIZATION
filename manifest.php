@@ -43,7 +43,7 @@ return array(
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
-            'oat\\taoInvalsi\\scripts\\install\\RegisterTestPluginService'
+            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures'
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
