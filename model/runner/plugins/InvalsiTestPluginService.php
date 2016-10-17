@@ -20,6 +20,9 @@
 namespace oat\taoInvalsi\model\runner\plugins;
 
 use oat\taoTests\models\runner\plugins\TestPluginService;
+use oat\taoTests\models\runner\plugins\TestRunnerFeature;
+use oat\taoInvalsi\model\runner\plugins\ProgressBar;
+use oat\taoInvalsi\model\runner\plugins\Accessibility;
 
 /**
  * override....
@@ -29,23 +32,12 @@ use oat\taoTests\models\runner\plugins\TestPluginService;
 class InvalsiTestPluginService extends TestPluginService
 {
     /**
-     * @return array
+     * @return TestRunnerFeature[]
      */
-    public function getToggableDeliveryFeatures() {
+    public function getTestRunnerFeatures() {
         return [
-            // todo: replace this with DeliveryFeatures instances?
-            'progressBar' => [
-                'label' => __('Progress Bar'),
-                'description' => __(''),
-                'pluginsIds' => ['progressbar'],
-                'isEnabledByDefault' => true
-            ],
-            'accessibility' => [
-                'label' => __('Accessibility'),
-                'description' => __(''),
-                'pluginsIds' => ['itemThemeSwitcher', 'disableRightClick', 'zoom'],
-                'isEnabledByDefault' => true
-            ]
+            new ProgressBar(),
+            new Accessibility()
         ];
     }
 }
