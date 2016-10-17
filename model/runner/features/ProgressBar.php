@@ -3,15 +3,17 @@
 namespace oat\taoInvalsi\model\runner\features;
 
 use oat\taoTests\models\runner\features\TestRunnerFeature;
+use oat\taoTests\models\runner\plugins\PluginRegistry;
 
 class ProgressBar extends TestRunnerFeature {
 
-    public function getId() {
-        return 'progressBar';
-    }
-
-    public function getPluginsIds() {
-        return ['progressbar'];
+    public function __construct() {
+        parent::__construct(
+            'progressBar',
+            ['progressbar'],
+            true,
+            PluginRegistry::getRegistry()
+        );
     }
 
     public function getLabel() {
@@ -20,9 +22,5 @@ class ProgressBar extends TestRunnerFeature {
 
     public function getDescription() {
         return __('Display the current progression within the test');
-    }
-
-    public function isEnabledByDefault() {
-        return true;
     }
 }
