@@ -19,7 +19,7 @@ class ProgressBar extends TestRunnerFeature {
     }
 
     public function getDescription() {
-        return __('xxxx');
+        return __('Display the current progression within the test');
     }
 
     public function isEnabledByDefault() {
