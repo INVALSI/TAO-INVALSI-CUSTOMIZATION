@@ -1,7 +1,6 @@
 <?php
 namespace oat\taoInvalsi\scripts\install;
 
-use oat\taoInvalsi\model\runner\features\Accessibility;
 use oat\taoInvalsi\model\runner\features\ProgressBar;
 use oat\taoTests\models\runner\features\TestRunnerFeatureService;
 
@@ -13,7 +12,6 @@ class RegisterTestRunnerFeatures extends \common_ext_action_InstallAction
 
         $testRunnerFeatureService = $serviceManager->get(TestRunnerFeatureService::SERVICE_ID);
         $testRunnerFeatureService->register(new ProgressBar());
-        $testRunnerFeatureService->register(new Accessibility());
 
         $serviceManager->register(TestRunnerFeatureService::SERVICE_ID, $testRunnerFeatureService);
 
