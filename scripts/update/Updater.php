@@ -149,7 +149,7 @@ class Updater extends common_ext_ExtensionUpdater
             $registerTestRunnerFeatures->setServiceLocator($this->getServiceManager());
             $registerTestRunnerFeatures([]);
 
-            //$this->setVersion('1.9.0');
+            $this->setVersion('1.9.0');
         }
     }
 }

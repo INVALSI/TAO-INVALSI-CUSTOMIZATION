@@ -14,7 +14,7 @@ class Accessibility extends TestRunnerFeature {
 
         parent::__construct(
             'accessibility',
-            [/*'itemThemeSwitcher',*/ 'disableRightClick'/*, 'zoom'*/],
+            ['itemThemeSwitcher', 'disableRightClick', 'zoom'],
             true,
             $pluginService->getAllPlugins()
         );
