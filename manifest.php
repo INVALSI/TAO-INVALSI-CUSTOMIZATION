@@ -29,7 +29,7 @@ return array(
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=5.11.0',
+            'taoQtiTest' => '>=5.28.0',
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
