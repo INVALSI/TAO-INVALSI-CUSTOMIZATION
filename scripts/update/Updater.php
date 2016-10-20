@@ -141,5 +141,16 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.8.0');
         }
+        
+        if ($this->isVersion('1.8.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+
+            $config = $extension->getConfig('testRunner');
+            $config['keep-timer-up-to-timeout'] = true;
+            
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.9.0');
+        }
     }
 }
