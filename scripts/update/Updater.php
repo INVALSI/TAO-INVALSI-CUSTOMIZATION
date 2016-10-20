@@ -4,19 +4,19 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA;
- *               
- * 
+ *
+ *
  */
 
 namespace oat\taoInvalsi\scripts\update;
@@ -24,6 +24,8 @@ namespace oat\taoInvalsi\scripts\update;
 use \common_ext_ExtensionUpdater;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
+use oat\taoInvalsi\scripts\install\RegisterTestPluginService;
+use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
@@ -66,7 +68,7 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.3.0');
         }
-        
+
         if ($this->isVersion('1.3.0')) {
             $registry = TestRunnerClientConfigRegistry::getRegistry();
 
@@ -128,7 +130,7 @@ class Updater extends common_ext_ExtensionUpdater
         }
 
         $this->skip('1.7.0', '1.7.2');
-        
+
         if ($this->isVersion('1.7.2')) {
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
 
@@ -136,10 +138,18 @@ class Updater extends common_ext_ExtensionUpdater
             $config['force-branchrules'] = true;
             $config['path-tracking'] = true;
             $config['always-allow-jumps'] = true;
-            
+
             $extension->setConfig('testRunner', $config);
 
             $this->setVersion('1.8.0');
+        }
+
+        if ($this->isVersion('1.8.0')) {
+            $registerTestRunnerFeatures = new RegisterTestRunnerFeatures();
+            $registerTestRunnerFeatures->setServiceLocator($this->getServiceManager());
+            $registerTestRunnerFeatures([]);
+
+            $this->setVersion('1.9.0');
         }
     }
 }
