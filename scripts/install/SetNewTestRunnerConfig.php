@@ -18,7 +18,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'test-taker-review-can-collapse' => true,
             'force-branchrules' => true,
             'path-tracking' => true,
-            'always-allow-jumps' => true
+            'always-allow-jumps' => true,
+            'keep-timer-up-to-timeout' => true,
         );
 
         $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');

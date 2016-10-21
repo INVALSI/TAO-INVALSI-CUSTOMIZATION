@@ -1,5 +1,5 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -24,12 +24,13 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.8.0',
+    'version' => '1.10.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=5.11.0',
+            'taoQtiTest' => '>=5.29.0',
+            'taoTests' => '>=3.5.0'
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -41,7 +42,9 @@ return array(
             __DIR__ . '/scripts/install/addHook.php',
             'oat\\taoInvalsi\\scripts\\install\\SetQtiCreatorConfig',
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
-            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig'
+            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
+            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
+            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures'
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
