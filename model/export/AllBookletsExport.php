@@ -154,13 +154,39 @@ class AllBookletsExport
 
                             /** @var ExtendedAssessmentItemRef $component */
                             foreach($components as $component){
+                                $href = explode('|',$component->getHref());
+                                $private = $href[2];
+                                $itemJsonDir = $storageService->getDirectoryById($private);
+                                $itemJsonFiles = $itemJsonDir->getFlyIterator(3);
+
+                                foreach($itemJsonFiles as $itemJsonFile){
+                                    if($itemJsonFile->getBasename() === 'item.json'){
+                                        $itemJson = json_decode($itemJsonFile->read());
+                                        $count = array();
+                                        foreach($itemJson->data->body->elements as $element){
+                                            if($element->qtiClass === 'matchInteraction'){
+                                                //columns
+                                                foreach($element->choices[1] as $choice){
+                                                    $count[$element->attributes->responseIdentifier][] = $choice->identifier;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
                                 $identifier = $component->getIdentifier();
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
                                 
                                 /** @var ResponseDeclaration $response */
                                 foreach ($responses as $response) {
-                                    $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                    if(isset($count[$response->getIdentifier()])){
+                                        foreach($count[$response->getIdentifier()] as $choiceId){
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier().'-'.$choiceId;
+                                        }
+                                    } else {
+                                        $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                    }
                                 }
 
                                 /** @var OutcomeDeclaration $outcome */
@@ -172,8 +198,8 @@ class AllBookletsExport
                                     $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $expectedVariable;
                                 }
                             }
+                            break 2;
                         }
-
                     }
                 }
 
