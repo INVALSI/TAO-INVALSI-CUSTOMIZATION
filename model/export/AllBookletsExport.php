@@ -173,7 +173,10 @@ class AllBookletsExport
         }
 
         foreach($this->variablesByDeliveries as $key => $variable){
-            $headers = array_merge($headers, $variable);
+            $diff = array_diff($variable, $headers);
+            if(!empty($diff)){
+                $headers = array_merge($headers, $diff);
+            }
         }
 
         if(empty($headers)){
