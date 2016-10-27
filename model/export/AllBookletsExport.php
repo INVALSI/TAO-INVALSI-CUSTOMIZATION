@@ -123,7 +123,7 @@ class AllBookletsExport
      */
     private function getHeaders()
     {
-        $headers = array();
+        $headers = array('ID', 'IDFORM');
         $report = \common_report_Report::createSuccess();
 
 
@@ -132,9 +132,6 @@ class AllBookletsExport
 
 
         foreach($this->deliveries as $delivery){
-            $this->variablesByDeliveries[$delivery->getUri()][] = 'ID';
-            $this->variablesByDeliveries[$delivery->getUri()][] = 'IDFORM';
-
             //Get item list
             $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
             foreach($directories as $directory){
@@ -317,7 +314,9 @@ class AllBookletsExport
         }
 
         foreach($emptyColumns as $column){
-            $row[$column] = self::NOT_REQUIRED;
+            if(!in_array($column, array_keys($row))){
+                $row[$column] = self::NOT_REQUIRED;
+            }
         }
 
     }
