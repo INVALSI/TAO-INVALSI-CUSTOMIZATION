@@ -32,6 +32,7 @@ use qtism\data\AssessmentTest;
 use qtism\data\ExtendedAssessmentItemRef;
 use qtism\data\state\OutcomeDeclaration;
 use qtism\data\state\ResponseDeclaration;
+use qtism\runtime\common\State;
 
 class AllBookletsExport
 {
@@ -68,7 +69,10 @@ class AllBookletsExport
     ];
 
     private $variablesByDeliveries = [];
+    
+    private $assessmentTest;
 
+    private $branchRules;
 
     /**
      * @var array
@@ -90,6 +94,7 @@ class AllBookletsExport
             ->get(FileSystemService::SERVICE_ID)
             ->getDirectory('taoQtiItem')
             ->getFile('export/'.$filename);
+        $this->branchRules = array();
     }
 
     /**
@@ -142,18 +147,24 @@ class AllBookletsExport
                     if($file->getBasename() === 'compact-test.php'){
                         $phpDocument = new PhpDocument();
                         $phpDocument->loadFromString($file->read());
-                        /** @var AssessmentTest $assementTest */
-                        $assementTest = $phpDocument->getDocumentComponent();
-                        $components = $assementTest->getComponentsByClassName('assessmentItemRef');
+
+                        $this->assessmentTest = $phpDocument->getDocumentComponent();
+                        $components = $this->assessmentTest->getComponentsByClassName('assessmentItemRef');
 
                         /** @var ExtendedAssessmentItemRef $component */
                         foreach($components as $component){
                             $identifier = $component->getIdentifier();
                             $outcomes = $component->getOutcomeDeclarations();
                             $responses = $component->getResponseDeclarations();
+                            $branchRules = $component->getBranchRules();
+                            $branchRulesCount = count($branchRules);
+                            
                             /** @var ResponseDeclaration $response */
                             foreach ($responses as $response) {
                                 $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                if ($branchRulesCount === 1) {
+                                    $this->branchRules[$identifier . '-' . $response->getIdentifier()] = $branchRules[0];
+                                }
                             }
 
                             /** @var OutcomeDeclaration $outcome */
@@ -310,6 +321,11 @@ class AllBookletsExport
         foreach($neededColumns as $column){
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REACHED;
+            } elseif (isset($this->branchRules[$column])) {
+                $branchColumn = preg_replace('/([a-zA-Z0-9\-]*)(-)([a-zA-Z0-9]*)/', '${1}.${3}', $column);
+                // Branch rule on item's variable.
+                
+                $state = new State();
             }
         }
 
@@ -318,7 +334,6 @@ class AllBookletsExport
                 $row[$column] = self::NOT_REQUIRED;
             }
         }
-
     }
 
 
