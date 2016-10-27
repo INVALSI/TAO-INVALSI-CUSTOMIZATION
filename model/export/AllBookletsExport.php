@@ -27,12 +27,13 @@ use oat\oatbox\service\ServiceManager;
 use oat\taoResultServer\models\classes\ResultServerService;
 use oat\taoResultServer\models\classes\ResultManagement;
 use oat\oatbox\filesystem\File;
+use qtism\common\datatypes\QtiPair;
 use qtism\data\storage\php\PhpDocument;
 use qtism\data\AssessmentTest;
 use qtism\data\ExtendedAssessmentItemRef;
 use qtism\data\state\OutcomeDeclaration;
 use qtism\data\state\ResponseDeclaration;
-use qtism\runtime\common\State;
+use qtism\runtime\common\MultipleContainer;
 
 class AllBookletsExport
 {
@@ -69,8 +70,6 @@ class AllBookletsExport
     ];
 
     private $variablesByDeliveries = [];
-
-    private $branchRules;
 
     /**
      * @var array
@@ -158,14 +157,10 @@ class AllBookletsExport
                                 $identifier = $component->getIdentifier();
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
-                                $branchRules = $component->getBranchRules();
                                 
                                 /** @var ResponseDeclaration $response */
                                 foreach ($responses as $response) {
                                     $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
-                                    if (count($branchRules) === 1) {
-                                        $this->branchRules[$identifier . '-' . $response->getIdentifier()] = $branchRules[0];
-                                    }
                                 }
 
                                 /** @var OutcomeDeclaration $outcome */
@@ -342,11 +337,19 @@ class AllBookletsExport
         foreach($neededColumns as $column){
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REACHED;
-            } elseif (isset($this->branchRules[$column])) {
-                $branchColumn = preg_replace('/([a-zA-Z0-9\-]*)(-)([a-zA-Z0-9]*)/', '${1}.${3}', $column);
-                // Branch rule on item's variable.
-                
-                $state = new State();
+            } elseif ($column === 'item-25-Q07') {
+                $tmpVal = str_replace(';',',', $row[$column]);
+                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
+                if ($val instanceof MultipleContainer && $val->contains(new QtiPair('choice_1', 'choice_3'))) {
+                    // item-26 has to be invalidated.
+                    if (isset($row['item-26-Q08'])) {
+                        $row['item-26-Q08'] = self::NOT_REACHED;
+                    }
+                }
+            }
+            
+            if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
+                $row[$column] = self::NOT_SELECTED;
             }
         }
 
@@ -356,8 +359,6 @@ class AllBookletsExport
             }
         }
     }
-
-
 
     private function getServiceManager()
     {
