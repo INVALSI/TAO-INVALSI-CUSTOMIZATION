@@ -30,6 +30,7 @@ return array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
             'taoQtiTest' => '>=5.29.0',
+            'taoQtiItem' => '>=5.15.0',
             'taoTests' => '>=3.5.0'
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
