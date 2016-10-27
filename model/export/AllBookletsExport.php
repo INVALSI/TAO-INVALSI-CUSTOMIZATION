@@ -75,6 +75,8 @@ class AllBookletsExport
      */
     private $deliveries;
 
+    private $headers = null;
+
     /**
      * Filesystem File to manage exported file storage
      *
@@ -100,8 +102,8 @@ class AllBookletsExport
     {
         $report = \common_report_Report::createSuccess();
 
-        $headersReport = $this->getHeaders();
-        $report->add($headersReport);
+        $headers = $this->getHeaders();
+        $this->writeToCsv($headers, true);
 
         $rowsReport = $this->getRows();
         $report->add($rowsReport);
@@ -118,76 +120,79 @@ class AllBookletsExport
 
     /**
      * Get the list of headers for all deliveries that we want to export
-     * @return \common_report_Report
+     * @return array $headers
      * @throws \common_exception_Error
      */
     private function getHeaders()
     {
-        $headers = array('ID', 'IDFORM');
-        $report = \common_report_Report::createSuccess();
+
+        if(is_null($this->headers)){
+            $headers = array('ID', 'IDFORM');
+            $report = \common_report_Report::createSuccess();
 
 
-        /** @var \tao_models_classes_service_FileStorage $storageService */
-        $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
+            /** @var \tao_models_classes_service_FileStorage $storageService */
+            $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
 
 
-        foreach($this->deliveries as $delivery){
-            //Get item list
-            $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
-            foreach($directories as $directory){
-                $dir = $storageService->getDirectoryById($directory);
-                $files = $dir->getFlyIterator(3);
-                /** @var File $file */
-                foreach($files as $file){
-                    if($file->getBasename() === 'compact-test.php'){
-                        $phpDocument = new PhpDocument();
-                        $phpDocument->loadFromString($file->read());
-                        /** @var AssessmentTest $assementTest */
-                        $assementTest = $phpDocument->getDocumentComponent();
-                        $components = $assementTest->getComponentsByClassName('assessmentItemRef');
+            foreach($this->deliveries as $delivery){
+                //Get item list
+                $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
+                foreach($directories as $directory){
+                    $dir = $storageService->getDirectoryById($directory);
+                    $files = $dir->getFlyIterator(3);
+                    /** @var File $file */
+                    foreach($files as $file){
+                        if($file->getBasename() === 'compact-test.php'){
+                            $phpDocument = new PhpDocument();
+                            $phpDocument->loadFromString($file->read());
+                            /** @var AssessmentTest $assementTest */
+                            $assementTest = $phpDocument->getDocumentComponent();
+                            $components = $assementTest->getComponentsByClassName('assessmentItemRef');
 
-                        /** @var ExtendedAssessmentItemRef $component */
-                        foreach($components as $component){
-                            $identifier = $component->getIdentifier();
-                            $outcomes = $component->getOutcomeDeclarations();
-                            $responses = $component->getResponseDeclarations();
-                            /** @var ResponseDeclaration $response */
-                            foreach ($responses as $response) {
-                                $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
-                            }
+                            /** @var ExtendedAssessmentItemRef $component */
+                            foreach($components as $component){
+                                $identifier = $component->getIdentifier();
+                                $outcomes = $component->getOutcomeDeclarations();
+                                $responses = $component->getResponseDeclarations();
+                                /** @var ResponseDeclaration $response */
+                                foreach ($responses as $response) {
+                                    $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                }
 
-                            /** @var OutcomeDeclaration $outcome */
-                            foreach ($outcomes as $outcome) {
-                                $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $outcome->getIdentifier();
-                            }
+                                /** @var OutcomeDeclaration $outcome */
+                                foreach ($outcomes as $outcome) {
+                                    $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $outcome->getIdentifier();
+                                }
 
-                            foreach($this->expectedVariables as $expectedVariable){
-                                $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $expectedVariable;
+                                foreach($this->expectedVariables as $expectedVariable){
+                                    $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $expectedVariable;
+                                }
                             }
                         }
-                    }
 
+                    }
+                }
+
+            }
+
+            foreach($this->variablesByDeliveries as $key => $variable){
+                $diff = array_diff($variable, $headers);
+                if(!empty($diff)){
+                    $headers = array_merge($headers, $diff);
                 }
             }
 
-        }
-
-        foreach($this->variablesByDeliveries as $key => $variable){
-            $diff = array_diff($variable, $headers);
-            if(!empty($diff)){
-                $headers = array_merge($headers, $diff);
+            if(empty($headers)){
+                $report->setType(\common_report_Report::TYPE_ERROR);
+                $report->setMessage('Impossible to get headers for theses deliveries');
+                return $report;
             }
+
+            $this->headers = $headers;
         }
+        return $this->headers;
 
-        if(empty($headers)){
-            $report->setType(\common_report_Report::TYPE_ERROR);
-            $report->setMessage('Impossible to get headers for theses deliveries');
-            return $report;
-        }
-
-        $this->writeToCsv($headers);
-
-        return $report;
     }
 
 
@@ -258,9 +263,26 @@ class AllBookletsExport
     /**
      * Write the row provided in the csv file
      * @param array $row
+     * @param bool $isHeader
      */
-    private function writeToCsv(array $row)
+    private function writeToCsv(array $row, $isHeader = false)
     {
+        //order the row to match the headers
+        if(!$isHeader){
+            $headers = $this->getHeaders();
+            $newRow = array();
+            foreach($headers as $value){
+                if(isset($row[$value])){
+                    $newRow[] = $row[$value];
+                } else {
+                    \common_Logger::w('column : '.$value.' is missing in row '.implode(',', $row));
+                }
+            }
+            $row = $newRow;
+        }
+
+
+        //write the row
         $content = self::CSV_ENCLOSURE
             . implode(self::CSV_ENCLOSURE . self::CSV_DELIMITER . self::CSV_ENCLOSURE, $row)
             . self::CSV_ENCLOSURE
