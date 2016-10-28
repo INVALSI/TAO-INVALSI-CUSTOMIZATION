@@ -16,7 +16,8 @@
  *
  * Copyright (c) 2016  (original work) Open Assessment Technologies SA;
  *
- * @author Alexander Zagovorichev <zagovorichev@1pt.com>
+ * @author Antoine Robin <antoine@taotesting.com>
+ * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
 
 namespace oat\taoInvalsi\model\export;
@@ -70,6 +71,15 @@ class AllBookletsExport
     ];
 
     private $variablesByDeliveries = [];
+    
+    private $variablesByDeliveriesHidden = [];
+    
+    private $matchTypes = [
+        'item-25' => 1,
+        'item-31' => 1,
+        'item-33' => 1,
+        'item-34' => 1
+    ];
 
     /**
      * @var array
@@ -165,8 +175,10 @@ class AllBookletsExport
                                         $count = array();
                                         foreach($itemJson->data->body->elements as $element){
                                             if($element->qtiClass === 'matchInteraction'){
-                                                //columns
-                                                foreach($element->choices[1] as $choice){
+                                                
+                                                $matchSet = (isset($this->matchTypes[$component->getIdentifier()])) ? 0 : 1;
+                                                
+                                                foreach($element->choices[$matchSet] as $choice){
                                                     $count[$element->attributes->responseIdentifier][] = $choice->identifier;
                                                 }
                                             }
@@ -182,8 +194,9 @@ class AllBookletsExport
                                 foreach ($responses as $response) {
                                     if(isset($count[$response->getIdentifier()])){
                                         foreach($count[$response->getIdentifier()] as $choiceId){
-                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier().'-'.$choiceId;
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier() . '-' . $choiceId;
                                         }
+                                        $this->variablesByDeliveriesHidden[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
                                     } else {
                                         $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
                                     }
@@ -261,8 +274,36 @@ class AllBookletsExport
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
-                            if(in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveries[$delivery->getUri()])){
+                            if (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveries[$delivery->getUri()])){
                                 $row[$itemIdentifier.'-'.$variable->getIdentifier()] = $this->formatVariable($variable);
+                            } elseif (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveriesHidden[$delivery->getUri()])) {
+                                
+                                // Set all fake variables to nothing...
+                                foreach ($this->variablesByDeliveries[$delivery->getUri()] as $col) {
+                                    if (preg_match('/^' . preg_quote($itemIdentifier.'-'.$variable->getIdentifier()) . '-/', $col) === 1) {
+                                        $row[$col] = '';
+                                    }
+                                }
+                                
+                                $tmpVal = str_replace(';',',', $this->formatVariable($variable));
+                                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
+                                if ($val) {
+                                    
+                                    foreach ($val as $v) {
+                                        if (in_array($itemIdentifier.'-'.$variable->getIdentifier().'-'.$v->getFirst(), $this->variablesByDeliveries[$delivery->getUri()])) {
+                                            
+                                            if (isset($this->matchTypes[$itemIdentifier])) {
+                                                $cmp = $v->getFirst();
+                                                $set = $v->getSecond();
+                                            } else {
+                                                $cmp = $v->getSecond();
+                                                $set = $v->getFirst();
+                                            }
+                                            
+                                            $row[$itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp] = $set;
+                                        }
+                                    }
+                                }
                             } else {
                                 \common_Logger::d($itemIdentifier.'-'.$variable->getIdentifier().' is not taken into account');
                             }
@@ -363,14 +404,10 @@ class AllBookletsExport
         foreach($neededColumns as $column){
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REACHED;
-            } elseif ($column === 'item-25-Q07') {
-                $tmpVal = str_replace(';',',', $row[$column]);
-                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
-                if ($val instanceof MultipleContainer && $val->contains(new QtiPair('choice_1', 'choice_3'))) {
+            } elseif ($column === 'item-25-Q07-choice_1') {
+                if ($row[$column] === 'choice_3' && isset($row['item-26-Q08'])) {
                     // item-26 has to be invalidated.
-                    if (isset($row['item-26-Q08'])) {
-                        $row['item-26-Q08'] = self::NOT_REACHED;
-                    }
+                    $row['item-26-Q08'] = self::NOT_REACHED;
                 }
             }
             
