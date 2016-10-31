@@ -70,14 +70,7 @@ class AllBookletsExport
 
     private $variablesByDeliveries = [];
     
-    private $variablesByDeliveriesHidden = [];
-    
-    private $matchTypes = [
-        'item-25' => 1,
-        'item-31' => 1,
-        'item-33' => 1,
-        'item-34' => 1
-    ];
+    private $matchTypeByDeliveries = [];
 
     /**
      * @var array
@@ -160,16 +153,22 @@ class AllBookletsExport
             /** @var \tao_models_classes_service_FileStorage $storageService */
             $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
 
-
             foreach($this->deliveries as $delivery){
                 //Get item list
+                $deliveryUri = $delivery->getUri();
+                $this->variablesByDeliveries[$deliveryUri] = [];
+                $this->matchTypeByDeliveries[$deliveryUri] = [];
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
-                foreach($directories as $directory){
+                
+                foreach ($directories as $directory) {
                     $dir = $storageService->getDirectoryById($directory);
                     $files = $dir->getFlyIterator(3);
+                    
                     /** @var File $file */
-                    foreach($files as $file){
-                        if($file->getBasename() === 'compact-test.php'){
+                    foreach ($files as $file) {
+                        
+                        if ($file->getBasename() === 'compact-test.php') {
+                            
                             $phpDocument = new PhpDocument();
                             $phpDocument->loadFromString($file->read());
                             /** @var AssessmentTest $assementTest */
@@ -177,42 +176,69 @@ class AllBookletsExport
                             $components = $assementTest->getComponentsByClassName('assessmentItemRef');
 
                             /** @var ExtendedAssessmentItemRef $component */
-                            foreach($components as $component){
+                            foreach ($components as $component) {
+                                
                                 $href = explode('|',$component->getHref());
                                 $private = $href[2];
                                 $itemJsonDir = $storageService->getDirectoryById($private);
                                 $itemJsonFiles = $itemJsonDir->getFlyIterator(3);
+                                $choices = array();
 
-                                foreach($itemJsonFiles as $itemJsonFile){
-                                    if($itemJsonFile->getBasename() === 'item.json'){
+                                foreach ($itemJsonFiles as $itemJsonFile) {
+                                    
+                                    if ($itemJsonFile->getBasename() === 'item.json') {
+                                        
                                         $itemJson = json_decode($itemJsonFile->read());
-                                        $count = array();
-                                        foreach($itemJson->data->body->elements as $element){
-                                            if($element->qtiClass === 'matchInteraction'){
+                                        $interactions = AllBookletsExportUtils::getInteractions($itemJson);
+                                        
+                                        if (isset($interactions['matchInteraction'])) {
+                                            
+                                            foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 
-                                                $matchSet = (isset($this->matchTypes[$component->getIdentifier()])) ? 0 : 1;
+                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
                                                 
-                                                foreach($element->choices[$matchSet] as $choice){
-                                                    $count[$element->attributes->responseIdentifier][] = $choice->identifier;
+                                                if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
+                                                    // By column strategy.
+                                                    $matchSetIndex = 0;
+                                                    $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
+                                                } elseif (AllBookletsExportUtils::isMatchByRow($jsonInteraction)) {
+                                                    // By row strategy.
+                                                    $matchSetIndex = 1;
+                                                    $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
+                                                } else {
+                                                    // No strategy could be identified, regular output for this interaction.
+                                                    continue;
                                                 }
+                                                
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $choices[$responseIdentifier] = $matchSets[$matchSetIndex];
                                             }
                                         }
+
                                         break;
                                     }
                                 }
+                                
                                 $identifier = $component->getIdentifier();
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
                                 
                                 /** @var ResponseDeclaration $response */
                                 foreach ($responses as $response) {
-                                    if(isset($count[$response->getIdentifier()])){
-                                        foreach($count[$response->getIdentifier()] as $choiceId){
-                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier() . '-' . $choiceId;
+                                    
+                                    $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
+                                    
+                                    if (isset($choices[$response->getIdentifier()])) {
+                                        
+                                        // Non default response variable structure (e.g. matchInteraction)
+                                        foreach ($choices[$response->getIdentifier()] as $choiceId) {
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
                                         }
-                                        $this->variablesByDeliveriesHidden[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                        
                                     } else {
-                                        $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                        
+                                        // Default response variable structure.
+                                        $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier;
                                     }
                                 }
 
@@ -263,10 +289,11 @@ class AllBookletsExport
         $i = 0;
         /** @var \core_kernel_classes_Resource $delivery */
         foreach($this->deliveries as $delivery){
+            $deliveryUri = $delivery->getUri();
             $storage = $this->getServiceManager()->get(ResultServerService::SERVICE_ID)->getResultStorage($delivery);
 
             if($storage instanceof ResultManagement){
-                $results = $storage->getResultByDelivery([$delivery->getUri()]);
+                $results = $storage->getResultByDelivery([$deliveryUri]);
                 // get each row and write it to the csv
 
                 foreach($results as $result){
@@ -279,22 +306,32 @@ class AllBookletsExport
 
 
                     $callIds = $storage->getRelatedItemCallIds($execution->getIdentifier());
-                    foreach($callIds as $callId){
+                    foreach ($callIds as $callId) {
+                        
                         $itemResults = $storage->getVariables($callId);
                         $splitCallId = explode('#', $callId);
-                        $itemIdentifier = explode('.',$splitCallId[1]);
+                        $itemIdentifier = explode('.', $splitCallId[1]);
                         $itemIdentifier = $itemIdentifier[1];
-                        foreach($itemResults as $itemResult){
+                        
+                        foreach ($itemResults as $itemResult) {
+                            
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
-                            if (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveries[$delivery->getUri()])){
-                                $row[$itemIdentifier.'-'.$variable->getIdentifier()] = $this->formatVariable($variable);
-                            } elseif (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveriesHidden[$delivery->getUri()])) {
+                            $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
+                            
+                            if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
+                                
+                                // Default response variable structure.
+                                $row[$headerIdentifier] = $this->formatVariable($variable);
+                                
+                            } elseif (in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
+                                
+                                // Non default response variable structure.
                                 
                                 // Set all fake variables to nothing...
-                                foreach ($this->variablesByDeliveries[$delivery->getUri()] as $col) {
-                                    if (preg_match('/^' . preg_quote($itemIdentifier.'-'.$variable->getIdentifier()) . '-/', $col) === 1) {
+                                foreach ($this->variablesByDeliveries[$deliveryUri] as $col) {
+                                    if (preg_match('/^' . preg_quote($headerIdentifier) . '-/', $col) === 1) {
                                         $row[$col] = '';
                                     }
                                 }
@@ -304,34 +341,37 @@ class AllBookletsExport
                                 if ($val) {
                                     
                                     foreach ($val as $v) {
-                                        if (in_array($itemIdentifier.'-'.$variable->getIdentifier().'-'.$v->getFirst(), $this->variablesByDeliveries[$delivery->getUri()])) {
+                                        
+                                        if (isset($this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier]) && $this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier] === 0) {
+                                            // By column strategy.
+                                            $cmp = $v->getFirst();
+                                            $set = $v->getSecond();
+                                        } else {
+                                            // By row strategy.
+                                            $cmp = $v->getSecond();
+                                            $set = $v->getFirst();
+                                        }
+                                        
+                                        if (in_array($headerIdentifier . '-' . $cmp, $this->variablesByDeliveries[$deliveryUri])) {
                                             
-                                            if (isset($this->matchTypes[$itemIdentifier])) {
-                                                $cmp = $v->getFirst();
-                                                $set = $v->getSecond();
-                                            } else {
-                                                $cmp = $v->getSecond();
-                                                $set = $v->getFirst();
-                                            }
-                                            
-                                            $row[$itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp] = $set;
+                                            $row[$headerIdentifier . '-' . $cmp] = $set;
                                         }
                                     }
                                 }
                             } else {
-                                \common_Logger::d($itemIdentifier.'-'.$variable->getIdentifier().' is not taken into account');
+                                \common_Logger::d($headerIdentifier . ' is not taken into account');
                             }
                         }
-
                     }
 
-                    if(empty($row)){
+                    if (empty($row)) {
                         $report->setType(\common_report_Report::TYPE_ERROR);
-                        $report->setMessage('Impossible to get row for theses delivery '.$delivery. 'and execution '.$execution->getIdentifier());
+                        $report->setMessage('Impossible to get row for theses delivery ' . $delivery . 'and execution ' . $execution->getIdentifier());
                         return $report;
                     }
+                    
                     $i++;
-                    $this->fillRow($row, $delivery->getUri());
+                    $this->fillRow($row, $deliveryUri);
                     $this->writeToCsv($row);
                 }
             }
@@ -350,17 +390,19 @@ class AllBookletsExport
      */
     private function writeToCsv(array $row, $isHeader = false)
     {
-        //order the row to match the headers
-        if(!$isHeader){
+        // order the row to match the headers
+        if (!$isHeader) {
             $headers = $this->getHeaders();
-            $newRow = array();
-            foreach($headers as $value){
-                if(isset($row[$value])){
+            $newRow = [];
+            
+            foreach($headers as $value) {
+                if (isset($row[$value])) {
                     $newRow[] = $row[$value];
                 } else {
-                    \common_Logger::w('column : '.$value.' is missing in row '.implode(',', $row));
+                    \common_Logger::w('column : ' . $value . ' is missing in row ' .implode(',', $row));
                 }
             }
+            
             $row = $newRow;
         }
 
@@ -369,10 +411,9 @@ class AllBookletsExport
         $content = self::CSV_ENCLOSURE
             . implode(self::CSV_ENCLOSURE . self::CSV_DELIMITER . self::CSV_ENCLOSURE, $row)
             . self::CSV_ENCLOSURE
-            ."\n";
+            . "\n";
 
-
-        if(!fwrite($this->exportFile, $content)){
+        if (!fwrite($this->exportFile, $content)) {
             \common_Logger::w('Fail to write in the csv : '.implode(',', $row));
         }
     }
@@ -381,7 +422,8 @@ class AllBookletsExport
      * Get the filename
      * @return string
      */
-    public function getFilename(){
+    public function getFilename()
+    {
         return $this->flySystemFile->getPrefix().$this->flySystemFile->getBasename();
     }
 
@@ -390,8 +432,8 @@ class AllBookletsExport
      * @param \taoResultServer_models_classes_Variable $variable
      * @return string $variable
      */
-    private function formatVariable($variable){
-
+    private function formatVariable($variable)
+    {
         if($variable instanceof \taoResultServer_models_classes_ResponseVariable){
             return $variable->getValue();
         } else {
@@ -408,15 +450,19 @@ class AllBookletsExport
     {
         $neededColumns = array();
         $emptyColumns = array();
-        foreach($this->variablesByDeliveries as $delivery => $columns){
+        
+        foreach ($this->variablesByDeliveries as $delivery => $columns) {
             if($delivery === $deliveryUri){
+                // Columns that are related to $deliveryUri.
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
+                // Columns that are NOT related to $deliveryUri.
                 $emptyColumns = $this->variablesByDeliveries[$deliveryUri];
             }
         }
-        foreach($neededColumns as $column){
-            if(!in_array($column, array_keys($row))){
+        
+        foreach ($neededColumns as $column) {
+            if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
             } elseif ($column === 'item-25-Q07-choice_1') {
                 if ($row[$column] === 'choice_3' && isset($row['item-26-Q08'])) {
@@ -430,7 +476,7 @@ class AllBookletsExport
             }
         }
 
-        foreach($emptyColumns as $column){
+        foreach ($emptyColumns as $column) {
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REQUIRED;
             }
