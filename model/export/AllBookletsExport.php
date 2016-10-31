@@ -38,8 +38,6 @@ use qtism\runtime\common\MultipleContainer;
 
 class AllBookletsExport
 {
-
-
     /**
      * Default csv delimiter
      */
@@ -94,16 +92,13 @@ class AllBookletsExport
      * @var File
      */
     protected $exportFile;
+    
+    protected $flySystemFile;
 
     public function __construct(array $deliveries)
     {
         $this->deliveries = $deliveries;
         $filename = 'booklet_export_'.date('Y_m_d_H_i_s').'.csv';
-        $this->exportFile = $this->getServiceManager()
-            ->get(FileSystemService::SERVICE_ID)
-            ->getDirectory('taoQtiItem')
-            ->getFile('export/'.$filename);
-        $this->branchRules = array();
     }
 
     /**
@@ -113,6 +108,10 @@ class AllBookletsExport
     public function export()
     {
         $report = \common_report_Report::createSuccess();
+
+        // Initialize temporary file.
+        $tmpLocation = tempnam(sys_get_temp_dir(), 'invalsiexport');
+        $this->exportFile = fopen($tmpLocation, 'w+');
 
         $headers = $this->getHeaders();
         $this->writeToCsv($headers, true);
@@ -127,6 +126,21 @@ class AllBookletsExport
 
         $rows = $rowsReport->getData();
         $report->setMessage($rows.' rows has been exported');
+        
+        // Write as stream and close temporary file.
+        
+        $filename = 'booklet_export_'.date('Y_m_d_H_i_s').'.csv';
+        $this->flySystemFile = $this->getServiceManager()
+            ->get(FileSystemService::SERVICE_ID)
+            ->getDirectory('taoQtiItem')
+            ->getFile('export/'.$filename);
+            
+        rewind($this->exportFile);
+        $this->flySystemFile->write($this->exportFile);
+        
+        fclose($this->exportFile);
+        unlink($tmpLocation);
+        
         return $report;
     }
 
@@ -358,7 +372,7 @@ class AllBookletsExport
             ."\n";
 
 
-        if(!$this->exportFile->put($content)){
+        if(!fwrite($this->exportFile, $content)){
             \common_Logger::w('Fail to write in the csv : '.implode(',', $row));
         }
     }
@@ -368,7 +382,7 @@ class AllBookletsExport
      * @return string
      */
     public function getFilename(){
-        return $this->exportFile->getPrefix().$this->exportFile->getBasename();
+        return $this->flySystemFile->getPrefix().$this->flySystemFile->getBasename();
     }
 
     /**
