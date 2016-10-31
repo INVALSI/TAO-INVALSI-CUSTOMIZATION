@@ -218,7 +218,7 @@ class AllBookletsExport
                                     if (isset($choices[$response->getIdentifier()])) {
                                         
                                         // Non default response variable structure (e.g. matchInteraction)
-                                        foreach($choices[$response->getIdentifier()] as $choiceId){
+                                        foreach ($choices[$response->getIdentifier()] as $choiceId) {
                                             $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier() . '-' . $choiceId;
                                         }
                                         
@@ -277,10 +277,11 @@ class AllBookletsExport
         $i = 0;
         /** @var \core_kernel_classes_Resource $delivery */
         foreach($this->deliveries as $delivery){
+            $deliveryUri = $delivery->getUri();
             $storage = $this->getServiceManager()->get(ResultServerService::SERVICE_ID)->getResultStorage($delivery);
 
             if($storage instanceof ResultManagement){
-                $results = $storage->getResultByDelivery([$delivery->getUri()]);
+                $results = $storage->getResultByDelivery([$deliveryUri]);
                 // get each row and write it to the csv
 
                 foreach($results as $result){
@@ -293,28 +294,32 @@ class AllBookletsExport
 
 
                     $callIds = $storage->getRelatedItemCallIds($execution->getIdentifier());
-                    foreach($callIds as $callId){
+                    foreach ($callIds as $callId) {
+                        
                         $itemResults = $storage->getVariables($callId);
                         $splitCallId = explode('#', $callId);
-                        $itemIdentifier = explode('.',$splitCallId[1]);
+                        $itemIdentifier = explode('.', $splitCallId[1]);
                         $itemIdentifier = $itemIdentifier[1];
-                        foreach($itemResults as $itemResult){
+                        
+                        foreach ($itemResults as $itemResult) {
+                            
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
+                            $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
-                            if (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveries[$delivery->getUri()])){
+                            if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
                                 
                                 // Default response variable structure.
-                                $row[$itemIdentifier.'-'.$variable->getIdentifier()] = $this->formatVariable($variable);
+                                $row[$headerIdentifier] = $this->formatVariable($variable);
                                 
-                            } elseif (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveriesHidden[$delivery->getUri()])) {
+                            } elseif (in_array($headerIdentifier, $this->variablesByDeliveriesHidden[$deliveryUri])) {
                                 
                                 // Non default response variable structure.
                                 
                                 // Set all fake variables to nothing...
-                                foreach ($this->variablesByDeliveries[$delivery->getUri()] as $col) {
-                                    if (preg_match('/^' . preg_quote($itemIdentifier.'-'.$variable->getIdentifier()) . '-/', $col) === 1) {
+                                foreach ($this->variablesByDeliveries[$deliveryUri] as $col) {
+                                    if (preg_match('/^' . preg_quote($headerIdentifier) . '-/', $col) === 1) {
                                         $row[$col] = '';
                                     }
                                 }
@@ -333,26 +338,26 @@ class AllBookletsExport
                                             $set = $v->getFirst();
                                         }
                                         
-                                        if (in_array($itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp, $this->variablesByDeliveries[$delivery->getUri()])) {
+                                        if (in_array($headerIdentifier . '-' . $cmp, $this->variablesByDeliveries[$deliveryUri])) {
                                             
-                                            $row[$itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp] = $set;
+                                            $row[$headerIdentifier . '-' . $cmp] = $set;
                                         }
                                     }
                                 }
                             } else {
-                                \common_Logger::d($itemIdentifier.'-'.$variable->getIdentifier().' is not taken into account');
+                                \common_Logger::d($headerIdentifier . ' is not taken into account');
                             }
                         }
-
                     }
 
-                    if(empty($row)){
+                    if (empty($row)) {
                         $report->setType(\common_report_Report::TYPE_ERROR);
-                        $report->setMessage('Impossible to get row for theses delivery '.$delivery. 'and execution '.$execution->getIdentifier());
+                        $report->setMessage('Impossible to get row for theses delivery ' . $delivery . 'and execution ' . $execution->getIdentifier());
                         return $report;
                     }
+                    
                     $i++;
-                    $this->fillRow($row, $delivery->getUri());
+                    $this->fillRow($row, $deliveryUri);
                     $this->writeToCsv($row);
                 }
             }
@@ -371,17 +376,19 @@ class AllBookletsExport
      */
     private function writeToCsv(array $row, $isHeader = false)
     {
-        //order the row to match the headers
-        if(!$isHeader){
+        // order the row to match the headers
+        if (!$isHeader) {
             $headers = $this->getHeaders();
-            $newRow = array();
-            foreach($headers as $value){
-                if(isset($row[$value])){
+            $newRow = [];
+            
+            foreach($headers as $value) {
+                if (isset($row[$value])) {
                     $newRow[] = $row[$value];
                 } else {
-                    \common_Logger::w('column : '.$value.' is missing in row '.implode(',', $row));
+                    \common_Logger::w('column : ' . $value . ' is missing in row ' .implode(',', $row));
                 }
             }
+            
             $row = $newRow;
         }
 
@@ -390,10 +397,9 @@ class AllBookletsExport
         $content = self::CSV_ENCLOSURE
             . implode(self::CSV_ENCLOSURE . self::CSV_DELIMITER . self::CSV_ENCLOSURE, $row)
             . self::CSV_ENCLOSURE
-            ."\n";
+            . "\n";
 
-
-        if(!fwrite($this->exportFile, $content)){
+        if (!fwrite($this->exportFile, $content)) {
             \common_Logger::w('Fail to write in the csv : '.implode(',', $row));
         }
     }
@@ -429,15 +435,19 @@ class AllBookletsExport
     {
         $neededColumns = array();
         $emptyColumns = array();
-        foreach($this->variablesByDeliveries as $delivery => $columns){
+        
+        foreach ($this->variablesByDeliveries as $delivery => $columns) {
             if($delivery === $deliveryUri){
+                // Columns that are related to $deliveryUri.
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
+                // Columns that are NOT related to $deliveryUri.
                 $emptyColumns = $this->variablesByDeliveries[$deliveryUri];
             }
         }
-        foreach($neededColumns as $column){
-            if(!in_array($column, array_keys($row))){
+        
+        foreach ($neededColumns as $column) {
+            if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
             } elseif ($column === 'item-25-Q07-choice_1') {
                 if ($row[$column] === 'choice_3' && isset($row['item-26-Q08'])) {
@@ -451,7 +461,7 @@ class AllBookletsExport
             }
         }
 
-        foreach($emptyColumns as $column){
+        foreach ($emptyColumns as $column) {
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REQUIRED;
             }
