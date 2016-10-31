@@ -162,6 +162,8 @@ class AllBookletsExport
 
             foreach($this->deliveries as $delivery){
                 //Get item list
+                $this->variablesByDeliveries[$delivery->getUri()] = [];
+                $this->variablesByDeliveriesHidden[$delivery->getUri()] = [];
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
@@ -198,7 +200,18 @@ class AllBookletsExport
                                         if (isset($interactions['matchInteraction'])) {
                                             
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                $matchSetIndex = (isset($this->matchTypes[$component->getIdentifier()])) ? $this->matchTypes[$component->getIdentifier()] : 0;
+                                                
+                                                if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
+                                                    // By column strategy.
+                                                    $matchSetIndex = 0;
+                                                } elseif (AllBookletsExportUtils::isMatchByRow($jsonInteraction)) {
+                                                    // By row strategy.
+                                                    $matchSetIndex = 1;
+                                                } else {
+                                                    // No strategy could be identifierd, regular output for this interaction.
+                                                    continue;
+                                                }
+                                                
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$responseIdentifier] = $matchSets[$matchSetIndex];
                                             }

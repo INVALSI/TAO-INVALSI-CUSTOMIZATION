@@ -76,4 +76,39 @@ class AllBookletsExportUtils
         
         return $result;
     }
+    
+    static public function isMatchByColumn(\stdClass $jsonInteraction)
+    {
+        $result = false;
+
+        if (isset($jsonInteraction->qtiClass) && $jsonInteraction->qtiClass === 'matchInteraction') {
+            
+            foreach ($jsonInteraction->choices[0] as $choice) {
+                if ($choice->attributes->matchMax != 1) {
+                    break;
+                }
+                
+                $result = true;
+            }
+        }
+        
+        return $result;
+    }
+    
+    static public function isMatchByRow(\stdClass $jsonInteraction)
+    {
+        $result = false;
+        
+        if (isset($jsonInteraction->qtiClass) && $jsonInteraction->qtiClass === 'matchInteraction') {
+            foreach ($jsonInteraction->choices[1] as $choice) {
+                if ($choice->attributes->matchMax != 1) {
+                    break;
+                }
+                
+                $result = true;
+            }
+        }
+        
+        return $result;
+    }
 }
