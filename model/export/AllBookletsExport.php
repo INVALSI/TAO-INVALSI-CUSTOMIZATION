@@ -422,7 +422,8 @@ class AllBookletsExport
      * Get the filename
      * @return string
      */
-    public function getFilename(){
+    public function getFilename()
+    {
         return $this->flySystemFile->getPrefix().$this->flySystemFile->getBasename();
     }
 
@@ -431,8 +432,8 @@ class AllBookletsExport
      * @param \taoResultServer_models_classes_Variable $variable
      * @return string $variable
      */
-    private function formatVariable($variable){
-
+    private function formatVariable($variable)
+    {
         if($variable instanceof \taoResultServer_models_classes_ResponseVariable){
             return $variable->getValue();
         } else {
