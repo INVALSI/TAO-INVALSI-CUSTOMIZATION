@@ -285,7 +285,7 @@ class AllBookletsExport
                                     }
                                 }
                                 
-                                $tmpVal = str_replace(';',',', $this->formatVariable($variable));
+                                $tmpVal = $this->formatVariable($variable);
                                 $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
                                 if ($val) {
                                     
