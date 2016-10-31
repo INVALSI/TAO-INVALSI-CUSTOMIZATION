@@ -160,16 +160,19 @@ class AllBookletsExport
             /** @var \tao_models_classes_service_FileStorage $storageService */
             $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
 
-
             foreach($this->deliveries as $delivery){
                 //Get item list
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
-                foreach($directories as $directory){
+                
+                foreach ($directories as $directory) {
                     $dir = $storageService->getDirectoryById($directory);
                     $files = $dir->getFlyIterator(3);
+                    
                     /** @var File $file */
-                    foreach($files as $file){
-                        if($file->getBasename() === 'compact-test.php'){
+                    foreach ($files as $file) {
+                        
+                        if ($file->getBasename() === 'compact-test.php') {
+                            
                             $phpDocument = new PhpDocument();
                             $phpDocument->loadFromString($file->read());
                             /** @var AssessmentTest $assementTest */
@@ -177,41 +180,52 @@ class AllBookletsExport
                             $components = $assementTest->getComponentsByClassName('assessmentItemRef');
 
                             /** @var ExtendedAssessmentItemRef $component */
-                            foreach($components as $component){
+                            foreach ($components as $component) {
+                                
                                 $href = explode('|',$component->getHref());
                                 $private = $href[2];
                                 $itemJsonDir = $storageService->getDirectoryById($private);
                                 $itemJsonFiles = $itemJsonDir->getFlyIterator(3);
+                                $choices = array();
 
-                                foreach($itemJsonFiles as $itemJsonFile){
-                                    if($itemJsonFile->getBasename() === 'item.json'){
+                                foreach ($itemJsonFiles as $itemJsonFile) {
+                                    
+                                    if ($itemJsonFile->getBasename() === 'item.json') {
+                                        
                                         $itemJson = json_decode($itemJsonFile->read());
-                                        $count = array();
-                                        foreach($itemJson->data->body->elements as $element){
-                                            if($element->qtiClass === 'matchInteraction'){
-                                                
-                                                $matchSet = (isset($this->matchTypes[$component->getIdentifier()])) ? $this->matchTypes[$component->getIdentifier()] : 0;
-                                                
-                                                foreach($element->choices[$matchSet] as $choice){
-                                                    $count[$element->attributes->responseIdentifier][] = $choice->identifier;
-                                                }
+                                        $interactions = AllBookletsExportUtils::getInteractions($itemJson);
+                                        
+                                        if (isset($interactions['matchInteraction'])) {
+                                            
+                                            foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $matchSetIndex = (isset($this->matchTypes[$component->getIdentifier()])) ? $this->matchTypes[$component->getIdentifier()] : 0;
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $choices[$responseIdentifier] = $matchSets[$matchSetIndex];
                                             }
                                         }
+
                                         break;
                                     }
                                 }
+                                
                                 $identifier = $component->getIdentifier();
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
                                 
                                 /** @var ResponseDeclaration $response */
                                 foreach ($responses as $response) {
-                                    if(isset($count[$response->getIdentifier()])){
-                                        foreach($count[$response->getIdentifier()] as $choiceId){
+                                    
+                                    if (isset($choices[$response->getIdentifier()])) {
+                                        
+                                        // Non default response variable structure (e.g. matchInteraction)
+                                        foreach($choices[$response->getIdentifier()] as $choiceId){
                                             $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier() . '-' . $choiceId;
                                         }
+                                        
                                         $this->variablesByDeliveriesHidden[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
                                     } else {
+                                        
+                                        // Default response variable structure.
                                         $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
                                     }
                                 }
@@ -288,9 +302,15 @@ class AllBookletsExport
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
+                            
                             if (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveries[$delivery->getUri()])){
+                                
+                                // Default response variable structure.
                                 $row[$itemIdentifier.'-'.$variable->getIdentifier()] = $this->formatVariable($variable);
+                                
                             } elseif (in_array($itemIdentifier.'-'.$variable->getIdentifier(), $this->variablesByDeliveriesHidden[$delivery->getUri()])) {
+                                
+                                // Non default response variable structure.
                                 
                                 // Set all fake variables to nothing...
                                 foreach ($this->variablesByDeliveries[$delivery->getUri()] as $col) {
