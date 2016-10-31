@@ -70,14 +70,7 @@ class AllBookletsExport
 
     private $variablesByDeliveries = [];
     
-    private $variablesByDeliveriesHidden = [];
-    
-    private $matchTypes = [
-        'item-25' => 0,
-        'item-31' => 1,
-        'item-33' => 0,
-        'item-34' => 0
-    ];
+    private $matchTypeByDeliveries = [];
 
     /**
      * @var array
@@ -162,8 +155,9 @@ class AllBookletsExport
 
             foreach($this->deliveries as $delivery){
                 //Get item list
-                $this->variablesByDeliveries[$delivery->getUri()] = [];
-                $this->variablesByDeliveriesHidden[$delivery->getUri()] = [];
+                $deliveryUri = $delivery->getUri();
+                $this->variablesByDeliveries[$deliveryUri] = [];
+                $this->matchTypeByDeliveries[$deliveryUri] = [];
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
@@ -201,14 +195,18 @@ class AllBookletsExport
                                             
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 
+                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                
                                                 if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
                                                     // By column strategy.
                                                     $matchSetIndex = 0;
+                                                    $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
                                                 } elseif (AllBookletsExportUtils::isMatchByRow($jsonInteraction)) {
                                                     // By row strategy.
                                                     $matchSetIndex = 1;
+                                                    $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
                                                 } else {
-                                                    // No strategy could be identifierd, regular output for this interaction.
+                                                    // No strategy could be identified, regular output for this interaction.
                                                     continue;
                                                 }
                                                 
@@ -228,18 +226,19 @@ class AllBookletsExport
                                 /** @var ResponseDeclaration $response */
                                 foreach ($responses as $response) {
                                     
+                                    $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
+                                    
                                     if (isset($choices[$response->getIdentifier()])) {
                                         
                                         // Non default response variable structure (e.g. matchInteraction)
                                         foreach ($choices[$response->getIdentifier()] as $choiceId) {
-                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier() . '-' . $choiceId;
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
                                         }
                                         
-                                        $this->variablesByDeliveriesHidden[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
                                     } else {
                                         
                                         // Default response variable structure.
-                                        $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $response->getIdentifier();
+                                        $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier;
                                     }
                                 }
 
@@ -326,7 +325,7 @@ class AllBookletsExport
                                 // Default response variable structure.
                                 $row[$headerIdentifier] = $this->formatVariable($variable);
                                 
-                            } elseif (in_array($headerIdentifier, $this->variablesByDeliveriesHidden[$deliveryUri])) {
+                            } elseif (in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
                                 
                                 // Non default response variable structure.
                                 
@@ -343,10 +342,12 @@ class AllBookletsExport
                                     
                                     foreach ($val as $v) {
                                         
-                                        if (isset($this->matchTypes[$itemIdentifier]) && $this->matchTypes[$itemIdentifier] === 0) {
+                                        if (isset($this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier]) && $this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier] === 0) {
+                                            // By column strategy.
                                             $cmp = $v->getFirst();
                                             $set = $v->getSecond();
                                         } else {
+                                            // By row strategy.
                                             $cmp = $v->getSecond();
                                             $set = $v->getFirst();
                                         }
