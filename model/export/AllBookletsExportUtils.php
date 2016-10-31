@@ -27,9 +27,26 @@ class AllBookletsExportUtils
     static public function getInteractions(\stdClass $json)
     {
         $interactions = array(
+            'associateInteraction',
             'choiceInteraction',
+            'drawingInteraction',
+            'extendedTextInteraction',
+            'gapMatchInteraction',
+            'graphicAssociateInteraction',
+            'graphicGapMatchInteraction',
+            'graphicOrderInteraction',
+            'hotspotInteraction',
+            'selectPointInteraction',
+            'hottextInteraction',
             'matchInteraction',
-            'orderInteraction'
+            'mediaInteraction',
+            'orderInteraction',
+            'sliderInteraction',
+            'uploadInteraction',
+            'endAttemptInteraction',
+            'inlineChoiceInteraction',
+            'textEntryInteraction',
+            'positionObjectInteraction'
         );
         
         $result = array();
