@@ -73,10 +73,10 @@ class AllBookletsExport
     private $variablesByDeliveriesHidden = [];
     
     private $matchTypes = [
-        'item-25' => 1,
+        'item-25' => 0,
         'item-31' => 1,
-        'item-33' => 1,
-        'item-34' => 1
+        'item-33' => 0,
+        'item-34' => 0
     ];
 
     /**
@@ -190,7 +190,7 @@ class AllBookletsExport
                                         foreach($itemJson->data->body->elements as $element){
                                             if($element->qtiClass === 'matchInteraction'){
                                                 
-                                                $matchSet = (isset($this->matchTypes[$component->getIdentifier()])) ? 0 : 1;
+                                                $matchSet = (isset($this->matchTypes[$component->getIdentifier()])) ? $this->matchTypes[$component->getIdentifier()] : 0;
                                                 
                                                 foreach($element->choices[$matchSet] as $choice){
                                                     $count[$element->attributes->responseIdentifier][] = $choice->identifier;
@@ -304,15 +304,16 @@ class AllBookletsExport
                                 if ($val) {
                                     
                                     foreach ($val as $v) {
-                                        if (in_array($itemIdentifier.'-'.$variable->getIdentifier().'-'.$v->getFirst(), $this->variablesByDeliveries[$delivery->getUri()])) {
-                                            
-                                            if (isset($this->matchTypes[$itemIdentifier])) {
-                                                $cmp = $v->getFirst();
-                                                $set = $v->getSecond();
-                                            } else {
-                                                $cmp = $v->getSecond();
-                                                $set = $v->getFirst();
-                                            }
+                                        
+                                        if (isset($this->matchTypes[$itemIdentifier]) && $this->matchTypes[$itemIdentifier] === 0) {
+                                            $cmp = $v->getFirst();
+                                            $set = $v->getSecond();
+                                        } else {
+                                            $cmp = $v->getSecond();
+                                            $set = $v->getFirst();
+                                        }
+                                        
+                                        if (in_array($itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp, $this->variablesByDeliveries[$delivery->getUri()])) {
                                             
                                             $row[$itemIdentifier.'-'.$variable->getIdentifier().'-'.$cmp] = $set;
                                         }
