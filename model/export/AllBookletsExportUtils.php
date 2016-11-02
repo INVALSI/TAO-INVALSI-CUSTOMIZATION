@@ -22,6 +22,8 @@
 
 namespace oat\taoInvalsi\model\export;
 
+use qtism\common\datatypes\QtiDuration;
+
 class AllBookletsExportUtils
 {
     static public function getInteractions(\stdClass $json)
@@ -127,5 +129,26 @@ class AllBookletsExportUtils
         }
         
         return $result;
+    }
+    
+    static public function formatDuration($duration)
+    {
+        try {
+            $qtiDuration = new QtiDuration($duration);
+            $seconds = $qtiDuration->getSeconds(true);
+            $microseconds = $qtiDuration->getMicroseconds();
+            $strMicroseconds = strval($microseconds);
+            
+            $offset = 6 - strlen($strMicroseconds);
+            for ($i = 0; $i < $offset; $i++) {
+                $strMicroseconds = '0' . $strMicroseconds;
+            }
+            
+            $floatDuration = floatval("${seconds}.${strMicroseconds}");
+            return strval(round($floatDuration, 3));
+            
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
     }
 }
