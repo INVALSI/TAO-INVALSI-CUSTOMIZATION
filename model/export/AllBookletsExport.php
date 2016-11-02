@@ -435,7 +435,12 @@ class AllBookletsExport
     private function formatVariable($variable)
     {
         if($variable instanceof \taoResultServer_models_classes_ResponseVariable){
-            return $variable->getValue();
+            if ($variable->getIdentifier() === 'duration') {
+                $duration = AllBookletsExportUtils::formatDuration($variable->getValue());
+                return ($duration === false) ? '' : $duration;
+            } else {
+                return $variable->getValue();
+            }
         } else {
             return $variable->getValue();
         }
