@@ -82,14 +82,46 @@ class AllBookletsExportUtils
     static public function getMatchSets(\stdClass $jsonInteraction, $responseIdentifier)
     {
         $result = [];
+        $choices = [];
         
-        if (isset($jsonInteraction->qtiClass) && $jsonInteraction->qtiClass === 'matchInteraction') {
-            for ($i = 0; $i <= 1; $i++) {
-                $choices = [];
-                foreach ($jsonInteraction->choices[$i] as $choice) {
-                    $choices[] = $choice->identifier;
+        if (isset($jsonInteraction->qtiClass)) {
+            if ($jsonInteraction->qtiClass === 'matchInteraction') {
+                for ($i = 0; $i <= 1; $i++) {
+                    
+                    foreach ($jsonInteraction->choices[$i] as $choice) {
+                        $choices[] = $choice->identifier;
+                    }
+                    $result[] = $choices;
                 }
-                $result[] = $choices;
+            } elseif ($jsonInteraction->qtiClass === 'gapMatchInteraction') {
+                if (isset($jsonInteraction->body) && isset($jsonInteraction->body->elements)) {
+                    $choices = [];
+                    foreach ($jsonInteraction->body->elements as $element) {
+                        if ($element->qtiClass === 'gap') {
+                            $choices[] = $element->attributes->identifier;
+                        }
+                    }
+                    $result[] = $choices;
+                    
+                    $choices = [];
+                    
+                    if (isset($jsonInteraction->choices)) {
+                        foreach ($jsonInteraction->choices as $choice) {
+                            $choices[] = $choice->attributes->identifier;
+                        }
+                    }
+                    $result[] = $choices;
+                }
+            } elseif ($jsonInteraction->qtiClass === 'hottextInteraction') {
+                if (isset($jsonInteraction->body) && isset($jsonInteraction->body->elements)) {
+                    $choices = [];
+                    foreach ($jsonInteraction->body->elements as $element) {
+                        if ($element->qtiClass === 'hottext') {
+                            $choices[] = $element->attributes->identifier;
+                        }
+                    }
+                    $result[] = $choices;
+                }
             }
         }
         

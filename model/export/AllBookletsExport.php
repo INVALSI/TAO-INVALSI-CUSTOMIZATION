@@ -71,6 +71,8 @@ class AllBookletsExport
     private $variablesByDeliveries = [];
     
     private $matchTypeByDeliveries = [];
+    
+    private $hottextTypeByDeliveries = [];
 
     /**
      * @var array
@@ -158,6 +160,7 @@ class AllBookletsExport
                 $deliveryUri = $delivery->getUri();
                 $this->variablesByDeliveries[$deliveryUri] = [];
                 $this->matchTypeByDeliveries[$deliveryUri] = [];
+                $this->hottextTypeByDeliveries[$deliveryUri] = [];
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
@@ -194,7 +197,6 @@ class AllBookletsExport
                                         if (isset($interactions['matchInteraction'])) {
                                             
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                
                                                 $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
                                                 
                                                 if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
@@ -212,6 +214,23 @@ class AllBookletsExport
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$responseIdentifier] = $matchSets[$matchSetIndex];
+                                            }
+                                        } elseif (isset($interactions['gapMatchInteraction'])) {
+
+                                            foreach ($interactions['gapMatchInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = 1;
+                                                
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $choices[$responseIdentifier] = $matchSets[0];
+                                            }
+                                        } elseif (isset($interactions['hottextInteraction'])) {
+                                            foreach ($interactions['hottextInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $this->hottextTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = true;
+                                                
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $choices[$responseIdentifier] = $matchSets[0];
                                             }
                                         }
 
@@ -321,25 +340,17 @@ class AllBookletsExport
                             $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
-                                
                                 // Default response variable structure.
                                 $row[$headerIdentifier] = $this->formatVariable($variable);
                                 
                             } elseif (in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
-                                
-                                // Non default response variable structure.
-                                
-                                // Set all fake variables to nothing...
-                                foreach ($this->variablesByDeliveries[$deliveryUri] as $col) {
-                                    if (preg_match('/^' . preg_quote($headerIdentifier) . '-/', $col) === 1) {
-                                        $row[$col] = '';
-                                    }
-                                }
+                                // Non default response variable structure (matchInteraction/gapMatchInteraction).
+                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
                                 $tmpVal = $this->formatVariable($variable);
                                 $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
+                                
                                 if ($val) {
-                                    
                                     foreach ($val as $v) {
                                         
                                         if (isset($this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier]) && $this->matchTypeByDeliveries[$deliveryUri][$headerIdentifier] === 0) {
@@ -353,8 +364,22 @@ class AllBookletsExport
                                         }
                                         
                                         if (in_array($headerIdentifier . '-' . $cmp, $this->variablesByDeliveries[$deliveryUri])) {
-                                            
                                             $row[$headerIdentifier . '-' . $cmp] = $set;
+                                        }
+                                    }
+                                }
+                            } elseif (in_array($headerIdentifier, array_keys($this->hottextTypeByDeliveries[$deliveryUri]))) {
+                                // Non default response variable structure (hottextInteraction).
+                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
+                                
+                                $tmpVal = $this->formatVariable($variable);
+                                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'identifier', $tmpVal);
+                                
+                                if ($val) {
+                                    foreach ($val as $v) {
+                                        $v = trim($v->getValue(), "'");
+                                        if (in_array($headerIdentifier . '-' . $v, $this->variablesByDeliveries[$deliveryUri])) {
+                                            $row[$headerIdentifier . '-' . $v] = '1';
                                         }
                                     }
                                 }
@@ -484,6 +509,14 @@ class AllBookletsExport
         foreach ($emptyColumns as $column) {
             if(!in_array($column, array_keys($row))){
                 $row[$column] = self::NOT_REQUIRED;
+            }
+        }
+    }
+    
+    private function setColumnToEmpty(array &$row, array $columns, $headerIdentifier) {
+        foreach ($columns as $col) {
+            if (preg_match('/^' . preg_quote($headerIdentifier) . '-/', $col) === 1) {
+                $row[$col] = '';
             }
         }
     }
