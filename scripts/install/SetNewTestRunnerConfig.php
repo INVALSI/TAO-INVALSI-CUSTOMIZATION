@@ -11,8 +11,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'check-informational' => true,
             'test-taker-review' => true,
             'test-taker-review-region' => 'left',
-            'test-taker-review-force-title' => true,
-            'test-taker-review-item-title' => 'Item %d', // forced translation
+            'test-taker-review-force-title' => false,
             'test-taker-review-scope' => 'testSection',
             'test-taker-review-prevents-unseen' => true,
             'test-taker-review-can-collapse' => true,
