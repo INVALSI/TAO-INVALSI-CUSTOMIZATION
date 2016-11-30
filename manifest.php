@@ -29,9 +29,10 @@ return array(
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=5.29.0',
+            'taoQtiTest' => '>=5.39.0',
             'taoQtiItem' => '>=6.0.0',
-            'taoTests' => '>=3.5.0'
+            'taoTests' => '>=3.5.0',
+            'pciSamples' => '>=1.3.0'
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
