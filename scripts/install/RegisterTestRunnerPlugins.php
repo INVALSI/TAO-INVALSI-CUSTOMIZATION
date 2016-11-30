@@ -45,6 +45,17 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'active' => true,
                 'tags' => [ 'core' ]
             ]
+        ],
+        'formula' => [
+            [
+                'id' => 'formula',
+                'name' => 'Formula PDF',
+                'module' => 'taoInvalsi/runner/plugins/tools/formula/plugin',
+                'description' => 'Display a formula PDF',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => [ ]
+            ]
         ]
     ];
 
