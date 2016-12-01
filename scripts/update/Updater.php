@@ -177,7 +177,7 @@ class Updater extends common_ext_ExtensionUpdater
             $registerTestRunnerPlugins = new RegisterTestRunnerPlugins();
             $registerTestRunnerPlugins([]);
 
-//            $this->setVersion('1.15.0');
+            $this->setVersion('1.15.0');
         }
     }
 }
