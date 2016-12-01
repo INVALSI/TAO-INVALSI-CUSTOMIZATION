@@ -31,6 +31,10 @@ define([
 ], function ($, _, __, pluginFactory, hider, buttonTpl) {
     'use strict';
 
+    var defaults = {
+        documentUrl: ''
+    };
+
     /**
      * Returns the configured plugin
      */
@@ -45,6 +49,10 @@ define([
             var self = this;
 
             var testRunner = this.getTestRunner();
+            var testData = testRunner.getTestData() || {};
+            var testConfig = testData.config || {};
+            var pluginsConfig = testConfig.plugins || {};
+            var config = _.defaults(pluginsConfig.formula || {}, defaults);
 
             /**
              * Checks if the plugin is currently available
@@ -98,7 +106,7 @@ define([
                     if (isEnabled()) {
                         testRunner.trigger('tool-documentViewer', {
                             label : __('Formula'),
-                            document : '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
+                            document : config.documentUrl
                         });
                     }
                 });

@@ -177,6 +177,13 @@ class Updater extends common_ext_ExtensionUpdater
             $registerTestRunnerPlugins = new RegisterTestRunnerPlugins();
             $registerTestRunnerPlugins([]);
 
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+
             $this->setVersion('1.15.0');
         }
     }
