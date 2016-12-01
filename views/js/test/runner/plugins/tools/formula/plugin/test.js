@@ -242,6 +242,12 @@ define([
         var runner = runnerFactory(providerName);
         var plugin = pluginFactory(runner, runner.getAreaBroker());
 
+        runner.setTestContext({
+            options: {
+                formula: true
+            }
+        });
+
         QUnit.expect(3);
 
         plugin.init()
@@ -276,6 +282,12 @@ define([
     QUnit.asyncTest('runner events: renderitem', function(assert) {
         var runner = runnerFactory(providerName);
         var plugin = pluginFactory(runner, runner.getAreaBroker());
+
+        runner.setTestContext({
+            options: {
+                formula: true
+            }
+        });
 
         QUnit.expect(2);
 

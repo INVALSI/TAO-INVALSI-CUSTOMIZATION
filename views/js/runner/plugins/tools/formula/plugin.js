@@ -45,22 +45,34 @@ define([
             var self = this;
 
             var testRunner = this.getTestRunner();
-            var testData = testRunner.getTestData() || {};
-            var testConfig = testData.config || {};
 
             /**
              * Checks if the plugin is currently available
+             * activate with category: x-tao-option-formula
              * @returns {Boolean}
              */
             function isEnabled() {
-                return self.getState('enabled') !== false;
+                var context = testRunner.getTestContext();
+                return context && context.options && !!context.options.formula;
+            }
+
+            /**
+             * Is plugin activated ? if not, then we hide the plugin
+             */
+            function togglePlugin() {
+                if (isEnabled()) {
+                    self.show();
+                } else {
+                    self.hide();
+                }
             }
 
             //build element (detached)
             this.$button = $(buttonTpl({
                 control : 'formula',
                 title : __('Formula'),
-                icon : 'math'
+                icon : 'maths',
+                text : __('Formula')
             }));
 
             //attach user events
@@ -70,13 +82,12 @@ define([
             });
 
             //start disabled
+            togglePlugin();
             this.disable();
 
             //update plugin state based on changes
             testRunner
-                .on('loaditem', function () {
-                    self.show();
-                })
+                .on('loaditem', togglePlugin)
                 .on('enabletools renderitem', function () {
                     self.enable();
                 })
@@ -85,7 +96,10 @@ define([
                 })
                 .on('tool-formula', function () {
                     if (isEnabled()) {
-                        // do THE stuff HERE !!!
+                        testRunner.trigger('tool-documentViewer', {
+                            label : __('Formula'),
+                            document : 'http://invalsi-newtr.dev/taoInvalsi/views/js/runner/plugins/tools/formula/Keyboardsshortcuts.pdf'
+                        });
                     }
                 });
         },
