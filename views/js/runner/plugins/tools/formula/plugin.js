@@ -98,7 +98,7 @@ define([
                     if (isEnabled()) {
                         testRunner.trigger('tool-documentViewer', {
                             label : __('Formula'),
-                            document : 'http://invalsi-newtr.dev/taoInvalsi/views/js/runner/plugins/tools/formula/Keyboardsshortcuts.pdf'
+                            document : '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
                         });
                     }
                 });
