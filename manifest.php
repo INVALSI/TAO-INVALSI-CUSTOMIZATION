@@ -29,7 +29,7 @@ return array(
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=5.39.0',
+            'taoQtiTest' => '>=5.43.0',
             'taoQtiItem' => '>=6.0.0',
             'taoTests' => '>=3.5.0',
             'pciSamples' => '>=1.3.0'
