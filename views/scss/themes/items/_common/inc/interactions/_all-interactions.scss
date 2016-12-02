@@ -6,7 +6,7 @@
 
 .qti-interaction {
     .solid {
-        
+
     }
     .txt-highlight {
         color: black;
@@ -40,18 +40,11 @@
         display: table;
         margin-bottom: 12px;
 
-        .col-6 {
+        div[class^="col-"] {
             display: table-cell;
             box-sizing: border-box;
             position: inherit;
             float: none;
-            width: 50%;
-            border: 6px solid #eee;
-            padding: 10px;
-            margin: 0;
-        }
-
-        .col-12 {
             border: 6px solid #f5f3f2;
             padding: 10px;
             margin: 0;
