@@ -24,14 +24,15 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.14.2',
+    'version' => '1.15.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
             'taoCe' => '>=1.2.0',
             'taoMediaManager' => '*',
-            'taoQtiTest' => '>=5.29.0',
+            'taoQtiTest' => '>=5.43.0',
             'taoQtiItem' => '>=6.0.0',
-            'taoTests' => '>=3.5.0'
+            'taoTests' => '>=3.5.0',
+            'pciSamples' => '>=1.3.0'
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(

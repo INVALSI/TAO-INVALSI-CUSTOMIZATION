@@ -45,6 +45,28 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'active' => true,
                 'tags' => [ 'core' ]
             ]
+        ],
+        'formula' => [
+            [
+                'id' => 'formula',
+                'name' => 'Formula PDF',
+                'module' => 'taoInvalsi/runner/plugins/tools/formula/plugin',
+                'description' => 'Display a formula PDF',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => [ ]
+            ]
+        ],
+        'documentViewer' => [
+            [
+                'id' => 'documentViewer',
+                'module' => 'taoQtiTest/runner/plugins/tools/documentViewer/documentViewer',
+                'name' => 'Document Viewer',
+                'description' => 'Display a document as requested by an event',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => [ ]
+            ]
         ]
     ];
 
