@@ -24,6 +24,11 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
         $config = $qtiTest->getConfig('testRunner');
         $config = array_merge($config, $invalsiConfig);
+
+        $config['plugins']['formula'] = [
+            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
+        ];
+
         $qtiTest->setConfig('testRunner', $config);
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Test runner config saved');
