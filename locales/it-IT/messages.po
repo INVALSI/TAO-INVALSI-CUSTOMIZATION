@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.2.0-sprint39\n"
+"PO-Revision-Date: 2016-12-01T13:01:29\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: it-IT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: it-IT\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Custom Styles"
+msgstr ""
+
+msgid "Display the current progression within the test"
+msgstr ""
+
+msgid "Formula"
+msgstr "Formulary"
+
+msgid "Progress bar"
+msgstr ""
+
+msgid "The Label"
+msgstr ""
+
