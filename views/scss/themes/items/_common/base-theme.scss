@@ -57,10 +57,9 @@ html {
 
             &.runtime {
                 /// styles/imports not used in authoring
-            }
-
-            .qti-textEntryInteraction {
-                border: 2px solid $textColor;
+                .qti-textEntryInteraction {
+                    border: 2px solid $textColor;
+                }
             }
         }
     }
