@@ -162,6 +162,33 @@ class Updater extends common_ext_ExtensionUpdater
             $this->setVersion('1.10.0');
         }
 
-        $this->skip('1.10.0', '1.12.0');
+        $this->skip('1.10.0', '1.13.0');
+
+        if ($this->isVersion('1.13.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['test-taker-review-force-title'] = false;
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.14.0');
+        }
+
+        $this->skip('1.14.0', '1.14.1');
+
+        if ($this->isVersion('1.14.1')) {
+            $registerTestRunnerPlugins = new RegisterTestRunnerPlugins();
+            $registerTestRunnerPlugins([]);
+
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.15.0');
+        }
+
+        $this->skip('1.15.0', '1.15.1');
     }
 }
