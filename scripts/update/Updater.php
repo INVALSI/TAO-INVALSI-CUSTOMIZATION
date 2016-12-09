@@ -22,6 +22,8 @@
 namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
+use oat\awsTools\AwsFileSystemService;
+use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestPluginService;
@@ -190,5 +192,29 @@ class Updater extends common_ext_ExtensionUpdater
         }
 
         $this->skip('1.15.0', '1.15.1');
+
+        if ($this->isVersion('1.15.1')) {
+            $service = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
+            if (!$service instanceof AwsFileSystemService) {
+                $options = $service->getOptions();
+
+                $options[FileSystemService::OPTION_ADAPTERS]['taoAwsS3'] = [
+                    'class'   => 'oat\\awsTools\\AwsFlyWrapper',
+                    'options' => [
+                        [
+                            'cache'  => true,
+                            'bucket' => '',
+                            'client' => 'generis/awsClient',
+                            'prefix' => 'taoInvalsi'
+                        ]
+                    ]
+                ];
+
+                $newService = new AwsFileSystemService($options);
+                $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $newService);
+            }
+
+            $this->setVersion('1.16.0');
+        }
     }
 }

@@ -124,12 +124,11 @@ class AllBookletsExport
         $report->setMessage($rows.' rows has been exported');
         
         // Write as stream and close temporary file.
-        
-        $filename = 'booklet_export_'.date('Y_m_d_H_i_s').'.csv';
+        $filename = 'export_'. date('His') .'.csv';
         $this->flySystemFile = $this->getServiceManager()
             ->get(FileSystemService::SERVICE_ID)
-            ->getDirectory('taoQtiItem')
-            ->getFile('export/'.$filename);
+            ->getDirectory('taoAwsS3')
+            ->getFile(date('Y_m_d') .'/bookletExport/'. gethostname() .'/'. $filename);
             
         rewind($this->exportFile);
         $this->flySystemFile->write($this->exportFile);
@@ -349,7 +348,7 @@ class AllBookletsExport
                             if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
 
                                 $tmpVal = $this->formatVariable($variable);
-                                if((in_array($headerIdentifier, array_keys($this->choiceTypeByDeliveries[$deliveryUri]))) &&
+                                if((isset($this->choiceTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->choiceTypeByDeliveries[$deliveryUri]))) &&
                                     ($index = array_search($tmpVal, $this->choiceTypeByDeliveries[$deliveryUri][$headerIdentifier])) !== false){
                                     $row[$headerIdentifier] = $index + 1;
                                 } else {
