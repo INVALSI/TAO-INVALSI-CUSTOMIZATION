@@ -52,3 +52,30 @@
 
     }
 }
+
+.__custom__vertical-column-border {
+
+    .grid-row {
+        border-collapse: collapse;
+        display: table;
+        margin-bottom: 12px;
+
+        div[class^="col-"] {
+            display: table-cell;
+            box-sizing: border-box;
+            position: inherit;
+            float: none;
+            border-right: 1px solid #aaa;
+            padding: 0 10px 0 10px !important;
+            margin: 0;
+        }
+        div[class^="col-"]:first-child {
+            padding-left: 0 !important;
+        }
+        div[class^="col-"]:last-child {
+            border-right: 0;
+            padding-right: 0 !important;
+        }
+
+    }
+}
