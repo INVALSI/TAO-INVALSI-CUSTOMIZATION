@@ -75,6 +75,10 @@ define([
         {
             className: 'bordered-columns',
             label: 'Bordered columns'
+        },
+        {
+            className: 'vertical-column-border',
+            label: 'Vertical column border'
         }
     ];
 

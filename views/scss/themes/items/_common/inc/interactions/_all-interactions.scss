@@ -50,5 +50,46 @@
             margin: 0;
         }
 
+        // add col max-width, as width doesn't work on elements with display: table-cell
+        $rowWidth: 58px; // in TAO framework, this is computed by the grid-unit mixin, unavailable here
+        @for $i from 1 through 12 {
+            .col-#{$i} {
+                max-width: $i * $rowWidth;
+            }
+        }
+    }
+}
+
+.__custom__vertical-column-border {
+
+    .grid-row {
+        border-collapse: collapse;
+        display: table;
+        margin-bottom: 12px;
+
+        div[class^="col-"] {
+            display: table-cell;
+            box-sizing: border-box;
+            position: inherit;
+            float: none;
+            border-right: 1px solid #aaa;
+            padding: 0 10px 0 10px !important;
+            margin: 0;
+        }
+        div[class^="col-"]:first-child {
+            padding-left: 0 !important;
+        }
+        div[class^="col-"]:last-child {
+            border-right: 0;
+            padding-right: 0 !important;
+        }
+
+        // add col max-width, as width doesn't work on elements with display: table-cell
+        $rowWidth: 58px; // in TAO framework, this is computed by the grid-unit mixin, unavailable here
+        @for $i from 1 through 12 {
+            .col-#{$i} {
+                max-width: $i * $rowWidth;
+            }
+        }
     }
 }
