@@ -50,6 +50,13 @@
             margin: 0;
         }
 
+        // add col max-width, as width doesn't work on elements with display: table-cell
+        $rowWidth: 58px; // in TAO framework, this is computed by the grid-unit mixin, unavailable here
+        @for $i from 1 through 12 {
+            .col-#{$i} {
+                max-width: $i * $rowWidth;
+            }
+        }
     }
 }
 
@@ -77,5 +84,12 @@
             padding-right: 0 !important;
         }
 
+        // add col max-width, as width doesn't work on elements with display: table-cell
+        $rowWidth: 58px; // in TAO framework, this is computed by the grid-unit mixin, unavailable here
+        @for $i from 1 through 12 {
+            .col-#{$i} {
+                max-width: $i * $rowWidth;
+            }
+        }
     }
 }
