@@ -190,5 +190,19 @@ class Updater extends common_ext_ExtensionUpdater
         }
 
         $this->skip('1.15.0', '1.16.0');
+
+        if ($this->isVersion('1.16.0')) {
+            $registerTestRunnerPlugins = new RegisterTestRunnerPlugins();
+            $registerTestRunnerPlugins([]);
+
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.16.1');
+        }
     }
 }
