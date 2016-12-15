@@ -26,7 +26,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = array_merge($config, $invalsiConfig);
 
         $config['plugins']['formula'] = [
-            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
+            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
         ];
 
         $qtiTest->setConfig('testRunner', $config);
