@@ -205,10 +205,11 @@ class Updater extends common_ext_ExtensionUpdater
         if ($this->isVersion('1.16.1')) {
  
              
-             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')));
+            \oat\tao\model\accessControl\func\AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')));
  
  
              $this->setVersion('1.17.0');
          }
+         $this->skip('1.17.0', '1.17.1');
     }
 }
