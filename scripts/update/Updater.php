@@ -214,9 +214,9 @@ class Updater extends common_ext_ExtensionUpdater
                     'options' => [
                         [
                             'cache'  => true,
-                            'bucket' => '',
+                            'bucket' => 'invalsi-export',
                             'client' => 'generis/awsClient',
-                            'prefix' => 'taoInvalsi'
+                            'prefix' => 'invalsiBQ'
                         ]
                     ]
                 ];
