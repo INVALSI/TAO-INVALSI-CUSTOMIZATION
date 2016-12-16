@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,20 +34,18 @@ use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
 
-class Updater extends common_ext_ExtensionUpdater
-{
+class Updater extends common_ext_ExtensionUpdater {
 
     /**
      * @param string $initialVersion
      * @return string $versionUpdatedTo
      */
-    public function update($initialVersion)
-    {
-        if($this->isVersion('1.0.0')){
+    public function update($initialVersion) {
+        if ($this->isVersion('1.0.0')) {
             HookRegistry::getRegistry()->set('taoInvalsiCreator', 'oat\taoInvalsi\model\CreatorHook');
             $this->setVersion('1.1.0');
         }
-        if($this->isVersion('1.1.0')){
+        if ($this->isVersion('1.1.0')) {
             $themeService = $this->getServiceManager()->get(ThemeService::SERVICE_ID);
 
             $themeService->setTheme(new TaoInvalsiDefaultTheme());
@@ -62,7 +61,6 @@ class Updater extends common_ext_ExtensionUpdater
                 'test' => true,
                 'testPart' => true,
                 'testSection' => true,
-
             );
             $extension->setConfig('testRunner', $config);
 
@@ -91,7 +89,7 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.5.0');
         }
-        $this->skip('1.5.0','1.5.1');
+        $this->skip('1.5.0', '1.5.1');
 
         if ($this->isVersion('1.5.1')) {
             $setNewTestRunner = new SetNewTestRunner();
@@ -109,14 +107,14 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.6.1');
         }
-        $this->skip('1.6.1','1.6.2');
+        $this->skip('1.6.1', '1.6.2');
 
         if ($this->isVersion('1.6.2')) {
             $registry = QtiCreatorClientConfigRegistry::getRegistry();
             $registry->registerPlugin('cssBlocks', 'taoInvalsi/qtiCreator/plugins/panel/cssBlocks', 'panel');
             $this->setVersion('1.6.3');
         }
-        $this->skip('1.6.3','1.6.4');
+        $this->skip('1.6.3', '1.6.4');
 
         if ($this->isVersion('1.6.4')) {
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
@@ -201,14 +199,16 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.16.1');
         }
-        
+
         if ($this->isVersion('1.16.1')) {
- 
-             
-             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')));
- 
- 
-             $this->setVersion('1.17.0');
-         }
+
+
+            \oat\tao\model\accessControl\func\AclProxy::applyRule(new \oat\tao\model\accessControl\func\AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext' => 'taoInvalsi', 'mod' => 'Main', 'act' => 'login')));
+
+
+            $this->setVersion('1.17.0');
+        }
+        $this->skip('1.17.0', '1.17.1');
     }
+
 }
