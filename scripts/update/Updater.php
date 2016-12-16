@@ -22,7 +22,6 @@
 namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
-use oat\awsTools\AwsFileSystemService;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
