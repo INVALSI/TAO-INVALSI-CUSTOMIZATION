@@ -25,7 +25,7 @@ class LogoutRedirect extends InstallAction
 {
     public function __invoke($params) {
         $DefaultUrlService = $this->getServiceManager()->get(DefaultUrlService::SERVICE_ID);
-        $options = $DefaultUrlService->getOptions();
+
         $DefaultUrlService->setOption('logoutDelivery' , array(
             'ext' => 'taoDelivery',
             'controller' => 'DeliveryServer',
@@ -38,7 +38,7 @@ class LogoutRedirect extends InstallAction
                 'controller' => 'Main',
                 'action'     => 'login',
             ]);
-        $DefaultUrlService->setOptions($options);
+
         $this->getServiceManager()->register(DefaultUrlService::SERVICE_ID , $DefaultUrlService);
     }
 }
