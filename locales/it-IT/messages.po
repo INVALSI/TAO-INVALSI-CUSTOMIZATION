@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.2.0-sprint39\n"
-"PO-Revision-Date: 2016-12-01T13:01:29\n"
+"Project-Id-Version: TAO 3.2.0-sprint40\n"
+"PO-Revision-Date: 2016-12-15T07:57:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -20,7 +20,7 @@ msgid "Display the current progression within the test"
 msgstr ""
 
 msgid "Formula"
-msgstr "Formulary"
+msgstr "Formulario"
 
 msgid "Progress bar"
 msgstr ""

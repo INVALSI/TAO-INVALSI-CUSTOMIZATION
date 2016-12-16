@@ -191,9 +191,20 @@ class Updater extends common_ext_ExtensionUpdater
             $this->setVersion('1.15.0');
         }
 
-        $this->skip('1.15.0', '1.15.1');
+        $this->skip('1.15.0', '1.16.0');
 
-        if ($this->isVersion('1.15.1')) {
+        if ($this->isVersion('1.16.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.16.1');
+        }
+
+        if ($this->isVersion('1.16.1')) {
             $service = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
             if (!$service instanceof AwsFileSystemService) {
                 $options = $service->getOptions();
@@ -214,7 +225,7 @@ class Updater extends common_ext_ExtensionUpdater
                 $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $newService);
             }
 
-            $this->setVersion('1.16.0');
+            $this->setVersion('1.17.0');
         }
     }
 }
