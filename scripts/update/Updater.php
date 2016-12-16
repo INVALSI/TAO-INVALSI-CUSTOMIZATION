@@ -206,24 +206,8 @@ class Updater extends common_ext_ExtensionUpdater
 
         if ($this->isVersion('1.16.1')) {
             $service = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
-            if (!$service instanceof AwsFileSystemService) {
-                $options = $service->getOptions();
-
-                $options[FileSystemService::OPTION_ADAPTERS]['taoAwsS3'] = [
-                    'class'   => 'oat\\awsTools\\AwsFlyWrapper',
-                    'options' => [
-                        [
-                            'cache'  => true,
-                            'bucket' => 'invalsi-export',
-                            'client' => 'generis/awsClient',
-                            'prefix' => 'invalsiBQ'
-                        ]
-                    ]
-                ];
-
-                $newService = new AwsFileSystemService($options);
-                $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $newService);
-            }
+            $service->createFileSystem('taoMonitoring');
+            $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $service);
 
             $this->setVersion('1.17.0');
         }
