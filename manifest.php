@@ -37,6 +37,7 @@ return array(
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi')),
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')),
     ),
     'install' => array(
         'php' => array(
