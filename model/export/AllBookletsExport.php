@@ -127,7 +127,7 @@ class AllBookletsExport
         $filename = 'export_'. date('His') .'.csv';
         $this->flySystemFile = $this->getServiceManager()
             ->get(FileSystemService::SERVICE_ID)
-            ->getDirectory('taoAwsS3')
+            ->getDirectory('taoMonitoring')
             ->getFile(date('Y_m_d') .'/bookletExport/'. gethostname() .'/'. $filename);
             
         rewind($this->exportFile);
