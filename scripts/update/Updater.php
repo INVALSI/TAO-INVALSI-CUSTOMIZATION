@@ -201,5 +201,14 @@ class Updater extends common_ext_ExtensionUpdater
 
             $this->setVersion('1.16.1');
         }
+        
+        if ($this->isVersion('1.16.1')) {
+ 
+             
+             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')));
+ 
+ 
+             $this->setVersion('1.17.0');
+         }
     }
 }
