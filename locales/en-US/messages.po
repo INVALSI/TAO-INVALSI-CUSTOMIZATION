@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint17\n"
-"PO-Revision-Date: 2016-01-20T11:18:39\n"
+"Project-Id-Version: TAO 3.2.0-sprint40\n"
+"PO-Revision-Date: 2016-12-15T07:57:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -13,17 +13,18 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
-msgid "All rights reserved."
+msgid "Custom Styles"
 msgstr ""
 
-msgid "Hello World"
+msgid "Display the current progression within the test"
 msgstr ""
 
-#, tao-public
-msgid "TAO INVALSI"
+msgid "Formula"
 msgstr ""
 
-#, tao-public
-msgid "Template"
+msgid "Progress bar"
+msgstr ""
+
+msgid "The Label"
 msgstr ""
 

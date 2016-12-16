@@ -189,6 +189,26 @@ class Updater extends common_ext_ExtensionUpdater
             $this->setVersion('1.15.0');
         }
 
-        $this->skip('1.15.0', '1.15.1');
+        $this->skip('1.15.0', '1.16.0');
+
+        if ($this->isVersion('1.16.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('1.16.1');
+        }
+        
+        if ($this->isVersion('1.16.1')) {
+ 
+             
+             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')));
+ 
+ 
+             $this->setVersion('1.17.0');
+         }
     }
 }
