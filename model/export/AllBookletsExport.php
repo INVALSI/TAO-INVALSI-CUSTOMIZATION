@@ -74,6 +74,8 @@ class AllBookletsExport
     
     private $hottextTypeByDeliveries = [];
 
+    private $choiceTypeByDeliveries = [];
+
     /**
      * @var array
      */
@@ -93,7 +95,6 @@ class AllBookletsExport
     public function __construct(array $deliveries)
     {
         $this->deliveries = $deliveries;
-        $filename = 'booklet_export_'.date('Y_m_d_H_i_s').'.csv';
     }
 
     /**
@@ -123,12 +124,11 @@ class AllBookletsExport
         $report->setMessage($rows.' rows has been exported');
         
         // Write as stream and close temporary file.
-        
-        $filename = 'booklet_export_'.date('Y_m_d_H_i_s').'.csv';
+        $filename = 'export_'. date('His') .'.csv';
         $this->flySystemFile = $this->getServiceManager()
             ->get(FileSystemService::SERVICE_ID)
-            ->getDirectory('taoQtiItem')
-            ->getFile('export/'.$filename);
+            ->getDirectory('taoMonitoring')
+            ->getFile(date('Y_m_d') .'/bookletExport/'. gethostname() .'/'. $filename);
             
         rewind($this->exportFile);
         $this->flySystemFile->write($this->exportFile);
@@ -231,6 +231,12 @@ class AllBookletsExport
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$responseIdentifier] = $matchSets[0];
+                                            }
+                                        } elseif (isset($interactions['choiceInteraction'])) {
+                                            foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                             }
                                         }
 
@@ -340,9 +346,17 @@ class AllBookletsExport
                             $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
-                                // Default response variable structure.
-                                $row[$headerIdentifier] = $this->formatVariable($variable);
-                                
+
+                                $tmpVal = $this->formatVariable($variable);
+                                if((isset($this->choiceTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->choiceTypeByDeliveries[$deliveryUri]))) &&
+                                    ($index = array_search($tmpVal, $this->choiceTypeByDeliveries[$deliveryUri][$headerIdentifier])) !== false){
+                                    $row[$headerIdentifier] = $index + 1;
+                                } else {
+                                    // Default response variable structure.
+                                    $row[$headerIdentifier] = $tmpVal;
+                                }
+
+
                             } elseif (in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
                                 // Non default response variable structure (matchInteraction/gapMatchInteraction).
                                 $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);

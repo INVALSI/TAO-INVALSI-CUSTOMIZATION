@@ -87,7 +87,7 @@ class AllBookletsExportUtils
         if (isset($jsonInteraction->qtiClass)) {
             if ($jsonInteraction->qtiClass === 'matchInteraction') {
                 for ($i = 0; $i <= 1; $i++) {
-                    
+                    $choices = [];
                     foreach ($jsonInteraction->choices[$i] as $choice) {
                         $choices[] = $choice->identifier;
                     }
@@ -122,6 +122,12 @@ class AllBookletsExportUtils
                     }
                     $result[] = $choices;
                 }
+            } elseif ($jsonInteraction->qtiClass === 'choiceInteraction') {
+
+                foreach ($jsonInteraction->choices as $choice) {
+                    $choices[] = $choice->identifier;
+                }
+                $result[] = $choices;
             }
         }
         
