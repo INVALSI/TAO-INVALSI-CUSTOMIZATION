@@ -31,7 +31,8 @@ return array(
             'taoMediaManager' => '*',
             'taoQtiTest' => '>=5.29.0',
             'taoQtiItem' => '>=6.0.0',
-            'taoTests' => '>=3.5.0'
+            'taoTests' => '>=3.5.0',
+            'taoMonitoring' => '0.2.0'
         ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -45,7 +46,8 @@ return array(
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
-            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures'
+            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures',
+            'oat\\taoMonitoring\\scripts\\install\\RegisterAwsFileSystem',
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
