@@ -189,4 +189,20 @@ class AllBookletsExportUtils
             return false;
         }
     }
+    
+    static public function matchSetIndex($identifier, array $matchSets)
+    {
+        $index = false;
+        
+        foreach ($matchSets as $matchSet) {
+            if (($search = array_search($identifier, $matchSet, true)) !== false) {
+                $index = $search;
+                break;
+            }
+        }
+        
+        reset($matchSets);
+        
+        return $index;
+    }
 }
