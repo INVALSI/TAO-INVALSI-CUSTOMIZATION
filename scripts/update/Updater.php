@@ -214,7 +214,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $service->createFileSystem('taoMonitoring');
             $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $service);
 
-            $this->setVersion('1.18.0');
+            $this->setVersion('1.18.1');
         }
     }
 
