@@ -168,8 +168,8 @@ class Updater extends common_ext_ExtensionUpdater
         if ($this->isVersion('1.12.0')) {
              \oat\tao\model\accessControl\func\AclProxy::applyRule(new \oat\tao\model\accessControl\func\AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext' => 'taoInvalsi', 'mod' => 'Main', 'act' => 'login')));
              $service = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
- +           $service->createFileSystem('taoMonitoring');
- +           $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $service);
+             $service->createFileSystem('taoMonitoring');
+             $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $service);
             
              $this->setVersion('1.12.1');
          }
