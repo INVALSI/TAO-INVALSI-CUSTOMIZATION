@@ -1,0 +1,41 @@
+{
+    "tests": [
+        {
+            "package": "mypackage.zip",
+            "deliveries": [
+                {
+                    "uri": "http://mysite.com#mydelivery1",
+                    "label": "Delivery 1",
+                    "startTime": "20/11/2015",
+                    "endTime": "21/11/2015",
+                    "tokens": 1
+                },
+                {
+                    "uri": "http://mysite.com#mydelivery2",
+                    "label": "Delivery 2",
+                    "startTime": "22/11/2015",
+                    "endTime": "23/11/2015",
+                    "tokens": 1
+                }
+            ],
+            "groups": [
+                {
+                    "uri": "http://mysite.com#mygroup1"
+                    "label": "Group 1",
+                    "users": "users-group1.csv"
+                    "deliveries": [
+                        "http://mysite.com#mydelivery1"
+                    ]
+                },
+                {
+                    "uri": "http://mysite.com#mygroup2"
+                    "label": "Group 2",
+                    "users": "users-group2.csv"
+                    "deliveries": [
+                        "http://mysite.com#mydelivery2"
+                    ]
+                }
+            ]
+        }
+    ]
+}
