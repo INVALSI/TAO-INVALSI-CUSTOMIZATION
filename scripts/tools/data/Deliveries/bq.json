@@ -20,17 +20,17 @@
             ],
             "groups": [
                 {
-                    "uri": "http://mysite.com#mygroup1"
+                    "uri": "http://mysite.com#mygroup1",
                     "label": "Group 1",
-                    "users": "users-group1.csv"
+                    "users": "users-group1.csv",
                     "deliveries": [
                         "http://mysite.com#mydelivery1"
                     ]
                 },
                 {
-                    "uri": "http://mysite.com#mygroup2"
+                    "uri": "http://mysite.com#mygroup2",
                     "label": "Group 2",
-                    "users": "users-group2.csv"
+                    "users": "users-group2.csv",
                     "deliveries": [
                         "http://mysite.com#mydelivery2"
                     ]
