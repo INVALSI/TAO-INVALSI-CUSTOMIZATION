@@ -1,7 +1,7 @@
 {
     "tests": [
         {
-            "package": "mypackage.zip",
+            "package": "../../../../test/samples/sample-test.zip",
             "deliveries": [
                 {
                     "uri": "http://mysite.com#mydelivery1",
@@ -22,7 +22,7 @@
                 {
                     "uri": "http://mysite.com#mygroup1",
                     "label": "Group 1",
-                    "users": "users-group1.csv",
+                    "users": "/tmp/invalsi/import/users-group1.csv",
                     "deliveries": [
                         "http://mysite.com#mydelivery1"
                     ]
@@ -30,7 +30,7 @@
                 {
                     "uri": "http://mysite.com#mygroup2",
                     "label": "Group 2",
-                    "users": "users-group2.csv",
+                    "users": "/tmp/invalsi/import/users-group2.csv",
                     "deliveries": [
                         "http://mysite.com#mydelivery2"
                     ]
