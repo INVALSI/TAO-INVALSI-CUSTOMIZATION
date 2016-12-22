@@ -9,7 +9,14 @@
                     "startTimestamp": "1482210900",
                     "endTimestamp": "1514305860",
                     "tokens": 1,
-                    "progressBar": false
+                    "progressBar": false,
+                    "groups": [
+                        {
+                            "uri": "http://mysite.com#mygroup1",
+                            "label": "Group 1",
+                            "users": "/tmp/invalsi/import/users-group1.csv"
+                        }
+                    ]
                 },
                 {
                     "uri": "http://mysite.com#mydelivery2",
@@ -17,24 +24,13 @@
                     "startTimestamp": "1482210900",
                     "endTimestamp": "1514305860",
                     "tokens": 1,
-                    "progressBar": false
-                }
-            ],
-            "groups": [
-                {
-                    "uri": "http://mysite.com#mygroup1",
-                    "label": "Group 1",
-                    "users": "/tmp/invalsi/import/users-group1.csv",
-                    "deliveries": [
-                        "http://mysite.com#mydelivery1"
-                    ]
-                },
-                {
-                    "uri": "http://mysite.com#mygroup2",
-                    "label": "Group 2",
-                    "users": "/tmp/invalsi/import/users-group2.csv",
-                    "deliveries": [
-                        "http://mysite.com#mydelivery2"
+                    "progressBar": false,
+                    "groups": [
+                        {
+                            "uri": "http://mysite.com#mygroup2",
+                            "label": "Group 2",
+                            "users": "/tmp/invalsi/import/users-group2.csv"
+                        }
                     ]
                 }
             ]

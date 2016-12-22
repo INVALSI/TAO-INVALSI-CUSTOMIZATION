@@ -104,7 +104,29 @@ class CreateDeliveries implements Action
             }
             
             $deliveryResource->editPropertyValues(new \core_kernel_classes_Property(DeliveryContainerService::TEST_RUNNER_FEATURES_PROPERTY), $features);
+            
+            // Create related groups.
+            foreach ($delivery['groups'] as $group) {
+                $report->add($this->createGroup($group, $deliveryResource));
+            }
         }
+        
+        return $report;
+    }
+    
+    protected function createGroup(array $group, \core_kernel_classes_Resource $delivery)
+    {
+        $report = new \common_report_Report(
+            \common_report_Report::TYPE_INFO, 
+            "Unknown status."
+        );
+        
+        $groupClass = new \core_kernel_classes_Class(TAO_GROUP_CLASS);
+        $groupResource = $groupClass->createInstance($group['label'], '', $group['uri']);
+        $groupResource->setPropertyValue(new \core_kernel_classes_Property(PROPERTY_GROUP_DELVIERY), $delivery->getUri());
+        
+        $report->setType(\common_report_Report::TYPE_SUCCESS);
+        $report->setMessage("Group '" . $group['label'] . "' successfully created.");
         
         return $report;
     }
