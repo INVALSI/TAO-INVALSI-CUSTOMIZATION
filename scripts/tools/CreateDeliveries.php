@@ -9,6 +9,7 @@ namespace oat\taoInvalsi\scripts\tools;
 
 use oat\oatbox\action\Action;
 use oat\taoDeliveryRdf\model\SimpleDeliveryFactory;
+use oat\taoDeliveryRdf\model\DeliveryContainerService;
 
 class CreateDeliveries implements Action
 {
@@ -27,6 +28,7 @@ class CreateDeliveries implements Action
     public function __invoke($params)
     {
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+        \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
         
         $this->setBasePath(realpath(dirname($params[0])));
         $json = json_decode(file_get_contents($params[0]), true);
@@ -69,18 +71,42 @@ class CreateDeliveries implements Action
         $successMsg = "The QTI Test located at '${absoluteSource}' was successfully imported.";
         $errorMsg = "The QTI Test located at '${absoluteSource}' could not be imported.";
         
-       if ($this->populateReport($report, $successMsg, $errorMsg) === true) {
+        if ($this->populateReport($report, $successMsg, $errorMsg) === true) {
+            
+            $test = current(current($report->getSuccesses())->getSuccesses())->getData()->rdfsResource;
+           
             foreach ($deliveries as $delivery) {
-                $this->createDelivery($delivery);
+                $report->add($this->createDelivery($test, $delivery));
             }
         }
         
         return $report;
     }
     
-    protected function createDelivery(array $delivery)
+    protected function createDelivery(\core_kernel_classes_Resource $test, array $delivery)
     {
+        $report = SimpleDeliveryFactory::create(new \core_kernel_classes_Class(CLASS_COMPILEDDELIVERY), $test, $delivery['label']);
         
+        $successMsg = "Delivery '" . $delivery['label'] . "' was successfully compiled.";
+        $errorMsg = "Delivery '" . $delivery['label'] . "' cound not be compiled.";
+        
+        if ($this->populateReport($report, $successMsg, $errorMsg) === true) {
+            // Configure Delivery.
+            $deliveryResource = $report->getData();
+            $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_MAXEXEC_PROP), $delivery['tokens']);
+            $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_START_PROP), $delivery['startTimestamp']);
+            $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_END_PROP), $delivery['endTimestamp']);
+            
+            $features = $deliveryResource->getPropertyValues(new \core_kernel_classes_Property(DeliveryContainerService::TEST_RUNNER_FEATURES_PROPERTY));
+            
+            if (isset($delivery['progressBar']) && $delivery['progressBar'] === false && ($index = array_search('progressBar', $features)) !== false) {
+                unset($features[$index]);
+            }
+            
+            $deliveryResource->editPropertyValues(new \core_kernel_classes_Property(DeliveryContainerService::TEST_RUNNER_FEATURES_PROPERTY), $features);
+        }
+        
+        return $report;
     }
     
     private static function populateReport(\common_report_Report $report, $successMsg, $errorMsg)
