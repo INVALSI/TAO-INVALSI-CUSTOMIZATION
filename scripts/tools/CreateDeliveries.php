@@ -8,6 +8,7 @@
 namespace oat\taoInvalsi\scripts\tools;
 
 use oat\oatbox\action\Action;
+use oat\taoDeliveryRdf\model\SimpleDeliveryFactory;
 
 class CreateDeliveries implements Action
 {
