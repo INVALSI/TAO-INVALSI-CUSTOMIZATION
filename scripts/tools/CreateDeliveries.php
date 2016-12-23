@@ -206,6 +206,8 @@ class CreateDeliveries implements Action
             $userCount++;
         }
         
+        fclose($fp);
+        
         $report->add(
             new \common_report_Report(
                 \common_report_Report::TYPE_SUCCESS, 
