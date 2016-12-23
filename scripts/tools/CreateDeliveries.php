@@ -14,6 +14,7 @@ use oat\taoDeliveryRdf\model\DeliveryContainerService;
 class CreateDeliveries implements Action
 {
     private $basePath;
+    private $persistence;
     
     protected function getBasePath()
     {
@@ -25,12 +26,24 @@ class CreateDeliveries implements Action
         $this->basePath = $basePath;
     }
     
+    protected function getPersistence()
+    {
+        return $this->persistence;
+    }
+    
+    protected function setPersistence(\common_persistence_SqlPersistence $persistence)
+    {
+        $this->persistence = $persistence;
+    }
+    
     public function __invoke($params)
     {
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
         
+        $this->setPersistence(\common_persistence_Manager::getPersistence('default'));
         $this->setBasePath(realpath(dirname($params[0])));
+        
         $json = json_decode(file_get_contents($params[0]), true);
         
         // Main report.
@@ -136,6 +149,8 @@ class CreateDeliveries implements Action
         
         $report->setType(\common_report_Report::TYPE_SUCCESS);
         $report->setMessage("Group '" . $group['label'] . "' successfully created.");
+        
+        
         
         return $report;
     }

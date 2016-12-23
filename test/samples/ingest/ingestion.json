@@ -1,10 +1,10 @@
 {
     "tests": [
         {
-            "package": "../../../../test/samples/sample-test.zip",
+            "package": "sample-test.zip",
             "deliveries": [
                 {
-                    "uri": "http://mysite.com#mydelivery1",
+                    "uri": "http://www.invalsi.com/invalsi.rdf#mydelivery1",
                     "label": "Delivery 1",
                     "startTimestamp": "1482210900",
                     "endTimestamp": "1514305860",
@@ -12,14 +12,14 @@
                     "progressBar": false,
                     "groups": [
                         {
-                            "uri": "http://mysite.com#mygroup1",
+                            "uri": "http://www.invalsi.com/invalsi.rdf#mygroup1",
                             "label": "Group 1",
-                            "users": "/tmp/invalsi/import/users-group1.csv"
+                            "users": "users-group1.csv"
                         }
                     ]
                 },
                 {
-                    "uri": "http://mysite.com#mydelivery2",
+                    "uri": "http://www.invalsi.com/invalsi.rdf#mydelivery2",
                     "label": "Delivery 2",
                     "startTimestamp": "1482210900",
                     "endTimestamp": "1514305860",
@@ -27,9 +27,9 @@
                     "progressBar": false,
                     "groups": [
                         {
-                            "uri": "http://mysite.com#mygroup2",
+                            "uri": "http://www.invalsi.com/invalsi.rdf#mygroup2",
                             "label": "Group 2",
-                            "users": "/tmp/invalsi/import/users-group2.csv"
+                            "users": "users-group2.csv"
                         }
                     ]
                 }
