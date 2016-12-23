@@ -85,14 +85,18 @@ class CreateDeliveries implements Action
     
     protected function createDelivery(\core_kernel_classes_Resource $test, array $delivery)
     {
-        $report = SimpleDeliveryFactory::create(new \core_kernel_classes_Class(CLASS_COMPILEDDELIVERY), $test, $delivery['label']);
+        // Delivery creation main report.
+        $report = new \common_report_Report(
+            \common_report_Report::TYPE_INFO, 
+            "Unknown status."
+        );
         
-        $successMsg = "Delivery '" . $delivery['label'] . "' was successfully compiled.";
-        $errorMsg = "Delivery '" . $delivery['label'] . "' cound not be compiled.";
+        $deliveryReport = SimpleDeliveryFactory::create(new \core_kernel_classes_Class(CLASS_COMPILEDDELIVERY), $test, $delivery['label']);
+        $report->add($deliveryReport);
         
-        if ($this->populateReport($report, $successMsg, $errorMsg) === true) {
+        if ($deliveryReport->getType() !== \common_report_Report::TYPE_ERROR) {
             // Configure Delivery.
-            $deliveryResource = $report->getData();
+            $deliveryResource = $deliveryReport->getData();
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_MAXEXEC_PROP), $delivery['tokens']);
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_START_PROP), $delivery['startTimestamp']);
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_END_PROP), $delivery['endTimestamp']);
@@ -110,6 +114,11 @@ class CreateDeliveries implements Action
                 $report->add($this->createGroup($group, $deliveryResource));
             }
         }
+        
+        $successMsg = "Delivery '" . $delivery['label'] . "' was successfully created.";
+        $errorMsg = "Delivery '" . $delivery['label'] . "' cound not be created.";
+        
+        $this->populateReport($report, $successMsg, $errorMsg);
         
         return $report;
     }
