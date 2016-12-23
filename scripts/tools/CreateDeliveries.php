@@ -10,6 +10,7 @@ namespace oat\taoInvalsi\scripts\tools;
 use oat\oatbox\action\Action;
 use oat\taoDeliveryRdf\model\SimpleDeliveryFactory;
 use oat\taoDeliveryRdf\model\DeliveryContainerService;
+use oat\authKeyValue\helpers\DataGeneration;
 
 class CreateDeliveries implements Action
 {
@@ -150,7 +151,47 @@ class CreateDeliveries implements Action
         $report->setType(\common_report_Report::TYPE_SUCCESS);
         $report->setMessage("Group '" . $group['label'] . "' successfully created.");
         
+        $absoluteSource = realpath($this->getBasePath() . '/' . $group['users']);
+        $fp = fopen($absoluteSource, 'r');
+        $userCount = 0;
         
+        while (($data = fgetcsv($fp, '', ',') !== false) {
+            $login = $data[0];
+            $password = \core_kernel_users_Service::getPasswordHash()->encrypt($data[1]);
+            $lang = $data[2];
+            
+            // Insert user data in key/value storage.
+            $userData = DataGeneration::createUser(
+                [
+                    PROPERTY_USER_LOGIN => $login,
+                    PROPERTY_USER_PASSWORD => $password,
+                    RDFS_LABEL => "Test Taker " . $login,
+                    PROPERTY_USER_FIRSTNAME => "Test Taker " . $login,
+                    PROPERTY_USER_LASTNAME => "Group " . $group['label']
+                ],
+                $lang
+            );
+            
+            // Make user login available for RDS Results Export.
+            $persistence->insert(
+                'statements',
+                array(
+                    'modelid' => 1,
+                    'subject' => $userData['uri'],
+                    'predicate' => RDFS_LABEL,
+                    'object' => $login,
+                    'l_language' => 'en-US'
+                )
+            );
+            
+            $userCount++;
+        }
+        
+        $report->add(
+            new \common_report_Report(
+            \common_report_Report::TYPE_SUCCESS, 
+            "${userCount} users assigned to Group '" . $group['label'] . "'"
+        );
         
         return $report;
     }
