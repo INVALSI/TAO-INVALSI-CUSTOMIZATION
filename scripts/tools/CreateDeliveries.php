@@ -112,6 +112,8 @@ class CreateDeliveries implements Action
         if ($deliveryReport->getType() !== \common_report_Report::TYPE_ERROR) {
             // Configure Delivery.
             $deliveryResource = $deliveryReport->getData();
+            $deliveryResource = $this->updateResourceUri($deliveryResource, $delivery['uri']);
+            
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_MAXEXEC_PROP), $delivery['tokens']);
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_START_PROP), $delivery['startTimestamp']);
             $deliveryResource->setPropertyValue(new \core_kernel_classes_Property(TAO_DELIVERY_END_PROP), $delivery['endTimestamp']);
@@ -148,9 +150,11 @@ class CreateDeliveries implements Action
         $groupClass = new \core_kernel_classes_Class(TAO_GROUP_CLASS);
         $groupResource = $groupClass->createInstance($group['label'], '', $group['uri']);
         $groupResource->setPropertyValue(new \core_kernel_classes_Property(PROPERTY_GROUP_DELVIERY), $delivery->getUri());
+        $groupResource = $this->updateResourceUri($groupResource, $group['uri']);
         
         $report->setType(\common_report_Report::TYPE_SUCCESS);
         $report->setMessage("Group '" . $group['label'] . "' successfully created.");
+        $report->setData($groupResource);
         
         $absoluteSource = realpath($this->getBasePath() . '/' . $group['users']);
         $fp = fopen($absoluteSource, 'r');
@@ -225,5 +229,18 @@ class CreateDeliveries implements Action
             
             return true;
         }
+    }
+    
+    private function updateResourceUri(\core_kernel_classes_Resource $resource, $newUri)
+    {
+        $this->getPersistence()->query(
+            'UPDATE statements SET subject=? WHERE subject = ?',
+            [
+                $newUri,
+                $resource->getUri()
+            ]
+        );
+        
+        return new \core_kernel_classes_Resource($newUri);
     }
 }
