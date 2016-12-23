@@ -14,7 +14,8 @@
                         {
                             "uri": "http://www.invalsi.com/invalsi.rdf#mygroup1",
                             "label": "Group 1",
-                            "users": "users-group1.csv"
+                            "users": "users-group1.csv",
+                            "userUriPattern": "http://www.invalsi.com/invalsi.rdf#"
                         }
                     ]
                 },
@@ -29,7 +30,8 @@
                         {
                             "uri": "http://www.invalsi.com/invalsi.rdf#mygroup2",
                             "label": "Group 2",
-                            "users": "users-group2.csv"
+                            "users": "users-group2.csv",
+                            "userUriPattern": "http://www.invalsi.com/invalsi.rdf#"
                         }
                     ]
                 }

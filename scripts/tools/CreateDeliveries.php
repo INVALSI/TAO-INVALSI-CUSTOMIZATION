@@ -160,9 +160,10 @@ class CreateDeliveries implements Action
             $login = $data[0];
             $password = \core_kernel_users_Service::getPasswordHash()->encrypt($data[1]);
             $lang = $data[2];
+            $userUri = $group['userUriPattern'] . strtolower($login);
             
             // Insert user data in key/value storage.
-            $userData = DataGeneration::createUser(
+            DataGeneration::createUser(
                 [
                     PROPERTY_USER_LOGIN => $login,
                     PROPERTY_USER_PASSWORD => $password,
@@ -171,16 +172,28 @@ class CreateDeliveries implements Action
                     //PROPERTY_USER_LASTNAME => "Group " . $group['label'],
                     GroupsService::PROPERTY_MEMBERS_URI => [$groupResource->getUri()]
                 ],
-                $lang
+                $lang,
+                $userUri
             );
             
-            // Make user login available for RDS Results Export.
+            // Make user label/login available for RDS Results.
             $this->getPersistence()->insert(
                 'statements',
                 array(
                     'modelid' => 1,
-                    'subject' => $userData['uri'],
+                    'subject' => $userUri,
                     'predicate' => RDFS_LABEL,
+                    'object' => $login,
+                    'l_language' => 'en-US'
+                )
+            );
+            
+            $this->getPersistence()->insert(
+                'statements',
+                array(
+                    'modelid' => 1,
+                    'subject' => $userUri,
+                    'predicate' => PROPERTY_USER_LOGIN,
                     'object' => $login,
                     'l_language' => 'en-US'
                 )
