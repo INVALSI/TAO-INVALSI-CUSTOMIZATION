@@ -200,13 +200,24 @@ class CreateDeliveries implements Action
                 $userUri
             );
             
-            // Make user login available for results export.
+            // Make user login/label available for results export.
             $this->getPersistence()->insert(
                 'statements',
                 array(
                     'modelid' => 1,
                     'subject' => $userUri,
                     'predicate' => PROPERTY_USER_LOGIN,
+                    'object' => $login,
+                    'l_language' => 'en-US'
+                )
+            );
+            
+            $this->getPersistence()->insert(
+                'statements',
+                array(
+                    'modelid' => 1,
+                    'subject' => $userUri,
+                    'predicate' => RDFS_LABEL,
                     'object' => $login,
                     'l_language' => 'en-US'
                 )
