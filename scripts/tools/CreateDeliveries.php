@@ -40,6 +40,23 @@ class CreateDeliveries implements Action
     
     public function __invoke($params)
     {
+        if (empty($params[0])) {
+            return new \common_report_Report(
+                \common_report_Report::TYPE_ERROR,
+                'No ingestion manifest provided as parameter 1.'
+            );
+        } elseif (!is_file($params[0])) {
+            return new \common_report_Report(
+                \common_report_Report::TYPE_ERROR,
+                $params[0] . ' is not a file.'
+            );
+        } elseif (!is_readable($params[0])) {
+            return new \common_report_Report(
+                \common_report_Report::TYPE_ERROR,
+                $params[0] . ' could not be read.'
+            );
+        }
+        
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
         
@@ -172,26 +189,13 @@ class CreateDeliveries implements Action
                     PROPERTY_USER_LOGIN => $login,
                     PROPERTY_USER_PASSWORD => $password,
                     RDFS_LABEL => "Test Taker " . $login,
-                    //PROPERTY_USER_FIRSTNAME => "Test Taker " . $login,
-                    //PROPERTY_USER_LASTNAME => "Group " . $group['label'],
                     GroupsService::PROPERTY_MEMBERS_URI => [$groupResource->getUri()]
                 ],
                 $lang,
                 $userUri
             );
             
-            // Make user label/login available for RDS Results.
-            $this->getPersistence()->insert(
-                'statements',
-                array(
-                    'modelid' => 1,
-                    'subject' => $userUri,
-                    'predicate' => RDFS_LABEL,
-                    'object' => $login,
-                    'l_language' => 'en-US'
-                )
-            );
-            
+            // Make user login available for results export.
             $this->getPersistence()->insert(
                 'statements',
                 array(
