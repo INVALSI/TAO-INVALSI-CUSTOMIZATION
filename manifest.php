@@ -24,7 +24,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.12.1',
+    'version' => '1.12.2',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
             'taoCe' => '>=1.2.0',
@@ -47,6 +47,7 @@ return array(
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures',
+            'oat\\taoInvalsi\\scripts\\install\\SetPasswordPolicy',
             'oat\\taoMonitoring\\scripts\\install\\RegisterAwsFileSystem',
         )
     ),
