@@ -318,7 +318,6 @@ class AllBookletsExport
     {
 
         $report = \common_report_Report::createSuccess();
-        $loginProperty = new \core_kernel_classes_Property(PROPERTY_USER_LOGIN);
 
         $i = 0;
         /** @var \core_kernel_classes_Resource $delivery */
@@ -335,7 +334,7 @@ class AllBookletsExport
                     $row = array();
 
                     $user = new \core_kernel_classes_Resource($execution->getUserIdentifier());
-                    $row['ID'] = $user->getUniquePropertyValue($loginProperty)->literal;
+                    $row['ID'] = $user->getLabel();
                     $row['IDFORM'] = $delivery->getLabel();
 
 

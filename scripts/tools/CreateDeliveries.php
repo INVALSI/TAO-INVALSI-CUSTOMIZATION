@@ -85,12 +85,15 @@ class CreateDeliveries implements Action
         
         $this->populateReport($report, $successMsg, $errorMsg);
 
+        \common_Logger::d("End of 'CreateDeliveries' script!");
+        
         return $report;
     }
     
     protected function importTest($source, array $deliveries)
     {
         $absoluteSource = realpath($this->getBasePath() . '/' . $source);
+        \common_Logger::d("Importing test from '${absoluteSource}'...");
         
         // Test import report.
         $report = new \common_report_Report(
@@ -128,6 +131,8 @@ class CreateDeliveries implements Action
             "Unknown status."
         );
         
+        \common_Logger::d("Creating Delivery '" . $delivery['label'] . "'...");
+        
         $deliveryReport = SimpleDeliveryFactory::create(new \core_kernel_classes_Class(CLASS_COMPILEDDELIVERY), $test, $delivery['label']);
         $report->add($deliveryReport);
         
@@ -143,6 +148,7 @@ class CreateDeliveries implements Action
             $features = $deliveryResource->getPropertyValues(new \core_kernel_classes_Property(DeliveryContainerService::TEST_RUNNER_FEATURES_PROPERTY));
             
             if (isset($delivery['progressBar']) && $delivery['progressBar'] === false && ($index = array_search('progressBar', $features)) !== false) {
+                \common_Logger::d("Removing progressBar feature for Delivery '" . $delivery['label'] . "'...");
                 unset($features[$index]);
             }
             
@@ -169,6 +175,8 @@ class CreateDeliveries implements Action
             "Unknown status."
         );
         
+        \common_Logger::d("Creating Group '" . $group['label'] . "'...");
+        
         $groupClass = new \core_kernel_classes_Class(TAO_GROUP_CLASS);
         $groupResource = $groupClass->createInstance($group['label'], '', $group['uri']);
         $groupResource->setPropertyValue(new \core_kernel_classes_Property(PROPERTY_GROUP_DELVIERY), $delivery->getUri());
@@ -185,10 +193,11 @@ class CreateDeliveries implements Action
         while (($data = fgetcsv($fp, '', ',')) !== false) {
             $login = $data[0];
             $password = \core_kernel_users_Service::getPasswordHash()->encrypt($data[1]);
-            $lang = $data[2];
+            $lang = (empty($data[2])) ? (empty($params[1])) ? DEFAULT_LANG : $params[1] : $data[2];
             $userUri = $group['userUriPattern'] . strtolower($login);
             
             // Insert user data in key/value storage.
+            \common_Logger::d("Creating User '${login}' in KV storage with language '${lang}'...");
             DataGeneration::createUser(
                 [
                     PROPERTY_USER_LOGIN => $login,
@@ -200,18 +209,8 @@ class CreateDeliveries implements Action
                 $userUri
             );
             
-            // Make user login/label available for results export.
-            $this->getPersistence()->insert(
-                'statements',
-                array(
-                    'modelid' => 1,
-                    'subject' => $userUri,
-                    'predicate' => PROPERTY_USER_LOGIN,
-                    'object' => $login,
-                    'l_language' => 'en-US'
-                )
-            );
-            
+            // Make user label available for results export.
+            \common_Logger::d("Referencing User '${login}' in Ontology storage...");
             $this->getPersistence()->insert(
                 'statements',
                 array(
