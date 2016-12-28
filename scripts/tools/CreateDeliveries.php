@@ -17,6 +17,7 @@ class CreateDeliveries implements Action
 {
     private $basePath;
     private $persistence;
+    private $parameters;
     
     protected function getBasePath()
     {
@@ -38,9 +39,20 @@ class CreateDeliveries implements Action
         $this->persistence = $persistence;
     }
     
+    protected function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+    
+    protected function getParameters()
+    {
+        return $this->parameters;
+    }
+    
     public function __invoke($params)
     {
         $beginScript = microtime(true);
+        $this->setParameters($params);
         
         if (empty($params[0])) {
             return new \common_report_Report(
@@ -170,6 +182,8 @@ class CreateDeliveries implements Action
     
     protected function createGroup(array $group, \core_kernel_classes_Resource $delivery)
     {
+        $params = $this->getParameters();
+        
         $report = new \common_report_Report(
             \common_report_Report::TYPE_INFO, 
             "Unknown status."
@@ -193,7 +207,7 @@ class CreateDeliveries implements Action
         while (($data = fgetcsv($fp, '', ',')) !== false) {
             $login = $data[0];
             $password = \core_kernel_users_Service::getPasswordHash()->encrypt($data[1]);
-            $lang = (empty($data[2])) ? (empty($params[1])) ? DEFAULT_LANG : $params[1] : $data[2];
+            $lang = (empty($data[2])) ? ((empty($params[1])) ? DEFAULT_LANG : $params[1]) : $data[2];
             $userUri = $group['userUriPattern'] . strtolower($login);
             
             // Insert user data in key/value storage.
