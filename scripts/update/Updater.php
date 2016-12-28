@@ -31,6 +31,7 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
+use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
@@ -217,7 +218,12 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('1.18.1');
         }
         
-        $this->skip('1.18.1', '1.19.0');
+        if ($this->isVersion('1.18.1')) {
+            $setPasswordPolicy = new SetPasswordPolicy();
+            $setPasswordPolicy([]);
+            
+            $this->setVersion('1.19.0');
+        }
     }
 
 }

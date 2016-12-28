@@ -49,6 +49,7 @@ return array(
             'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
             'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures',
+            'oat\\taoInvalsi\\scripts\\install\\SetPasswordPolicy',
             'oat\\taoMonitoring\\scripts\\install\\RegisterAwsFileSystem',
         )
     ),
