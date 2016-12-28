@@ -40,6 +40,8 @@ class CreateDeliveries implements Action
     
     public function __invoke($params)
     {
+        $beginScript = microtime(true);
+        
         if (empty($params[0])) {
             return new \common_report_Report(
                 \common_report_Report::TYPE_ERROR,
@@ -75,7 +77,10 @@ class CreateDeliveries implements Action
             $report->add($this->importTest($test['package'], $test['deliveries']));
         }
         
-        $successMsg = "The script ended gracefully.";
+        $endScript = microtime(true);
+        $timeScript = self::secondsToDuration($endScript - $beginScript);
+        
+        $successMsg = "The script ended gracefully in ${timeScript}.";
         $errorMsg = "The script could not be run gracefully.";
         
         $this->populateReport($report, $successMsg, $errorMsg);
@@ -248,5 +253,15 @@ class CreateDeliveries implements Action
         );
         
         return new \core_kernel_classes_Resource($newUri);
+    }
+    
+    private static function secondsToDuration($seconds)
+    {
+        $seconds = intval($seconds);
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds / 60) % 60);
+        $seconds = $seconds % 60;
+        
+        return "${hours}:${minutes}:{$seconds}";
     }
 }
