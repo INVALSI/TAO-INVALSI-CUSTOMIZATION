@@ -23,6 +23,7 @@
 namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
+use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestPluginService;
@@ -30,6 +31,7 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
+use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
@@ -202,13 +204,26 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if ($this->isVersion('1.16.1')) {
 
-
             \oat\tao\model\accessControl\func\AclProxy::applyRule(new \oat\tao\model\accessControl\func\AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext' => 'taoInvalsi', 'mod' => 'Main', 'act' => 'login')));
-
 
             $this->setVersion('1.17.0');
         }
         $this->skip('1.17.0', '1.17.1');
+
+        if ($this->isVersion('1.17.1')) {
+            $service = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
+            $service->createFileSystem('taoMonitoring');
+            $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $service);
+
+            $this->setVersion('1.18.1');
+        }
+        
+        if ($this->isVersion('1.18.1')) {
+            $setPasswordPolicy = new SetPasswordPolicy();
+            $setPasswordPolicy([]);
+            
+            $this->setVersion('1.19.0');
+        }
     }
 
 }
