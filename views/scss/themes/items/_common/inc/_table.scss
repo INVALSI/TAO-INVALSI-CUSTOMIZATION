@@ -7,21 +7,86 @@
 /// Tables in items are likely to be match interactions. In this case
 /// it would be better to edit interactions/_match.scss instead.
 table {
-    &.matrix {
+    &.alpha-table {
+        width: 100%;
 
-        th {
-        }
-        td {
-            &.numeric {
-            }
-            label {
+        thead {
+            border-bottom: 1px solid $borderColor;
+            th {
+                text-align: center;
             }
         }
-        tr {
-            &:nth-child(even){
+
+        tfoot {
+            border-top: 1px solid $borderColor;
+            th {
+                text-align: left;
             }
-            &:nth-child(odd){
+            td {
+                text-align: right;
             }
+        }
+
+        thead, tfoot {
+            tr {
+                background-color: whiten(#3B576D, 0.8);
+            }
+            th, td {
+                font-weight: bold;
+            }
+        }
+
+        tbody {
+            th {
+                font-weight: bold;
+                text-align: left;
+            }
+            td {
+                text-align: right;
+            }
+            tr {
+                &:nth-child(even){
+                    background-color: whiten(#3B576D, 0.9);
+                }
+                &:nth-child(odd){
+                    background-color: whiten(#3B576D, 0.95);
+                }
+            }
+        }
+
+        th, td {
+            padding: 5px;
+        }
+
+    }
+
+    &.beta-table {
+        width: 60%;
+
+        thead {
+            border-bottom: 1px solid $borderColor;
+            tr {
+                background-color: whiten(#3B576D, 0.8);
+            }
+            th {
+                font-weight: bold;
+            }
+        }
+
+        tbody {
+            tr {
+                &:nth-child(even){
+                    background-color: whiten(#3B576D, 0.9);
+                }
+                &:nth-child(odd){
+                    background-color: whiten(#3B576D, 0.95);
+                }
+            }
+        }
+
+        th, td {
+            padding: 3px;
+            text-align: center;
         }
     }
 }
