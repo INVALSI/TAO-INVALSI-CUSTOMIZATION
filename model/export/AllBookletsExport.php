@@ -370,7 +370,7 @@ class AllBookletsExport
                                 $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
                                 $tmpVal = $this->formatVariable($variable);
-                                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
+                                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', str_replace(';', ',', $tmpVal));
                                 $alpha = range('a', 'z');
                                 
                                 if ($val) {
