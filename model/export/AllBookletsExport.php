@@ -522,9 +522,10 @@ class AllBookletsExport
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
-            } elseif ($column === 'item-25-Q07-choice_1') {
-                if ($row[$column] === 'choice_3' && isset($row['item-26-Q08'])) {
-                    // item-26 has to be invalidated.
+            } elseif ($column === 'item-25-Q07-a') {
+                // When item-25-Q07-a is 1 ...
+                if ($row[$column] === 1 && isset($row['item-26-Q08'])) {
+                    // item-26-Q08 has to be invalidated.
                     $row['item-26-Q08'] = self::NOT_REACHED;
                 }
             }
