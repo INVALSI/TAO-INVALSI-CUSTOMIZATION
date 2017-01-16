@@ -179,7 +179,7 @@ class Updater extends common_ext_ExtensionUpdater
             $setPasswordPolicy = new SetPasswordPolicy();
             $setPasswordPolicy([]);
             
-            $this->setVersion('1.12.3');
+            $this->setVersion('1.12.4');
         }
     }
 }
