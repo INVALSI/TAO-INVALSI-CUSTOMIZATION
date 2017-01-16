@@ -179,7 +179,18 @@ class Updater extends common_ext_ExtensionUpdater
             $setPasswordPolicy = new SetPasswordPolicy();
             $setPasswordPolicy([]);
             
+            $this->setVersion('1.12.2');
+        }
+        
+        // For missed 1.12.2/1.12.3 version, from a previous update script issue.
+        if ($this->isVersion('1.12.2')) {
+            $this->setVersion('1.12.3');
+        }
+        
+        if ($this->isVersion('1.12.3')) {
             $this->setVersion('1.12.4');
         }
+        
+        $this->skip('1.12.4', '1.12.5');
     }
 }
