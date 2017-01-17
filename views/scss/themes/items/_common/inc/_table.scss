@@ -43,6 +43,9 @@ table {
             }
             td {
                 text-align: right;
+                input {
+                    text-align: right;
+                }
             }
             tr {
                 &:nth-child(even){
@@ -85,8 +88,11 @@ table {
         }
 
         th, td {
-            padding: 3px;
+            padding: 5px;
             text-align: center;
+            input {
+                text-align: center;
+            }
         }
     }
 }
