@@ -30,6 +30,7 @@ class ExtractExclusivelySkippedFromBqCsvDuplicates extends AbstractIndexedCsv
                 }
                 
                 if (\tao_helpers_Array::arraysContainOnlyValue($rows, '88', 0, [0, 1])) {
+                    // Student with ID = $key did not attempt any question, for all deliveries he took.
                     fputcsv($destinationFp, $rows[0]);
                     $writtenCount++;
                 }
