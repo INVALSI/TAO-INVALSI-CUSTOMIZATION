@@ -13,7 +13,9 @@ use \common_report_Report as Report;
 /**
  * BQ2017 Partially Skipped Rows from Duplicate CSV file.
  * 
- * This script has to be applied on the output of "oat\taoInvalsi\scripts\tools\ExtractExclusivelySkippedFromBqCsvDuplicates". It aims at:
+ * This script has to be applied on 
+ * 
+ * "oat\tao\scripts\tools\ExtractCsvDuplicates" - "oat\tao\scripts\tools\ExtractExclusivelySkippedFromBqCsvDuplicates"
  * 
  * * Finding students having at least one delivery taken with no attempt at all.
  * * For these stuends, extract the rows describing deliveries where at least one item has been attempted.
