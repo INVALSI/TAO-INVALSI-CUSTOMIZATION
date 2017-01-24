@@ -11,11 +11,11 @@ use oat\tao\scripts\tools\AbstractIndexedCsv;
 use \common_report_Report as Report;
 
 /**
- * BQ2017 Partially Skipped Rows from Duplicate CSV file.
+ * BQ2017 Resolve Partially Skipped Rows from Duplicate CSV file.
  * 
  * This script has to be applied on 
  * 
- * "oat\tao\scripts\tools\ExtractCsvDuplicates" - "oat\tao\scripts\tools\ExtractExclusivelySkippedFromBqCsvDuplicates"
+ * "oat\tao\scripts\tools\ExtractCsvDuplicates" - "oat\tao\scripts\tools\ResolveExclusivelySkippedFromBqCsvDuplicates"
  * 
  * * Finding students having at least one delivery taken with no attempt at all.
  * * For these stuends, extract the rows describing deliveries where at least one item has been attempted.
@@ -27,7 +27,7 @@ use \common_report_Report as Report;
  * * Parameter 3: The column index of the column identifying students with a unique ID.
  * * Parameter 4: Whether not (0|1) the first line of the source CSV file contains column names.
  */
-class ExtractPartiallySkippedFromBqCsvDuplicates extends AbstractIndexedCsv
+class ResolvePartiallySkippedFromBqCsvDuplicates extends AbstractIndexedCsv
 {
     protected function process()
     {
