@@ -11,7 +11,7 @@ use oat\tao\scripts\tools\AbstractIndexedCsv;
 use \common_report_Report as Report;
 
 /**
- * BQ2017 Exclusively Skipped Rows from Duplicate CSV file.
+ * BQ2017 Resolve Exclusively Skipped Rows from Duplicate CSV file.
  * 
  * This script has to be applied on the output of "oat\tao\scripts\tools\ExtractCsvDuplicates". It aims at:
  * 
@@ -27,7 +27,7 @@ use \common_report_Report as Report;
  * * Parameter 3: The column index of the column identifying students with a unique ID.
  * * Parameter 4: Whether not (0|1) the first line of the source CSV file contains column names.
  */
-class ExtractExclusivelySkippedFromBqCsvDuplicates extends AbstractIndexedCsv
+class ResolveExclusivelySkippedFromBqCsvDuplicates extends AbstractIndexedCsv
 {
     protected function process()
     {
