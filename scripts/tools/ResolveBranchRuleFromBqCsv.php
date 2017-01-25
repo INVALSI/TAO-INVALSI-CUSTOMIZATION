@@ -13,6 +13,14 @@ use \common_report_Report as Report;
 /**
  * BQ2017 Resolve Branch Rule Invalidation Script.
  * 
+ * This script aims at resolving the branch rule invalidation from BQ2017
+ * in case it is not applied on the export file.
+ * 
+ * The script will scan all rows of the source file, and check the value
+ * of columns "item-25-Q07-a" and "item-26-Q08". In case of "item-25-Q07-a"
+ * has a value of 1 and "item-26-Q08" has value which is different from 88,
+ * "item-26-Q08" becomes invalidated with the 88 value.
+ * 
  * Script parameters:
  * 
  * * Parameter 1: The path to the source CSV file.
