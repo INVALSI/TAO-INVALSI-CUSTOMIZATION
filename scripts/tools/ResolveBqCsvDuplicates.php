@@ -11,14 +11,27 @@ use oat\tao\scripts\tools\AbstractIndexedCsv;
 use \common_report_Report as Report;
 
 /**
- * BQ2017 CSV Duplicate Results Resolution.
+ * INV-BQ 2017 CSV Duplicate Results Resolution.
+ * 
+ * During the INV-BQ 2017, some results appeared to be duplicated. A mitigation plan was set. This script
+ * aims at automatically resolve results duplication for the following cases:
+ * 
+ * Case 1: The response data is composed by fully skipped [88] values only.
+ * Case 2: After removing skipped [88] from the set of rows, only a single result row remains.
+ * Case 3: The response data is strictly identical amongst rows.
+ * Case 4: The response data is consistent but not strictly equivalent amongst rows. The row with the less [88/99] values is selected.
+ * Case 5: The response data is incconsistent amongst rows. The row with the less [88/99] values is selected, because it has $consistencyThreshold (c.f. script parameter #5) or more consistent responses amongst rows.
+ * 
+ * Otherwise, the duplicated rows remain not resolved.
  * 
  * Script parameters:
  * 
  * * Parameter 1: The path to the source CSV file.
  * * Parameter 2: The path to the destination CSV file.
  * * Parameter 3: The column index of the column identifying students with a unique ID.
- * * Parameter 4: Whether not (0|1) the first line of the source CSV file contains column names.
+ * * Parameter 4: Whether or not (0|1) the first line of the source CSV file contains column names.
+ * * Parameter 5: The consistency threshold to be used to resolve "Case 5".
+ * * Parameter 6: (optional) Whether or not to output additional information about case resolution.
  */
 class ResolveBqCsvDuplicates extends AbstractIndexedCsv
 {
@@ -52,6 +65,8 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
     
     private $caseResolved;
     private $writtenCount = 0;
+    private $verbose;
+    private $consistencyThreshold;
     
     protected function setCaseResolved($rowResolved)
     {
@@ -78,13 +93,75 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
         $this->writtenCount++;
     }
     
+    protected function isVerbose()
+    {
+        return $this->verbose;
+    }
+    
+    protected function setVerbose($verbose)
+    {
+        $this->verbose = $verbose;
+    }
+    
+    protected function getConsistencyThreshold()
+    {
+        return $this->consistencyThreshold;
+    }
+    
+    protected function setConsistencyThreshold($consistencyThreshold)
+    {
+        $this->consistencyThreshold = $consistencyThreshold;
+    }
+    
+    protected function beforeProcess()
+    {
+        $report = parent::beforeProcess();
+        $params = $this->getParams();
+        
+        if (isset($params[4]) === false) {
+            $report->add(
+                new Report(
+                    Report::TYPE_ERROR,
+                    "'Consistenct Threshold' parameter not provided."
+                )
+            );
+            
+            return $report;
+            
+        } else {
+            // Default threshold.
+            $threshold = 13;
+            $thresholdParam = intval($params[4]);
+            
+            // Do not go upper the max/min value.
+            if ($thresholdParam <= 25  && $thresholdParam >= 1) {
+                $threshold = $thresholdParam;
+            }
+            
+            $this->setConsistencyThreshold($threshold);
+        }
+        
+        $verbose = false;
+        
+        if (isset($params[5])) {
+            $verbose = boolval($params[5]);
+        }
+        
+        $this->setVerbose($verbose);
+        
+        return $report;
+    }
+    
     protected function process()
     {
         /**
          * Case 1: The response data is composed by fully skipped [88] values only.
-         * Case 2 - The response data is strictly identical amongst rows.
-         * Case 3 - The response data is consistent but not strictly equivalent amongst rows. The row with the less [88/99] values is selected.
-         * Case 4 - The response data is incconsistent amongst rows. The row with the less [88/99] values is selected, because it has $consistencyTreshold or more consistent responses amongst rows.
+         * Case 2: After removing skipped [88] from the set of rows, only a single result row remains.
+         * Case 3: The response data is strictly identical amongst rows.
+         * Case 4: The response data is consistent but not strictly equivalent amongst rows. The row with the less [88/99] values is selected.
+         * Case 5: The response data is incconsistent amongst rows. The row with the less [88/99] values is selected, because it has $consistencyThreshold or more consistent responses amongst rows.
+         * 
+         * Otherwise, the duplicated rows remain not resolved.
          */
         
         $sourceFp = $this->getSourceFp();
@@ -93,7 +170,7 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
         $writtenCount = 0;
         $potentialCount = 0;
         $expectedConsistencyCount = count(self::$responseColumns);
-        $consistencyTreshold = 13;
+        $consistencyThreshold = $this->getConsistencyThreshold();
         
         $report = new Report(
             Report::TYPE_SUCCESS,
@@ -183,7 +260,7 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
                                         "Case 4 [consistency score = ${consistencyCount}]" . (($mixedCase) ? ' (fully skipped [88] related rows not taken into account)' : ''),
                                         $report
                                     );
-                                } elseif ($consistencyCount >= $consistencyTreshold) {
+                                } elseif ($consistencyCount >= $consistencyThreshold) {
                                     $this->resolveRow(
                                         $rows[$less88Or99],
                                         "Case 5 [consistency score = ${consistencyCount}]" . (($mixedCase) ? ' (fully skipped [88] related rows not taken into account)' : ''),
@@ -196,7 +273,7 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
                 }
                 
                 // Is this case resolved?
-                if (!$this->isCaseResolved()) {
+                if (!$this->isCaseResolved() && $this->isVerbose()) {
                     $report->add(
                         new Report(
                             Report::TYPE_INFO,
@@ -207,7 +284,7 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
             }
         }
         
-         $report->setMessage($this->getWrittenCount() . '/' . count($index) . " cases resolved and written in file '" . realpath($this->getDestination()) . "'.");
+         $report->setMessage($this->getWrittenCount() . '/' . count($index) . " cases resolved and written in file '" . realpath($this->getDestination()) . "'. Consistency Threshold was set to " . $this->getConsistencyThreshold() . '.');
          return $report;
     }
     
@@ -216,11 +293,14 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
         $this->setCaseResolved(true);
         fputcsv($this->getDestinationFp(), $row);
         $this->incrementWrittenCount();
-        $report->add(
-            new Report(
-                Report::TYPE_SUCCESS,
-                $row[0] . ': ' . $info
-            )
-        );
+        
+        if ($this->isVerbose()) {
+            $report->add(
+                new Report(
+                    Report::TYPE_SUCCESS,
+                    $row[0] . ': ' . $info
+                )
+            );
+        }
     }
 }

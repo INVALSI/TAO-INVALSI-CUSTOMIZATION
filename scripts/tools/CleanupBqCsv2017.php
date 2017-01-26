@@ -15,8 +15,9 @@ class CleanupBqCsv2017 implements Action
     public function __invoke($params)
     {
         $source = $params[0];
-        $verbose = boolval($params[1]);
-        $filePrefix = $params[2];
+        $consistencyThreshold = intval($params[1]);
+        $verbose = boolval($params[2]);
+        $filePrefix = $params[3];
         
         $realSource = realpath($source);
         $pathInfo = pathinfo($realSource);
@@ -79,7 +80,9 @@ class CleanupBqCsv2017 implements Action
                 $basePath . "/${filePrefix}duplicates.csv",
                 $basePath . "/${filePrefix}resolved-duplicates.csv",
                 0,
-                1
+                1,
+                $consistencyThreshold,
+                $verbose
             ])
         );
         
