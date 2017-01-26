@@ -131,8 +131,8 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
                         $mixedCase = true;
                         // Partially Skipped Case
                         $newRows = [];
-                        foreach ($notSkipped as $index) {
-                            $newRows[] = $rows[$index];
+                        foreach ($notSkipped as $i) {
+                            $newRows[] = $rows[$i];
                         }
                         
                         $rows = $newRows;
@@ -207,7 +207,7 @@ class ResolveBqCsvDuplicates extends AbstractIndexedCsv
             }
         }
         
-         $report->setMessage($this->getWrittenCount() . " cases resolved and written in file '" . realpath($this->getDestination()) . "'.");
+         $report->setMessage($this->getWrittenCount() . '/' . count($index) . " cases resolved and written in file '" . realpath($this->getDestination()) . "'.");
          return $report;
     }
     
