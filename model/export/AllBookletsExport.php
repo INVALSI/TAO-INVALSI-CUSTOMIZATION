@@ -77,6 +77,8 @@ class AllBookletsExport
     private $hottextTypeByDeliveries = [];
 
     private $choiceTypeByDeliveries = [];
+    
+    private $assessmentItemRefIdentifierMapping = [];
 
     /**
      * @var array
@@ -183,6 +185,8 @@ class AllBookletsExport
                             /** @var ExtendedAssessmentItemRef $component */
                             foreach ($components as $component) {
                                 
+                                $identifier = $this->getAssessmentItemRefIdentifier($component);
+                                $this->assessmentItemRefIdentifierMapping[$component->getIdentifier()] = $identifier;
                                 $href = explode('|',$component->getHref());
                                 $private = $href[2];
                                 $itemJsonDir = $storageService->getDirectoryById($private);
@@ -199,7 +203,7 @@ class AllBookletsExport
                                         if (isset($interactions['matchInteraction'])) {
                                             
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 
                                                 if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
                                                     // By column strategy.
@@ -221,7 +225,7 @@ class AllBookletsExport
                                         } elseif (isset($interactions['gapMatchInteraction'])) {
 
                                             foreach ($interactions['gapMatchInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = 1;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
@@ -229,7 +233,7 @@ class AllBookletsExport
                                             }
                                         } elseif (isset($interactions['hottextInteraction'])) {
                                             foreach ($interactions['hottextInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $this->hottextTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = true;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
@@ -237,7 +241,7 @@ class AllBookletsExport
                                             }
                                         } elseif (isset($interactions['choiceInteraction'])) {
                                             foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
-                                                $headerResponseIdentifier = $component->getIdentifier() . '-' . $responseIdentifier;
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                             }
@@ -247,7 +251,6 @@ class AllBookletsExport
                                     }
                                 }
                                 
-                                $identifier = $component->getIdentifier();
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
                                 
@@ -344,10 +347,10 @@ class AllBookletsExport
                         $itemResults = $storage->getVariables($callId);
                         $splitCallId = explode('#', $callId);
                         $itemIdentifier = explode('.', $splitCallId[1]);
-                        $itemIdentifier = $itemIdentifier[1];
+                        $itemIdentifier = $this->assessmentItemRefIdentifierMapping[$itemIdentifier[1]];
+                        \common_Logger::i($itemIdentifier);
                         
                         foreach ($itemResults as $itemResult) {
-                            
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
@@ -548,6 +551,16 @@ class AllBookletsExport
                 $row[$col] = '';
             }
         }
+    }
+    
+    private function getAssessmentItemRefIdentifier(ExtendedAssessmentItemRef $assessmentItemRef, $strategy = 'itemRef')
+    {
+        switch ($strategy) {
+            case 'title':
+                
+                break;
+        }
+        return $assessmentItemRef->getIdentifier();
     }
 
     private function getServiceManager()
