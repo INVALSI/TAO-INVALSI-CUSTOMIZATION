@@ -122,7 +122,7 @@ class AllBookletsExportUtils
                     }
                     $result[] = $choices;
                 }
-            } elseif ($jsonInteraction->qtiClass === 'choiceInteraction' || $jsonInteraction->qtiClass === 'inlineChoiceInteraction') {
+            } elseif ($jsonInteraction->qtiClass === 'choiceInteraction' || $jsonInteraction->qtiClass === 'inlineChoiceInteraction' || $jsonInteraction->qtiClass = 'orderInteraction') {
 
                 foreach ($jsonInteraction->choices as $choice) {
                     $choices[] = $choice->identifier;
