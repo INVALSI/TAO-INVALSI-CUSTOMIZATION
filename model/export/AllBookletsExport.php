@@ -515,7 +515,7 @@ class AllBookletsExport
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
                 // Columns that are NOT related to $deliveryUri.
-                $emptyColumns = $this->variablesByDeliveries[$deliveryUri];
+                $emptyColumns = $this->variablesByDeliveries[$delivery];
             }
         }
         
