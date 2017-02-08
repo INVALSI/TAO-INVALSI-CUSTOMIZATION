@@ -411,8 +411,6 @@ class AllBookletsExport
                                         }
                                     }
                                 }
-                            } else {
-                                \common_Logger::d($headerIdentifier . ' is not taken into account');
                             }
                         }
                     }
