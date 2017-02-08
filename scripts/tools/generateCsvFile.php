@@ -21,11 +21,14 @@ class generateCsvFile implements Action
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
 
         $delivery = array_shift($params);
-        var_dump($delivery);
         if(is_null($delivery) || strtolower($delivery) === 'all'){
             $deliveries = DeliveryAssemblyService::singleton()->getRootClass()->getInstances(true);
         } else {
-            $deliveries = [new \core_kernel_classes_Resource($delivery)];
+            $deliveries = [];
+            $explodedDeliveries = explode(',', $delivery);
+            foreach($explodedDeliveries as $delivery){
+                  $deliveries[] = new \core_kernel_classes_Resource($delivery);
+            }
         }
         
         $identifierStrategy = array_shift($params);
