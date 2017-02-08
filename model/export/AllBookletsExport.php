@@ -79,6 +79,8 @@ class AllBookletsExport
     private $choiceTypeByDeliveries = [];
     
     private $assessmentItemRefIdentifierMapping = [];
+    
+    private $identifierStrategy;
 
     /**
      * @var array
@@ -96,9 +98,10 @@ class AllBookletsExport
     
     protected $flySystemFile;
 
-    public function __construct(array $deliveries)
+    public function __construct(array $deliveries, $identifierStrategy = 'itemRef')
     {
         $this->deliveries = $deliveries;
+        $this->identifierStrategy = $identifierStrategy;
     }
 
     /**
@@ -185,8 +188,6 @@ class AllBookletsExport
                             /** @var ExtendedAssessmentItemRef $component */
                             foreach ($components as $component) {
                                 
-                                $identifier = $this->getAssessmentItemRefIdentifier($component);
-                                $this->assessmentItemRefIdentifierMapping[$component->getIdentifier()] = $identifier;
                                 $href = explode('|',$component->getHref());
                                 $private = $href[2];
                                 $itemJsonDir = $storageService->getDirectoryById($private);
@@ -198,6 +199,8 @@ class AllBookletsExport
                                     if ($itemJsonFile->getBasename() === 'item.json') {
                                         
                                         $itemJson = json_decode($itemJsonFile->read());
+                                        $identifier = $this->getAssessmentItemRefIdentifier($component, $itemJson, $this->identifierStrategy);
+                                        $this->assessmentItemRefIdentifierMapping[$component->getIdentifier()] = $identifier;
                                         $interactions = AllBookletsExportUtils::getInteractions($itemJson);
                                         
                                         if (isset($interactions['matchInteraction'])) {
@@ -348,7 +351,6 @@ class AllBookletsExport
                         $splitCallId = explode('#', $callId);
                         $itemIdentifier = explode('.', $splitCallId[1]);
                         $itemIdentifier = $this->assessmentItemRefIdentifierMapping[$itemIdentifier[1]];
-                        \common_Logger::i($itemIdentifier);
                         
                         foreach ($itemResults as $itemResult) {
                             $itemResult = array_pop($itemResult);
@@ -551,14 +553,24 @@ class AllBookletsExport
         }
     }
     
-    private function getAssessmentItemRefIdentifier(ExtendedAssessmentItemRef $assessmentItemRef, $strategy = 'itemRef')
+    private function getAssessmentItemRefIdentifier(ExtendedAssessmentItemRef $assessmentItemRef, $itemJson,  $strategy = 'itemRef')
     {
         switch ($strategy) {
-            case 'title':
-                
+            case 'label':
+                return $itemJson->data->attributes->label;
                 break;
+                
+            case 'title':
+                return $itemJson->data->attributes->title;
+                break;
+                
+            case 'identifier':
+                return $itemJson->data->attributes->identifier;
+                break;
+                
+            default:
+                return $assessmentItemRef->getIdentifier();
         }
-        return $assessmentItemRef->getIdentifier();
     }
 
     private function getServiceManager()

@@ -21,15 +21,19 @@ class generateCsvFile implements Action
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
 
         $delivery = array_shift($params);
-
-        if(is_null($delivery)){
+        var_dump($delivery);
+        if(is_null($delivery) || strtolower($delivery) === 'all'){
             $deliveries = DeliveryAssemblyService::singleton()->getRootClass()->getInstances(true);
         } else {
             $deliveries = [new \core_kernel_classes_Resource($delivery)];
         }
+        
+        $identifierStrategy = array_shift($params);
+        if (is_null($identifierStrategy)){
+            $identifierStrategy = 'itemRef';
+        }
 
-
-        $bookletExporter = new AllBookletsExport($deliveries);
+        $bookletExporter = new AllBookletsExport($deliveries, $identifierStrategy);
         $exportReport = $bookletExporter->export();
 
 
