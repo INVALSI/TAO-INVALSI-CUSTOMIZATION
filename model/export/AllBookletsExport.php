@@ -513,7 +513,7 @@ class AllBookletsExport
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
                 // Columns that are NOT related to $deliveryUri.
-                $emptyColumns = $this->variablesByDeliveries[$delivery];
+                $emptyColumns = array_merge($emptyColumns, $this->variablesByDeliveries[$delivery]);
             }
         }
         
