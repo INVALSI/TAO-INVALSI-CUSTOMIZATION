@@ -54,7 +54,11 @@ define([
         },
         {
             className: 'choice-interaction-table',
-            label: 'Choice interaction as table'
+            label: 'Choices as table'
+        },
+        {
+            className: 'choice-interaction-tiles',
+            label: 'Choices as tiles'
         },
         {
             className: 'text-entry-fixed-size',
