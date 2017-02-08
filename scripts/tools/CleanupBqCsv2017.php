@@ -85,7 +85,7 @@ class CleanupBqCsv2017 implements Action
         $report->add(
             $scripts['branch']([
                 $realSource,
-                $basePath . "/${filePrefix}raw-aggregate-br.csv",
+                $basePath . "/${filePrefix}aggregate-br.csv",
                 0,
                 1
             ])
@@ -93,8 +93,8 @@ class CleanupBqCsv2017 implements Action
         
         $report->add(
             $scripts['clean']([
-                $basePath . "/${filePrefix}raw-aggregate-br.csv",
-                $basePath . "/${filePrefix}raw-aggregate-noqa.csv",
+                $basePath . "/${filePrefix}aggregate-br.csv",
+                $basePath . "/${filePrefix}aggregate-noqa.csv",
                 0,
                 "/^Test-taker|^OAT_QA/u",
                 1
@@ -103,7 +103,7 @@ class CleanupBqCsv2017 implements Action
         
         $report->add(
             $scripts['dupes']([
-                $basePath . "/${filePrefix}raw-aggregate-noqa.csv",
+                $basePath . "/${filePrefix}aggregate-noqa.csv",
                 $basePath . "/${filePrefix}duplicates.csv",
                 0,
                 1
@@ -112,8 +112,8 @@ class CleanupBqCsv2017 implements Action
         
         $report->add(
             $scripts['exclude']([
-                $basePath . "/${filePrefix}raw-aggregate-noqa.csv",
-                $basePath . "/${filePrefix}raw-aggregate-noqa-noduplicates.csv",
+                $basePath . "/${filePrefix}aggregate-noqa.csv",
+                $basePath . "/${filePrefix}aggregate-noqa-noduplicates.csv",
                 0,
                 1,
                 $basePath . "/${filePrefix}duplicates.csv"
@@ -143,9 +143,9 @@ class CleanupBqCsv2017 implements Action
         
         $report->add(
             $scripts['merge']([
-                $basePath . "/${filePrefix}raw-aggregate-noqa-noduplicates.csv",
+                $basePath . "/${filePrefix}aggregate-noqa-noduplicates.csv",
                 $basePath . "/${filePrefix}resolved-duplicates.csv",
-                $basePath . "/${filePrefix}raw-aggregate-resolved.csv",
+                $basePath . "/${filePrefix}aggregate-resolved.csv",
                 1
             ])
         );
