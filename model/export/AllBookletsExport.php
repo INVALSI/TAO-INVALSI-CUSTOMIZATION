@@ -411,8 +411,6 @@ class AllBookletsExport
                                         }
                                     }
                                 }
-                            } else {
-                                \common_Logger::d($headerIdentifier . ' is not taken into account');
                             }
                         }
                     }
@@ -515,7 +513,7 @@ class AllBookletsExport
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
                 // Columns that are NOT related to $deliveryUri.
-                $emptyColumns = $this->variablesByDeliveries[$deliveryUri];
+                $emptyColumns = array_merge($emptyColumns, $this->variablesByDeliveries[$delivery]);
             }
         }
         
