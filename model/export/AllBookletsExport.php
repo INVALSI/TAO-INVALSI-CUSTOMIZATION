@@ -78,6 +78,8 @@ class AllBookletsExport
 
     private $choiceTypeByDeliveries = [];
     
+    private $orderTypeByDeliveries = [];
+    
     private $assessmentItemRefIdentifierMapping = [];
     
     private $identifierStrategy;
@@ -163,6 +165,8 @@ class AllBookletsExport
             $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
 
             foreach($this->deliveries as $delivery){
+                $this->assessmentItemRefIdentifierMapping[$delivery->getUri()] = [];
+                
                 //Get item list
                 $deliveryUri = $delivery->getUri();
                 $this->variablesByDeliveries[$deliveryUri] = [];
@@ -200,7 +204,7 @@ class AllBookletsExport
                                         
                                         $itemJson = json_decode($itemJsonFile->read());
                                         $identifier = $this->getAssessmentItemRefIdentifier($component, $itemJson, $this->identifierStrategy);
-                                        $this->assessmentItemRefIdentifierMapping[$component->getIdentifier()] = $identifier;
+                                        $this->assessmentItemRefIdentifierMapping[$delivery->getUri()][$component->getIdentifier()] = $identifier;
                                         $interactions = AllBookletsExportUtils::getInteractions($itemJson);
                                         
                                         if (isset($interactions['matchInteraction'])) {
@@ -223,7 +227,7 @@ class AllBookletsExport
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
-                                                $choices[$responseIdentifier] = $matchSets[$matchSetIndex];
+                                                $choices[$identifier . $responseIdentifier] = $matchSets[$matchSetIndex];
                                             }
                                         } elseif (isset($interactions['gapMatchInteraction'])) {
 
@@ -232,7 +236,7 @@ class AllBookletsExport
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = 1;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
-                                                $choices[$responseIdentifier] = $matchSets[0];
+                                                $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
                                         } elseif (isset($interactions['hottextInteraction'])) {
                                             foreach ($interactions['hottextInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -240,13 +244,26 @@ class AllBookletsExport
                                                 $this->hottextTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = true;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
-                                                $choices[$responseIdentifier] = $matchSets[0];
+                                                $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
                                         } elseif (isset($interactions['choiceInteraction'])) {
                                             foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
+                                            }
+                                        } elseif (isset($interactions['inlineChoiceInteraction'])) {
+                                            foreach ($interactions['inlineChoiceInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
+                                            }
+                                        } elseif (isset($interactions['orderInteraction'])) {
+                                            foreach ($interactions['orderInteraction'] as $responseIdentifier => $jsonInteraction) {
+                                                $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $this->orderTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
+                                                $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
                                         }
 
@@ -262,10 +279,10 @@ class AllBookletsExport
                                     
                                     $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
                                     
-                                    if (isset($choices[$response->getIdentifier()])) {
+                                    if (isset($choices[$identifier . $response->getIdentifier()])) {
                                         
                                         // Non default response variable structure (e.g. matchInteraction)
-                                        foreach ($choices[$response->getIdentifier()] as $choiceId) {
+                                        foreach ($choices[$identifier . $response->getIdentifier()] as $choiceId) {
                                             if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
                                                 $alpha = range('a', 'z');
                                                 $choiceId = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId, $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])];
@@ -310,7 +327,7 @@ class AllBookletsExport
                 return $report;
             }
 
-            $this->headers = $headers;
+            $this->headers = array_unique($headers);
         }
         return $this->headers;
 
@@ -325,6 +342,7 @@ class AllBookletsExport
 
         $report = \common_report_Report::createSuccess();
 
+        $exportedResultsCount = 0;
         $i = 0;
         /** @var \core_kernel_classes_Resource $delivery */
         foreach($this->deliveries as $delivery){
@@ -350,7 +368,7 @@ class AllBookletsExport
                         $itemResults = $storage->getVariables($callId);
                         $splitCallId = explode('#', $callId);
                         $itemIdentifier = explode('.', $splitCallId[1]);
-                        $itemIdentifier = $this->assessmentItemRefIdentifierMapping[$itemIdentifier[1]];
+                        $itemIdentifier = $this->assessmentItemRefIdentifierMapping[$deliveryUri][$itemIdentifier[1]];
                         
                         foreach ($itemResults as $itemResult) {
                             $itemResult = array_pop($itemResult);
@@ -358,7 +376,7 @@ class AllBookletsExport
                             $variable = $itemResult->variable;
                             $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
-                            if (in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
+                            if (isset($this->variablesByDeliveries[$deliveryUri]) && in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
 
                                 $tmpVal = $this->formatVariable($variable);
                                 if((isset($this->choiceTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->choiceTypeByDeliveries[$deliveryUri]))) &&
@@ -370,7 +388,7 @@ class AllBookletsExport
                                 }
 
 
-                            } elseif (in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
+                            } elseif (isset($this->matchTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
                                 // Non default response variable structure (matchInteraction/gapMatchInteraction).
                                 $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
@@ -401,7 +419,7 @@ class AllBookletsExport
                                         }
                                     }
                                 }
-                            } elseif (in_array($headerIdentifier, array_keys($this->hottextTypeByDeliveries[$deliveryUri]))) {
+                            } elseif (isset($this->hottextTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->hottextTypeByDeliveries[$deliveryUri]))) {
                                 // Non default response variable structure (hottextInteraction).
                                 $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
@@ -413,6 +431,21 @@ class AllBookletsExport
                                         $v = trim($v->getValue(), "'");
                                         if (in_array($headerIdentifier . '-' . $v, $this->variablesByDeliveries[$deliveryUri])) {
                                             $row[$headerIdentifier . '-' . $v] = '1';
+                                        }
+                                    }
+                                }
+                            } elseif (isset($this->orderTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->orderTypeByDeliveries[$deliveryUri]))) {
+                                // Non default response variable structure (orderInteraction).
+                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
+                                $tmpVal = $this->formatVariable($variable);
+                                $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'identifier', $tmpVal);
+
+                                if ($val) {
+                                    for ($j = 0; $j < count($val); $j++) {
+                                        $v = trim($val[$j]->getValue(), "'");
+                                        
+                                        if (in_array($headerIdentifier . '-' . $v, $this->variablesByDeliveries[$deliveryUri])) {
+                                            $row[$headerIdentifier . '-' . $v] = $j + 1;
                                         }
                                     }
                                 }
@@ -429,6 +462,8 @@ class AllBookletsExport
                     $i++;
                     $this->fillRow($row, $deliveryUri);
                     $this->writeToCsv($row);
+                    
+                    $exportedResultsCount++;
                 }
             }
 
