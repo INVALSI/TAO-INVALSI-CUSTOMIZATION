@@ -242,7 +242,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
 
             $config = $extension->getConfig('testRunner');
-            $config['calculator'] = array(
+            $config['plugins']['calculator'] = array(
                 'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
             );
 
