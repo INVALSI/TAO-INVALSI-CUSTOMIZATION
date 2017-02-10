@@ -26,8 +26,12 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = array_merge($config, $invalsiConfig);
 
         $config['plugins']['formula'] = [
-            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
+            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
         ];
+
+        $config['plugins']['calculator'] = array(
+            'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
+        );
 
         $qtiTest->setConfig('testRunner', $config);
 

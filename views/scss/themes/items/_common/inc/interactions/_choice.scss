@@ -162,3 +162,41 @@
     }
 }
 
+
+////
+//// Display choices as tiles
+////
+.__custom__choice-interaction-tiles {
+
+    .choice-area {
+        display: flex;
+        flex-flow: row nowrap;
+        flex-wrap: wrap;
+        padding: 0;
+        width: 100%;
+        align-items: stretch;
+        & > li {
+            &.qti-choice {
+                flex: 0 1 calc(50% - 2px);
+                position: relative;
+                margin: 1px;
+                padding-bottom: 23px;
+                @include simple-border();
+                .pseudo-label-box {
+                    position: static;
+                }
+                .label-box {
+                    margin: 0;
+                }
+                .real-label {
+                    position: absolute;
+                    right: .5rem;
+                    bottom: .3rem;
+                    left: auto;
+                    top: auto;
+                    height: 2rem;
+                }
+            }
+        }
+    }
+}

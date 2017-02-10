@@ -25,7 +25,6 @@ $config = $extension->getConfig('testRunner');
 $config['disableExitMessage'] = array(
     'test' => false,
     'testPart' => false,
-    'testSection' => false,
-
+    'testSection' => false
 );
 $extension->setConfig('testRunner', $config);
