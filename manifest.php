@@ -24,14 +24,14 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '1.25.0',
+    'version' => '1.26.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=7.64.0',
+        'tao' => '>=7.67.0',
         'taoMediaManager' => '*',
-        'taoQtiTest' => '>=6.0.0',
-        'taoQtiItem' => '>=6.0.0',
+        'taoQtiTest' => '>=5.43.0',
+        'taoQtiItem' => '>=6.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
         'taoMonitoring' => '>=0.2.0'

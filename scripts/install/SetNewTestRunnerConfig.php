@@ -29,6 +29,10 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
         ];
 
+        $config['plugins']['calculator'] = array(
+            'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
+        );
+
         $qtiTest->setConfig('testRunner', $config);
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Test runner config saved');
