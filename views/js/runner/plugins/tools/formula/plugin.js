@@ -25,10 +25,8 @@ define([
     'jquery',
     'lodash',
     'i18n',
-    'taoTests/runner/plugin',
-    'ui/hider',
-    'tpl!taoQtiTest/runner/plugins/templates/button'
-], function ($, _, __, pluginFactory, hider, buttonTpl) {
+    'taoTests/runner/plugin'
+], function ($, _, __, pluginFactory) {
     'use strict';
 
     var defaults = {
@@ -48,11 +46,12 @@ define([
         init: function init() {
             var self = this;
 
-            var testRunner = this.getTestRunner();
-            var testData = testRunner.getTestData() || {};
-            var testConfig = testData.config || {};
-            var pluginsConfig = testConfig.plugins || {};
-            var config = _.defaults(pluginsConfig.formula || {}, defaults);
+            var testRunner      = this.getTestRunner();
+            var testData        = testRunner.getTestData() || {};
+            var testConfig      = testData.config || {};
+            var pluginsConfig   = testConfig.plugins || {};
+            var config          = _.defaults(pluginsConfig.formula || {}, defaults);
+            var areaBroker      = testRunner.getAreaBroker();
 
             /**
              * Checks if the plugin is currently available
@@ -76,15 +75,15 @@ define([
             }
 
             //build element (detached)
-            this.$button = $(buttonTpl({
+            this.button = areaBroker.getToolbox().createEntry({
                 control : 'formula',
                 title : __('Formula'),
                 icon : 'maths',
                 text : __('Formula')
-            }));
+            });
 
             //attach user events
-            this.$button.on('click', function (e) {
+            this.button.on('click', function (e) {
                 e.preventDefault();
                 testRunner.trigger('tool-formula');
             });
@@ -113,48 +112,31 @@ define([
         },
 
         /**
-         * Called during the runner's render phase
-         */
-        render: function render() {
-            var $container = this.getAreaBroker().getToolboxArea();
-            $container.append(this.$button);
-        },
-
-        /**
-         * Called during the runner's destroy phase
-         */
-        destroy: function destroy() {
-            this.$button.remove();
-        },
-
-        /**
          * Enable the button
          */
         enable: function enable() {
-            this.$button.removeProp('disabled')
-                .removeClass('disabled');
+            this.button.enable();
         },
 
         /**
          * Disable the button
          */
         disable: function disable() {
-            this.$button.prop('disabled', true)
-                .addClass('disabled');
+            this.button.disable();
         },
 
         /**
          * Show the button
          */
         show: function show() {
-            hider.show(this.$button);
+            this.button.show();
         },
 
         /**
          * Hide the button
          */
         hide: function hide() {
-            hider.hide(this.$button);
+            this.button.hide();
         }
     });
 });
