@@ -25,7 +25,9 @@ $config = $extension->getConfig('testRunner');
 $config['disableExitMessage'] = array(
     'test' => false,
     'testPart' => false,
-    'testSection' => false,
-
+    'testSection' => false
+);
+$config['calculator'] = array(
+    'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
 );
 $extension->setConfig('testRunner', $config);

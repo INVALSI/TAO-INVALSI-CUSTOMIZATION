@@ -237,6 +237,18 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('1.25.0');
         }
+
+        if ($this->isVersion('1.25.0')) {
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+
+            $config = $extension->getConfig('testRunner');
+            $config['calculator'] = array(
+                'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
+            );
+
+            $extension->setConfig('testRunner', $config);
+            $this->setVersion('1.26.0');
+        }
     }
 
 }
