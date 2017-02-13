@@ -225,7 +225,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('1.19.0');
         }
 
-        $this->skip('1.19.0', '1.24.0');
+        $this->skip('1.19.0', '2.0.0');
 
         if ($this->isVersion('1.24.0')) {
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
