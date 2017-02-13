@@ -249,6 +249,8 @@ class Updater extends common_ext_ExtensionUpdater {
             $extension->setConfig('testRunner', $config);
             $this->setVersion('1.26.0');
         }
+
+        $this->skip('1.26.0', '2.0.0');
     }
 
 }

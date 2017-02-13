@@ -560,13 +560,15 @@ class AllBookletsExport
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
-            } elseif ($column === 'item-25-Q07-a') {
+            } 
+            /*
+            elseif ($column === 'item-25-Q07-a') {
                 // When item-25-Q07-a is 1 ...
                 if ($row[$column] === 1 && isset($row['item-26-Q08'])) {
                     // item-26-Q08 has to be invalidated.
                     $row['item-26-Q08'] = self::NOT_REACHED;
                 }
-            }
+            } */
             
             if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
                 $row[$column] = self::NOT_SELECTED;
