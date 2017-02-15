@@ -251,6 +251,12 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('1.26.0', '2.0.0');
+        
+        if ($this->isVersion('2.0.0')) {
+            \oat\tao\model\accessControl\func\AclProxy::RevokeRule(new \oat\tao\model\accessControl\func\AccessRule('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext' => 'taoInvalsi', 'mod' => 'Main', 'act' => 'login')));
+            
+            $this->setVersion('3.0.0');
+        }
     }
 
 }

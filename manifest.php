@@ -24,7 +24,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '2.0.0',
+    'version' => '3.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
@@ -38,8 +38,7 @@ return array(
     ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi')),
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole', array('ext'=>'taoInvalsi','mod' => 'Main', 'act' => 'login')),
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi'))
     ),
     'install' => array(
         'php' => array(
@@ -56,9 +55,6 @@ return array(
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
     'uninstall' => array(
-    ),
-    'routes' => array(
-        '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
 	'constants' => array(
 	    # views directory
