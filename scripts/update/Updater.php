@@ -35,6 +35,7 @@ use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
+use oat\tao\model\mvc\DefaultUrlService;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -251,6 +252,20 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('1.26.0', '2.1.0');
+        
+        if ($this->isVersion('2.1.0')) {
+            $defaultUrlService = $this->getServiceManager()->get(DefaultUrlService::SERVICE_ID);
+            
+            if ($defaultUrlService->getOption('login') == ['ext' => 'taoInvalsi', 'controller' => 'Main', 'action' => 'login']) {
+                $defaultUrlService->setOption(
+                    'login',
+                    [ 'ext' => 'tao', 'controller' => 'Main', 'action' => 'login']
+                );
+                $this->getServiceManager()->register(DefaultUrlService::SERVICE_ID , $defaultUrlService);
+            }
+            
+            $this->setVersion('3.0.0');
+        }
     }
 
 }
