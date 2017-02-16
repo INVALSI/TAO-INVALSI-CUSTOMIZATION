@@ -157,7 +157,7 @@ class AllBookletsExport
     {
 
         if(is_null($this->headers)){
-            $headers = array('ID', 'IDFORM');
+            $headers = array('ID', 'IDFORM', 'STARTTIME', 'FINISHTIME');
             $report = \common_report_Report::createSuccess();
 
 
@@ -360,7 +360,8 @@ class AllBookletsExport
                     $user = new \core_kernel_classes_Resource($execution->getUserIdentifier());
                     $row['ID'] = $user->getLabel();
                     $row['IDFORM'] = $delivery->getLabel();
-
+                    $row['STARTTIME'] = $this->cleanTimestamp($execution->getStartTime());
+                    $row['FINISHTIME'] = (($endTime = $execution->getFinishTime()) !== null) ? $this->cleanTimestamp($endTime) : ''; 
 
                     $callIds = $storage->getRelatedItemCallIds($execution->getIdentifier());
                     foreach ($callIds as $callId) {
@@ -613,5 +614,11 @@ class AllBookletsExport
     private function getServiceManager()
     {
         return ServiceManager::getServiceManager();
+    }
+    
+    private function cleanTimestamp($ts)
+    {
+        $ts = explode(' ', $ts);
+        return $ts[1];
     }
 }
