@@ -25,6 +25,9 @@ class Export extends \tao_actions_CommonModule
     
     public function exportBooklet() {
 
+        if(!$this->hasRequestParameter('uri')){
+            throw new \common_exception_MissingParameter('uri');
+        }
         $deliveryUri = $this->getRequestParameter('uri');
         $delivery = new \core_kernel_classes_Resource(\tao_helpers_Uri::decode($deliveryUri));
         $bookletExporter = new AllBookletsExport([$delivery]);
