@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE structures SYSTEM "../../tao/doc/structures.dtd">
+<structures>
+    <structure id="results" name="Results" level="5" group="main">
+        <sections>
+            <section id="manage_results" name="Manage Results" url="/taoOutcomeUi/Results/index">
+                <actions>
+                    <action id="results-invalsi-csv-export" name="Export Invalsi CSV" url="/taoInvalsi/Export/exportBooklet" binding="download_csv" group="tree" context="instance">
+                        <icon id="icon-download"/>
+                    </action>
+                </actions>
+            </section>
+        </sections>
+    </structure>
+</structures>

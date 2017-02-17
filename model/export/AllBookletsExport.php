@@ -149,6 +149,14 @@ class AllBookletsExport
     }
 
     /**
+     * @return \oat\oatbox\filesystem\File
+     */
+    public function getFile()
+    {
+        return $this->flySystemFile;
+    }
+
+    /**
      * Get the list of headers for all deliveries that we want to export
      * @return array $headers
      * @throws \common_exception_Error
@@ -157,7 +165,7 @@ class AllBookletsExport
     {
 
         if(is_null($this->headers)){
-            $headers = array('ID', 'IDFORM');
+            $headers = array('ID', 'IDFORM', 'STARTTIME', 'FINISHTIME');
             $report = \common_report_Report::createSuccess();
 
 
@@ -360,7 +368,8 @@ class AllBookletsExport
                     $user = new \core_kernel_classes_Resource($execution->getUserIdentifier());
                     $row['ID'] = $user->getLabel();
                     $row['IDFORM'] = $delivery->getLabel();
-
+                    $row['STARTTIME'] = $this->cleanTimestamp($execution->getStartTime());
+                    $row['FINISHTIME'] = (($endTime = $execution->getFinishTime()) !== null) ? $this->cleanTimestamp($endTime) : ''; 
 
                     $callIds = $storage->getRelatedItemCallIds($execution->getIdentifier());
                     foreach ($callIds as $callId) {
@@ -560,13 +569,15 @@ class AllBookletsExport
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
-            } elseif ($column === 'item-25-Q07-a') {
+            } 
+            /*
+            elseif ($column === 'item-25-Q07-a') {
                 // When item-25-Q07-a is 1 ...
                 if ($row[$column] === 1 && isset($row['item-26-Q08'])) {
                     // item-26-Q08 has to be invalidated.
                     $row['item-26-Q08'] = self::NOT_REACHED;
                 }
-            }
+            } */
             
             if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
                 $row[$column] = self::NOT_SELECTED;
@@ -611,5 +622,11 @@ class AllBookletsExport
     private function getServiceManager()
     {
         return ServiceManager::getServiceManager();
+    }
+    
+    private function cleanTimestamp($ts)
+    {
+        $ts = explode(' ', $ts);
+        return $ts[1];
     }
 }
