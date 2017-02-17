@@ -149,6 +149,14 @@ class AllBookletsExport
     }
 
     /**
+     * @return \oat\oatbox\filesystem\File
+     */
+    public function getFile()
+    {
+        return $this->flySystemFile;
+    }
+
+    /**
      * Get the list of headers for all deliveries that we want to export
      * @return array $headers
      * @throws \common_exception_Error
