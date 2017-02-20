@@ -56,6 +56,9 @@ return array(
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
     'uninstall' => array(
     ),
+    'routes' => array(
+        '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
+    ),
 	'constants' => array(
 	    # views directory
 	    "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
