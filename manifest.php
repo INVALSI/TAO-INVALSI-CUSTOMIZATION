@@ -24,7 +24,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'GPL-2.0',
-    'version' => '3.1.0',
+    'version' => '3.1.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
@@ -55,6 +55,9 @@ return array(
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
     'uninstall' => array(
+    ),
+    'routes' => array(
+        '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
 	'constants' => array(
 	    # views directory
