@@ -5,7 +5,7 @@
 ////
 
 .qti-choiceInteraction {
-              
+
     .item-instruction {
     }
 
@@ -39,10 +39,10 @@
         display: -ms-flexbox;
 
         margin-top: 5px;
-        padding: 0;
+        padding: 0 !important;
         width: 100%;
 
-        border: 1px solid #ccc;
+        border: 1px solid #ccc !important;
 
         .qti-prompt-container {
             flex: 4 1 0;
