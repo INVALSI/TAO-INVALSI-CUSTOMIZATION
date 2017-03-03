@@ -7,6 +7,8 @@
 /// Tables in items are likely to be match interactions. In this case
 /// it would be better to edit interactions/_match.scss instead.
 table {
+    margin-bottom: 25px;
+
     &.alpha-table {
         width: 100%;
 
@@ -68,6 +70,13 @@ table {
 
         thead {
             border-bottom: 1px solid $borderColor;
+        }
+
+        tfoot {
+            border-top: 1px solid $borderColor;
+        }
+
+        thead, tfoot {
             tr {
                 background-color: whiten(#3B576D, 0.8);
             }
