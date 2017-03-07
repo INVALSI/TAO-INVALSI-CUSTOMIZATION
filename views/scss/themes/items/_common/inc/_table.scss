@@ -9,6 +9,7 @@
 table {
     margin-bottom: 25px;
 
+    // deprecated: use gamma-table
     &.alpha-table {
         width: 100%;
 
@@ -65,6 +66,7 @@ table {
 
     }
 
+    // deprecated: use gamma-table
     &.beta-table {
         width: 60%;
 
@@ -104,4 +106,74 @@ table {
             }
         }
     }
+
+
+
+    &.gamma-table {
+        thead {
+            border-bottom: 1px solid $borderColor;
+        }
+
+        tfoot {
+            border-top: 1px solid $borderColor;
+        }
+
+        thead, tfoot {
+            tr {
+                background-color: whiten(#3B576D, 0.8);
+            }
+            th {
+                font-weight: bold;
+            }
+        }
+
+        tbody {
+            tr {
+                &:nth-child(even){
+                    background-color: whiten(#3B576D, 0.9);
+                }
+                &:nth-child(odd){
+                    background-color: whiten(#3B576D, 0.95);
+                }
+            }
+        }
+
+        th, td {
+            padding: 5px;
+        }
+
+        .txt-center {
+            text-align: center;
+        }
+
+        .input-center {
+            input {
+                text-align: center;
+            }
+        }
+
+        .input-right {
+            input {
+                text-align: right;
+            }
+        }
+    }
+
+    &.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &.width_50 {
+        width: 50%;
+    }
+
+    &.width_75 {
+        width: 75%;
+    }
+
+    &.width_100 {
+        width: 100%;
+    }
+
 }
