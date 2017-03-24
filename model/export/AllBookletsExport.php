@@ -38,6 +38,11 @@ use qtism\runtime\common\MultipleContainer;
 
 class AllBookletsExport
 {
+    const IDENTIFIER_STRATEGY_ITEMREFIDENTIFIER = 0;
+    const IDENTIFIER_STRATEGY_TITLE = 1;
+    const IDENTIFIER_STRATEGY_LABEL = 2;
+    const IDENTIFIER_STRATEGY_IDENTIFIER = 3;
+    
     /**
      * Default csv delimiter
      */
@@ -621,17 +626,25 @@ class AllBookletsExport
     {
         switch ($strategy) {
             case 'label':
+            case self::IDENTIFIER_STRATEGY_LABEL:
                 return $itemJson->data->attributes->label;
                 break;
                 
             case 'title':
+            case self::IDENTIFIER_STRATEGY_TITLE:
                 return $itemJson->data->attributes->title;
                 break;
                 
             case 'identifier':
+            case self::IDENTIFIER_STRATEGY_IDENTIFIER:
                 return $itemJson->data->attributes->identifier;
                 break;
                 
+            case self::IDENTIFIER_STRATEGY_ITEMREFIDENTIFIER:
+                return $assessmentItemRef->getIdentifier();
+                break;
+            
+            // default = 'itemRef'
             default:
                 return $assessmentItemRef->getIdentifier();
         }
