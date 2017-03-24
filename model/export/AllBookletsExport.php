@@ -468,10 +468,11 @@ class AllBookletsExport
                         return $report;
                     }
                     
-                    $i++;
                     $this->fillRow($row, $deliveryUri);
+                    $this->rowPostProcessing($row, $deliveryUri);
                     $this->writeToCsv($row);
                     
+                    $i++;
                     $exportedResultsCount++;
                 }
             }
@@ -525,6 +526,23 @@ class AllBookletsExport
     public function getFilename()
     {
         return $this->flySystemFile->getPrefix().$this->flySystemFile->getBasename();
+    }
+    
+    /**
+     * Row Post-processing
+     * 
+     * Sub-classes can override this method in order to apply some post-processing
+     * on exported CSV rows before they are written.
+     * 
+     * @param array $row A reference on an array representing the a CSV row to be written.
+     * @param string $deliveryUri The URI of the $delivery the $row belongs to.
+     * @return void
+     * 
+     */
+    protected function rowPostProcessing(array &$row, $deliveryUri)
+    {
+        // Do nothing, it's just an opportunity to delegate some 
+        // post-processing on more specific implementations.
     }
 
     /**
