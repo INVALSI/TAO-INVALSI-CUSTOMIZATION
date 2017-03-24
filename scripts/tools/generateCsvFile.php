@@ -61,6 +61,12 @@ class generateCsvFile implements Action
         $bookletExporter = new AllBookletsExport($deliveries, $identifierStrategy);
         $bookletExporter->setVariablePolicy($variablePolicy);
         
+        // Param 4: Variable blacklist.
+        $variableBlacklist = array_shift($params);
+        if (is_null($variableBlacklist) === false) {
+            $bookletExporter->setVariableBlacklist(explode(',', $variableBlacklist));
+        }
+        
         $exportReport = $bookletExporter->export();
 
 
