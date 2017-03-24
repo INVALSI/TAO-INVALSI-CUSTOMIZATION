@@ -26,6 +26,10 @@ class AllBookletsExport
     const IDENTIFIER_STRATEGY_LABEL = 2;
     const IDENTIFIER_STRATEGY_IDENTIFIER = 3;
     
+    const VARIABLE_POLICY_ALL = 0;
+    const VARIABLE_POLICY_RESPONSE = 1;
+    const VARIABLE_POLICY_OUTCOME = 2;
+    
     /**
      * Default csv delimiter
      */
@@ -71,6 +75,8 @@ class AllBookletsExport
     private $assessmentItemRefIdentifierMapping = [];
     
     private $identifierStrategy;
+    
+    private $variablePolicy = self::VARIABLE_POLICY_ALL;
 
     /**
      * @var array
@@ -92,6 +98,11 @@ class AllBookletsExport
     {
         $this->deliveries = $deliveries;
         $this->identifierStrategy = $identifierStrategy;
+    }
+    
+    public function setVariablePolicy($variablePolicy)
+    {
+        $this->variablePolicy = $variablePolicy;
     }
 
     /**
@@ -270,35 +281,40 @@ class AllBookletsExport
                                 $outcomes = $component->getOutcomeDeclarations();
                                 $responses = $component->getResponseDeclarations();
                                 
-                                /** @var ResponseDeclaration $response */
-                                foreach ($responses as $response) {
-                                    
-                                    $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
-                                    
-                                    if (isset($choices[$identifier . $response->getIdentifier()])) {
+                                if ($this->variablePolicy === self::VARIABLE_POLICY_ALL || $this->variablePolicy === self::VARIABLE_POLICY_RESPONSE)
+                                    /** @var ResponseDeclaration $response */
+                                    foreach ($responses as $response) {
                                         
-                                        // Non default response variable structure (e.g. matchInteraction)
-                                        foreach ($choices[$identifier . $response->getIdentifier()] as $choiceId) {
-                                            if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
-                                                $alpha = range('a', 'z');
-                                                $choiceId = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId, $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])];
+                                        $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
+                                        
+                                        if (isset($choices[$identifier . $response->getIdentifier()])) {
+                                            
+                                            // Non default response variable structure (e.g. matchInteraction)
+                                            foreach ($choices[$identifier . $response->getIdentifier()] as $choiceId) {
+                                                if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
+                                                    $alpha = range('a', 'z');
+                                                    $choiceId = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId, $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])];
+                                                }
+                                                
+                                                $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
                                             }
                                             
-                                            $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
+                                        } else {
+                                            
+                                            // Default response variable structure.
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier;
                                         }
-                                        
-                                    } else {
-                                        
-                                        // Default response variable structure.
-                                        $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier;
                                     }
                                 }
 
-                                /** @var OutcomeDeclaration $outcome */
-                                foreach ($outcomes as $outcome) {
-                                    $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $outcome->getIdentifier();
+                                if ($this->variablePolicy === self::VARIABLE_POLICY_ALL || $this->variablePolicy === self::VARIABLE_POLICY_OUTCOME) {
+                                    /** @var OutcomeDeclaration $outcome */
+                                    foreach ($outcomes as $outcome) {
+                                        $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $outcome->getIdentifier();
+                                    }
                                 }
 
+                                // Deal with variables that are QTI built-in.
                                 foreach($this->expectedVariables as $expectedVariable){
                                     $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $expectedVariable;
                                 }
@@ -371,6 +387,17 @@ class AllBookletsExport
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
+                            
+                            // Deal with variable policy...
+                            if ($variable instanceof \taoResultServer_models_classes_ResponseVariable && $this->variablePolicy === self::VARIABLE_POLICY_OUTCOME) {
+                                continue;
+                            }
+                            
+                            if ($variable instanceof \taoResultServer_models_classes_OutcomeVariable && $this->variablePolicy === self::VARIABLE_POLICY_RESPONSE) {
+                                continue;
+                            }
+                            
+                            // The variable has to be exported!
                             $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             if (isset($this->variablesByDeliveries[$deliveryUri]) && in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
