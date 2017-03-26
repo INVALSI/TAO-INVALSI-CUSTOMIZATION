@@ -30,6 +30,10 @@ class AllBookletsExport
     const VARIABLE_POLICY_RESPONSE = 1;
     const VARIABLE_POLICY_OUTCOME = 2;
     
+    const MATCH_TYPE_COLUMN = 0;
+    const MATCH_TYPE_ROW = 1;
+    const MATCH_TYPE_MATRIX = 2;
+    
     /**
      * Default csv delimiter
      */
@@ -228,11 +232,11 @@ class AllBookletsExport
                                                 
                                                 if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
                                                     // By column strategy.
-                                                    $matchSetIndex = 0;
+                                                    $matchSetIndex = self::MATCH_TYPE_COLUMN;
                                                     $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
                                                 } elseif (AllBookletsExportUtils::isMatchByRow($jsonInteraction)) {
                                                     // By row strategy.
-                                                    $matchSetIndex = 1;
+                                                    $matchSetIndex = self::MATCH_TYPE_ROW;
                                                     $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSetIndex;
                                                 } else {
                                                     // No strategy could be identified, regular output for this interaction.
@@ -247,7 +251,7 @@ class AllBookletsExport
 
                                             foreach ($interactions['gapMatchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
-                                                $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = 1;
+                                                $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = self::MATCH_TYPE_ROW;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
