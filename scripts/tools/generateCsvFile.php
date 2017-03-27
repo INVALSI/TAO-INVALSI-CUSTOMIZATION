@@ -1,10 +1,9 @@
 <?php
 /**
- * Copyright (c) 2016 Open Assessment Technologies, S.A.
+ * Copyright (c) 2016-2017 Open Assessment Technologies, S.A.
  *
  * @author A.Zagovorichev, <zagovorichev@1pt.com>
  */
-
 
 namespace oat\taoInvalsi\scripts\tools;
 
@@ -12,6 +11,7 @@ namespace oat\taoInvalsi\scripts\tools;
 use oat\oatbox\action\Action;
 use oat\taoDeliveryRdf\model\DeliveryAssemblyService;
 use oat\taoInvalsi\model\export\AllBookletsExport;
+use \common_report_Report as Report;
 
 class generateCsvFile implements Action
 {
@@ -20,8 +20,16 @@ class generateCsvFile implements Action
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoResultServer');
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoDeliveryRdf');
 
+        // Param 1: Deliveries to be exported.
         $delivery = array_shift($params);
-        if(is_null($delivery) || strtolower($delivery) === 'all'){
+        if (is_null($delivery)) {
+            return new Report(
+                Report::TYPE_ERROR,
+                "Missing parameter 1 - 'deliveries': 'all' or a comma (',') separated list of Delivery URIs." 
+            );
+        }
+        
+        if (strtolower($delivery) === 'all'){
             $deliveries = DeliveryAssemblyService::singleton()->getRootClass()->getInstances(true);
         } else {
             $deliveries = [];
@@ -31,18 +39,61 @@ class generateCsvFile implements Action
             }
         }
         
+        // Param 2: Identifier strategy.
         $identifierStrategy = array_shift($params);
-        if (is_null($identifierStrategy)){
-            $identifierStrategy = 'itemRef';
+        if (is_null($identifierStrategy)) {
+            return new Report(
+                Report::TYPE_ERROR,
+                "Missing parameter 2 - 'identifier strategy': possible values are 'itemRef'|'identifier'|'title'|'label'."
+            );
         }
-
+        
+        // Param 3: Variable policy.
+        $variablePolicy = array_shift($params);
+        if (is_null($variablePolicy)) {
+            return new Report(
+                Report::TYPE_ERROR,
+                "Missing parameter 3 - 'variable policy': possible values are 'all'|'response'|'outcome'."
+            );
+        }
+        $variablePolicy = self::transformStringVariablePolicyIntoConstant(strtolower($variablePolicy));
+        
         $bookletExporter = new AllBookletsExport($deliveries, $identifierStrategy);
+        $bookletExporter->setVariablePolicy($variablePolicy);
+        
+        // Param 4: Variable blacklist.
+        $variableBlacklist = array_shift($params);
+        if (is_null($variableBlacklist) === false) {
+            $bookletExporter->setVariableBlacklist(explode(',', $variableBlacklist));
+        }
+        
         $exportReport = $bookletExporter->export();
 
 
-        $report = new \common_report_Report(\common_report_Report::TYPE_INFO, 'Writing file : '.$bookletExporter->getFilename().PHP_EOL.'For deliveries : '.implode(',', $deliveries));
+        $report = new \common_report_Report(
+            \common_report_Report::TYPE_INFO,
+            'Writing file : '.$bookletExporter->getFilename() . PHP_EOL . 'for deliveries : '.implode(',', $deliveries)
+        );
+        
         $report->add($exportReport);
 
         return $report;
+    }
+    
+    private static function transformStringVariablePolicyIntoConstant($strVariablePolicy)
+    {
+        $variablePolicy = AllBookletsExport::VARIABLE_POLICY_ALL;
+        
+        switch ($strVariablePolicy) {
+            case 'outcome':
+                $variablePolicy = AllBookletsExport::VARIABLE_POLICY_OUTCOME;
+                break;
+                
+            case 'response':
+                $variablePolicy = AllBookletsExport::VARIABLE_POLICY_RESPONSE;
+                break;
+        }
+        
+        return $variablePolicy;
     }
 }
