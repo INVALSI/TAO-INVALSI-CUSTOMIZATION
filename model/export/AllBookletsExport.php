@@ -47,13 +47,13 @@ class AllBookletsExport
     /**
      * // 77 - not needed for current delivery
      * //      #1# (should be set in the getAllDeliveryData on merge results)
-     * //      #2# (or if item was skipped by directedPair (branch condition))
-     * // 88 - page not reached
-     * // 99 - student didn't select choice
+     * //      #2# (or if item was skipped (branchRule))
+     * // 88 - not attempted
+     * // 99 - student didn't
      */
     const NOT_REQUIRED = 77;
-    const NOT_REACHED = 88;
-    const NOT_SELECTED = 99;
+    const NOT_ATTEMPTED = 88;
+    const NOT_RESPONDED = 99;
 
     /**
      * Order and expected columns
@@ -646,11 +646,11 @@ class AllBookletsExport
         
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
-                $row[$column] = self::NOT_REACHED;
+                $row[$column] = self::NOT_ATTEMPTED;
             }
             
             if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
-                $row[$column] = self::NOT_SELECTED;
+                $row[$column] = self::NOT_RESPONDED;
             }
         }
 
