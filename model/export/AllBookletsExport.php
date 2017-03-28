@@ -190,6 +190,7 @@ class AllBookletsExport
                 $this->variablesByDeliveries[$deliveryUri] = [];
                 $this->matchTypeByDeliveries[$deliveryUri] = [];
                 $this->hottextTypeByDeliveries[$deliveryUri] = [];
+                $this->choiceTypeByDeliveries[$deliveryUri] = [];
                 $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
@@ -270,8 +271,17 @@ class AllBookletsExport
                                         } elseif (isset($interactions['choiceInteraction'])) {
                                             foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
-                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
-                                                $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
+                                                
+                                                if (isset($jsonInteraction->attributes->maxChoices) && $jsonInteraction->attributes->maxChoices !== 1) {
+                                                    // Multiple cardinality (similar to hottext)
+                                                    $this->hottextTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = true;
+                                                    $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                    $choices[$identifier . $responseIdentifier] = $matchSets[0];
+                                                } else {
+                                                    // Single cardinality
+                                                    $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                    $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
+                                                }
                                             }
                                         } elseif (isset($interactions['inlineChoiceInteraction'])) {
                                             foreach ($interactions['inlineChoiceInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -323,6 +333,9 @@ class AllBookletsExport
                                                         if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
                                                             $alpha = range('a', 'z');
                                                             $choiceId = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId, $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])];
+                                                        } elseif (isset($this->choiceMultipleTypeByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
+                                                            $alpha = range('a', 'z');
+                                                            $choiceId = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId, [$this->choiceMultipleTypeByDeliveries[$deliveryUri][$headerResponseIdentifier]])];
                                                         }
                                                         
                                                         $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
@@ -433,18 +446,18 @@ class AllBookletsExport
                             $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             if (isset($this->variablesByDeliveries[$deliveryUri]) && in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
-                                // choiceInteraction, inlineChoiceInteraction.
-
+                                // Not modified variable header.
                                 $tmpVal = $this->formatVariable($variable);
+                                
+                                // choiceInteraction (single cardinality), inlineChoiceInteraction.
                                 if((isset($this->choiceTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->choiceTypeByDeliveries[$deliveryUri]))) &&
                                     ($index = array_search($tmpVal, $this->choiceTypeByDeliveries[$deliveryUri][$headerIdentifier])) !== false) {
+                                    
                                     $row[$headerIdentifier] = $index + 1;
                                 } else {
-                                    // Default response variable structure.
+                                    // Default response variable structure (textEntry, extendedTextEntry)
                                     $row[$headerIdentifier] = $tmpVal;
                                 }
-
-
                             } elseif (isset($this->matchTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
                                 // matchInteraction, gapMatchInteraction.
                                 $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
@@ -466,8 +479,8 @@ class AllBookletsExport
                                     } else {
                                         // Matrix strategy.
                                         foreach ($val as $v) {
-                                            $alpha1 = $alpha[AllBookletsExportUtils::matchSetIndex($v->getFirst(), $this->matchSetsByDeliveries[$deliveryUri][$headerIdentifier])];
-                                            $alpha2 = $alpha[AllBookletsExportUtils::matchSetIndex($v->getSecond(), $this->matchSetsByDeliveries[$deliveryUri][$headerIdentifier])];
+                                            $alpha1 = $alpha[AllBookletsExportUtils::matchSetIndex($v->getSecond(), $this->matchSetsByDeliveries[$deliveryUri][$headerIdentifier])];
+                                            $alpha2 = $alpha[AllBookletsExportUtils::matchSetIndex($v->getFirst(), $this->matchSetsByDeliveries[$deliveryUri][$headerIdentifier])];
                                             
                                             $matchHeaderIdentifier = "${headerIdentifier}-{$alpha1}-${alpha2}";
                                             $row[$matchHeaderIdentifier] = '1';
@@ -634,15 +647,7 @@ class AllBookletsExport
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
                 $row[$column] = self::NOT_REACHED;
-            } 
-            /*
-            elseif ($column === 'item-25-Q07-a') {
-                // When item-25-Q07-a is 1 ...
-                if ($row[$column] === 1 && isset($row['item-26-Q08'])) {
-                    // item-26-Q08 has to be invalidated.
-                    $row['item-26-Q08'] = self::NOT_REACHED;
-                }
-            } */
+            }
             
             if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
                 $row[$column] = self::NOT_SELECTED;
