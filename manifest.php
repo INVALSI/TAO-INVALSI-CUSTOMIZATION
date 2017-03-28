@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA.
+ * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
 return array(
