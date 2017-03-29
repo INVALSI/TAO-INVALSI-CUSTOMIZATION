@@ -123,6 +123,7 @@ class AllBookletsExport
     public function export()
     {
         $report = \common_report_Report::createSuccess();
+        $startTime = microtime(true);
 
         // Initialize temporary file.
         $tmpLocation = tempnam(sys_get_temp_dir(), 'invalsiexport');
@@ -139,8 +140,11 @@ class AllBookletsExport
             $report->setMessage('Some errors occurred during export :');
         }
 
+        $endTime = microtime(true);
+        $totalTime = self::formatTime($endTime - $startTime);
+
         $rows = $rowsReport->getData();
-        $report->setMessage($rows.' row(s) exported');
+        $report->setMessage("${rows} row(s) exported in ${totalTime}.");
         
         // Write as stream and close temporary file.
         $filename = 'export_'. date('His') .'.csv';
@@ -230,6 +234,7 @@ class AllBookletsExport
                                             
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
+                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 
                                                 if (AllBookletsExportUtils::isMatchByColumn($jsonInteraction)) {
                                                     // By column strategy.
@@ -247,7 +252,6 @@ class AllBookletsExport
                                                 }
                                                 
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $strategy;
-                                                $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
                                                 
                                             }
@@ -712,5 +716,14 @@ class AllBookletsExport
     protected function isVariableNameBlacklisted($variableName)
     {
         return in_array($variableName, $this->variableBlacklist);
+    }
+    
+    private static function formatTime($s)
+    {
+        $h = floor($s / 3600);
+        $m = floor(($s / 60) % 60);
+        $s = $s % 60;
+        
+        return "${h}h ${m}m ${s}s";
     }
 }
