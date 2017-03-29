@@ -461,7 +461,7 @@ class AllBookletsExport
                                 }
                             } elseif (isset($this->matchTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->matchTypeByDeliveries[$deliveryUri]))) {
                                 // matchInteraction, gapMatchInteraction.
-                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
+                                $this->setColumnTo($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
                                 $tmpVal = $this->formatVariable($variable);
                                 $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'pair', $tmpVal);
@@ -490,7 +490,7 @@ class AllBookletsExport
                                 }
                             } elseif (isset($this->hottextTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->hottextTypeByDeliveries[$deliveryUri]))) {
                                 // hottextInteraction.
-                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
+                                $this->setColumnTo($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 
                                 $tmpVal = $this->formatVariable($variable);
                                 $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'identifier', $tmpVal);
@@ -505,7 +505,7 @@ class AllBookletsExport
                                 }
                             } elseif (isset($this->orderTypeByDeliveries[$deliveryUri]) && in_array($headerIdentifier, array_keys($this->orderTypeByDeliveries[$deliveryUri]))) {
                                 // orderInteraction.
-                                $this->setColumnToEmpty($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
+                                $this->setColumnTo($row, $this->variablesByDeliveries[$deliveryUri], $headerIdentifier);
                                 $tmpVal = $this->formatVariable($variable);
                                 $val = \taoQtiCommon_helpers_Utils::toQtiDatatype('multiple', 'identifier', $tmpVal);
 
@@ -662,10 +662,10 @@ class AllBookletsExport
         }
     }
     
-    private function setColumnToEmpty(array &$row, array $columns, $headerIdentifier) {
+    private function setColumnTo(array &$row, array $columns, $headerIdentifier, $value = '') {
         foreach ($columns as $col) {
             if (preg_match('/^' . preg_quote($headerIdentifier) . '-/', $col) === 1) {
-                $row[$col] = '';
+                $row[$col] = $value;
             }
         }
     }
