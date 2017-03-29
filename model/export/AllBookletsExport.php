@@ -258,6 +258,7 @@ class AllBookletsExport
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = self::MATCH_TYPE_ROW;
                                                 
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
+                                                $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
                                         } elseif (isset($interactions['hottextInteraction'])) {
