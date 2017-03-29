@@ -320,10 +320,10 @@ class AllBookletsExport
                                                     // Match Matrix specific case.
                                                     $alpha = range('a', 'z');
                                                     $matchSets = $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier];
-                                                    foreach ($matchSets[0] as $choiceId1) {
+                                                    foreach ($matchSets[1] as $choiceId1) {
                                                         $alphaId1 = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId1, $matchSets)];
                                                         
-                                                        foreach ($matchSets[1] as $choiceId2) {
+                                                        foreach ($matchSets[0] as $choiceId2) {
                                                             $alphaId2 = $alpha[AllBookletsExportUtils::matchSetIndex($choiceId2, $matchSets)];
                                                             $this->variablesByDeliveries[$delivery->getUri()][] = "${headerResponseIdentifier}-${alphaId1}-${alphaId2}";
                                                         }
