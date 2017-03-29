@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA.
+ * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
 return array(
@@ -8,7 +8,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '4.0.0',
+    'version' => '4.1.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
