@@ -255,7 +255,9 @@ class AllBookletsExport
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
                                                 
                                             }
-                                        } elseif (isset($interactions['gapMatchInteraction'])) {
+                                        } 
+                                        
+                                        if (isset($interactions['gapMatchInteraction'])) {
 
                                             foreach ($interactions['gapMatchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
@@ -265,7 +267,9 @@ class AllBookletsExport
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
-                                        } elseif (isset($interactions['hottextInteraction'])) {
+                                        } 
+                                        
+                                        if (isset($interactions['hottextInteraction'])) {
                                             foreach ($interactions['hottextInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $this->hottextTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = true;
@@ -273,7 +277,9 @@ class AllBookletsExport
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
-                                        } elseif (isset($interactions['choiceInteraction'])) {
+                                        } 
+                                        
+                                        if (isset($interactions['choiceInteraction'])) {
                                             foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 
@@ -288,13 +294,17 @@ class AllBookletsExport
                                                     $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                                 }
                                             }
-                                        } elseif (isset($interactions['inlineChoiceInteraction'])) {
+                                        } 
+                                        
+                                        if (isset($interactions['inlineChoiceInteraction'])) {
                                             foreach ($interactions['inlineChoiceInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                             }
-                                        } elseif (isset($interactions['orderInteraction'])) {
+                                        } 
+                                        
+                                        if (isset($interactions['orderInteraction'])) {
                                             foreach ($interactions['orderInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
