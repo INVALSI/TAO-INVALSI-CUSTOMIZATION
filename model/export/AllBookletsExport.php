@@ -83,6 +83,8 @@ class AllBookletsExport
     private $variablePolicy = self::VARIABLE_POLICY_ALL;
     
     private $variableBlacklist = [];
+    
+    private $forcedItemIdentifiers = [];
 
     /**
      * @var array
@@ -226,7 +228,7 @@ class AllBookletsExport
                                     if ($itemJsonFile->getBasename() === 'item.json') {
                                         
                                         $itemJson = json_decode($itemJsonFile->read());
-                                        $identifier = $this->getAssessmentItemRefIdentifier($component, $itemJson, $this->identifierStrategy);
+                                        $identifier = $this->getAssessmentItemRefIdentifier($delivery, $component, $itemJson, $this->identifierStrategy);
                                         $this->assessmentItemRefIdentifierMapping[$delivery->getUri()][$component->getIdentifier()] = $identifier;
                                         $interactions = AllBookletsExportUtils::getInteractions($itemJson);
                                         
@@ -415,7 +417,7 @@ class AllBookletsExport
     {
 
         $report = \common_report_Report::createSuccess();
-
+        
         $exportedResultsCount = 0;
         $i = 0;
         /** @var \core_kernel_classes_Resource $delivery */
@@ -545,6 +547,7 @@ class AllBookletsExport
                     
                     $this->fillRow($row, $deliveryUri);
                     $this->rowPostProcessing($row, $deliveryUri);
+                    
                     $this->writeToCsv($row);
                     
                     $i++;
@@ -553,7 +556,7 @@ class AllBookletsExport
             }
 
         }
-
+        
         $report->setData($i);
 
         return $report;
@@ -684,8 +687,12 @@ class AllBookletsExport
         }
     }
     
-    private function getAssessmentItemRefIdentifier(ExtendedAssessmentItemRef $assessmentItemRef, $itemJson,  $strategy = 'itemRef')
+    private function getAssessmentItemRefIdentifier(\core_kernel_classes_Resource $delivery, ExtendedAssessmentItemRef $assessmentItemRef, $itemJson,  $strategy = 'itemRef')
     {
+        if (($forcedItemIdentifier = $this->getForcedItemIdentifier($delivery->getUri(), $assessmentItemRef->getIdentifier())) !== false) {
+            return $forcedItemIdentifier;
+        }
+        
         switch ($strategy) {
             case 'label':
             case self::IDENTIFIER_STRATEGY_LABEL:
@@ -735,5 +742,17 @@ class AllBookletsExport
         $s = $s % 60;
         
         return "${h}h ${m}m ${s}s";
+    }
+    
+    public function addForcedItemIdentifier($deliveryUri, $assessmentItemRefIdentifier, $forcedIdentifier) {
+        $this->forcedItemIdentifiers[$deliveryUri][$assessmentItemRefIdentifier] = $forcedIdentifier;
+    }
+    
+    private function getForcedItemIdentifier($deliveryUri, $assessmentItemRefIdentifier) {
+        if (isset($this->forcedItemIdentifiers[$deliveryUri]) && isset($this->forcedItemIdentifiers[$deliveryUri][$assessmentItemRefIdentifier])) {
+            return $this->forcedItemIdentifiers[$deliveryUri][$assessmentItemRefIdentifier];
+        } else {
+            return false;
+        }
     }
 }
