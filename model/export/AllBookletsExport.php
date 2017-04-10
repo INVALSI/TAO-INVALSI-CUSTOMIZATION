@@ -570,7 +570,9 @@ class AllBookletsExport
     private function writeToCsv(array $row, $isHeader = false)
     {
         // order the row to match the headers
+        
         if (!$isHeader) {
+            // Prepare a result row to be written.
             $headers = $this->getHeaders();
             $newRow = [];
             
@@ -583,8 +585,11 @@ class AllBookletsExport
             }
             
             $row = $newRow;
+            
+        } else {
+            // Prepare a header row to be written.
+            $this->headerPostProcessing($row);
         }
-
 
         //write the row
         $content = self::CSV_ENCLOSURE
@@ -620,6 +625,15 @@ class AllBookletsExport
     protected function rowPostProcessing(array &$row, $deliveryUri)
     {
         // Do nothing, it's just an opportunity to delegate some 
+        // post-processing on more specific implementations.
+    }
+    
+    /**
+     * 
+     */
+    protected function headerPostProcessing(array &$header)
+    {
+        // Do nothing, it's just an opportunity to delegate some
         // post-processing on more specific implementations.
     }
 
