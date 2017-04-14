@@ -33,16 +33,6 @@ class AllBookletsExport
     const MATCH_TYPE_COLUMN = 0;
     const MATCH_TYPE_ROW = 1;
     const MATCH_TYPE_MATRIX = 2;
-    
-    /**
-     * Default csv delimiter
-     */
-    const CSV_DELIMITER = ',';
-
-    /**
-     * Default csv enclosure
-     */
-    const CSV_ENCLOSURE = '"';
 
     /**
      * // 77 - not needed for current delivery
@@ -591,14 +581,9 @@ class AllBookletsExport
             $this->headerPostProcessing($row);
         }
 
-        //write the row
-        $content = self::CSV_ENCLOSURE
-            . implode(self::CSV_ENCLOSURE . self::CSV_DELIMITER . self::CSV_ENCLOSURE, $row)
-            . self::CSV_ENCLOSURE
-            . "\n";
-
-        if (!fwrite($this->exportFile, $content)) {
-            \common_Logger::w('Fail to write in the csv : '.implode(',', $row));
+        // Write the row using PHP's default CSV configuration.
+        if (fputcsv($this->exportFile, $row) === false) {
+            \common_Logger::w('Fail to write in the csv file : ' . implode(',', $row));
         }
     }
 
