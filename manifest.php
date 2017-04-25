@@ -8,11 +8,11 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '4.2.0',
+    'version' => '5.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=7.67.0',
+        'tao' => '>=9.0.0',
         'taoMediaManager' => '*',
         'taoQtiTest' => '>=5.43.0',
         'taoQtiItem' => '>=6.2.0',
@@ -47,11 +47,8 @@ return array(
 	    # views directory
 	    "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
 
-            #BASE URL (usually the domain root)
-            'BASE_URL' => ROOT_URL.'taoInvalsi/',
-
-	    #BASE WWW required by JS
-	    'BASE_WWW' => ROOT_URL.'taoInvalsi/views/'
+        #BASE URL (usually the domain root)
+        'BASE_URL' => ROOT_URL.'taoInvalsi/',
 	),
     'extra' => array(
         'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
