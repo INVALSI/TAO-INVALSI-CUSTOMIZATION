@@ -75,6 +75,10 @@ class AllBookletsExport
     private $variableBlacklist = [];
     
     private $forcedItemIdentifiers = [];
+    
+    private $alternateMissingDataEncodings = [];
+    
+    private $globalAlternateMissingDataEncodings = [];
 
     /**
      * @var array
@@ -642,9 +646,12 @@ class AllBookletsExport
     }
 
     /**
-     * Fill empty cells with correct placeholder
-     * @param array $row the row to fill
-     * @param string $deliveryUri the delivery that the test taker took
+     * Fill empty cells with correct placeholder.
+     * 
+     * This method will fill empty cells with the appropriate missing data encoding values.
+     * 
+     * @param array $row A reference to the array representing the row to fill.
+     * @param string $deliveryUri The delivery that the test taker took.
      */
     private function fillRow(&$row, $deliveryUri)
     {
@@ -652,7 +659,7 @@ class AllBookletsExport
         $emptyColumns = array();
         
         foreach ($this->variablesByDeliveries as $delivery => $columns) {
-            if($delivery === $deliveryUri){
+            if ($delivery === $deliveryUri) {
                 // Columns that are related to $deliveryUri.
                 $neededColumns = $this->variablesByDeliveries[$deliveryUri];
             } else {
@@ -663,18 +670,47 @@ class AllBookletsExport
         
         foreach ($neededColumns as $column) {
             if (!in_array($column, array_keys($row))) {
-                $row[$column] = self::NOT_ATTEMPTED;
+                $row[$column] = $this->determineMissingDataEncoding(self::NOT_ATTEMPTED, $column);
             }
             
             if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
-                $row[$column] = self::NOT_RESPONDED;
+                $row[$column] = $this->determineMissingDataEncoding(self::NOT_RESPONDED, $column);
             }
         }
 
         foreach ($emptyColumns as $column) {
-            if(!in_array($column, array_keys($row))){
-                $row[$column] = self::NOT_REQUIRED;
+            if (!in_array($column, array_keys($row))) {
+                $row[$column] = $this->determineMissingDataEncoding(self::NOT_REQUIRED, $column);
             }
+        }
+    }
+    
+    protected function determineMissingDataEncoding($code, $column)
+    {
+        if (isset($this->alternateMissingDataEncodings[$column]) === true && isset($this->alternateMissingDataEncodings[$column][$code]) === true) {
+            
+            return $this->alternateMissingDataEncodings[$column][$code];
+            
+        } elseif (isset($this->globalAlternateMissingDataEncodings[$code]) === true) {
+            
+            return $this->globalAlternateMissingDataEncodings[$code];
+            
+        } else {
+            
+            return $code;
+        }
+    }
+    
+    public function addAlternateMissingDataEnconding($originalCode, $newCode, $column = '')
+    {
+        if (empty($column) === false) {
+            if (isset($this->alternateMissingDataEncodings[$column]) === false) {
+                $this->alternateMissingDataEncodings[$column] = [];
+            }
+            
+            $this->alternateMissingDataEncodings[$column][$originalCode] = $newCode;
+        } else {
+            $this->globalAlternateMissingDataEncodings[$originalCode] = $newCode;
         }
     }
     
