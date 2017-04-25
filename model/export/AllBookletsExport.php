@@ -680,7 +680,6 @@ class AllBookletsExport
 
         foreach ($emptyColumns as $column) {
             if (!in_array($column, array_keys($row))) {
-                var_dump($column);
                 $row[$column] = $this->determineMissingDataEncoding(self::NOT_REQUIRED, $column);
             }
         }
