@@ -710,7 +710,7 @@ class AllBookletsExport
             
             $this->alternateMissingDataEncodings[$column][$originalCode] = $newCode;
         } else {
-            $this->alternateGlobalMissingDataEncondings[$originalCode] = $newCode;
+            $this->globalAlternateMissingDataEncodings[$originalCode] = $newCode;
         }
     }
     
