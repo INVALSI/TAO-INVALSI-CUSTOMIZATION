@@ -27,7 +27,7 @@ return array(
         'taoQtiItem' => '>=6.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
-        'taoBooklet' => '>=0.5.0',
+        'taoBooklet' => '>=1.1.0',
         'taoMonitoring' => '>=0.2.0'
     ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
