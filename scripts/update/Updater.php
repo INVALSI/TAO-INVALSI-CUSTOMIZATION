@@ -16,6 +16,7 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
+use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
@@ -250,7 +251,15 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('3.0.0');
         }
+
         $this->skip('3.0.0', '5.0.0');
+
+        if ($this->isVersion('5.0.0')) {
+
+            $this->runExtensionScript(SetupBookletConfigService::class);
+
+            $this->setVersion('5.1.0');
+        }
     }
 
 }
