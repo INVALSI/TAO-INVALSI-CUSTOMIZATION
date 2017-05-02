@@ -21,11 +21,10 @@
 define([
     'lodash',
     'helpers',
-    'ui/hider',
     'taoTests/runner/runner',
     'taoQtiTest/test/runner/mocks/providerMock',
     'taoInvalsi/runner/plugins/tools/formula/plugin'
-], function(_, helpers, hider, runnerFactory, providerMockFactory, pluginFactory) {
+], function(_, helpers, runnerFactory, providerMockFactory, pluginFactory) {
     'use strict';
 
     var pluginApi;

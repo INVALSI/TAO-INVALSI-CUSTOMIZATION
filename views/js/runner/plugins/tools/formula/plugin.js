@@ -32,10 +32,6 @@ define([
     var categoryPrefix = 'formula';
     var documentUrlPrefix = 'documentUrl';
 
-    var defaults = {
-        formulaUrl: ''
-    };
-
     /**
      * Returns the configured plugin
      */
@@ -53,7 +49,7 @@ define([
             var testData        = testRunner.getTestData() || {};
             var testConfig      = testData.config || {};
             var pluginsConfig   = testConfig.plugins || {};
-            var config          = _.defaults(pluginsConfig.formula || {}, defaults);
+            var config          = pluginsConfig.formula || {};
             var areaBroker      = testRunner.getAreaBroker();
 
             var formulaFile;
