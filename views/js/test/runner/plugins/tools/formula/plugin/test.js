@@ -21,10 +21,11 @@
 define([
     'lodash',
     'helpers',
+    'ui/hider',
     'taoTests/runner/runner',
     'taoQtiTest/test/runner/mocks/providerMock',
     'taoInvalsi/runner/plugins/tools/formula/plugin'
-], function(_, helpers, runnerFactory, providerMockFactory, pluginFactory) {
+], function(_, helpers, hider, runnerFactory, providerMockFactory, pluginFactory) {
     'use strict';
 
     var pluginApi;
@@ -205,6 +206,16 @@ define([
             }
         });
 
+        runner.setTestData({
+            config: {
+                plugins: {
+                    formula: {
+                        documentUrl: 'url.pdf'
+                    }
+                }
+            }
+        });
+
         QUnit.expect(4);
 
         plugin.init()
@@ -233,8 +244,8 @@ define([
     });
 
     QUnit.asyncTest('runner events: renderitem', function(assert) {
-        var runner      = runnerFactory(providerName);
-        var plugin      = pluginFactory(runner, runner.getAreaBroker()),
+        var runner      = runnerFactory(providerName),
+            plugin      = pluginFactory(runner, runner.getAreaBroker()),
             areaBroker  = runner.getAreaBroker(),
             toolbox     = areaBroker.getToolbox(),
             $container  = areaBroker.getToolboxArea(),
@@ -269,5 +280,86 @@ define([
                 QUnit.start();
             });
     });
+
+    QUnit
+        .cases([
+            {
+                title: 'formula category set',
+                qtiCategories: { formula: true },
+                pluginOptions: { documentUrl: 'formula.pdf', documentUrlL10: 'formula_L10.pdf', documentUrlL13: 'formula_L13.pdf' },
+                document: 'formula.pdf'
+            }, {
+                title: 'formula category set, no url',
+                qtiCategories: { formula: true }
+            }, {
+                title: 'formulaL10 category set, url',
+                qtiCategories: { formulaL10: true },
+                pluginOptions: { documentUrl: 'formula.pdf', documentUrlL10: 'formula_L10.pdf', documentUrlL13: 'formula_L13.pdf' },
+                document: 'formula_L10.pdf'
+            }, {
+                title: 'formulaL10 category set, no url',
+                qtiCategories: { formulaL10: true }
+            }, {
+                title: 'formulaL13 category set',
+                qtiCategories: { formulaL13: true },
+                pluginOptions: { documentUrl: 'formula.pdf', documentUrlL10: 'formula_L10.pdf', documentUrlL13: 'formula_L13.pdf' },
+                document: 'formula_L13.pdf'
+            }, {
+                title: 'formulaL13 category set, no url',
+                qtiCategories: { formulaL13: true }
+            }
+        ])
+        .asyncTest('', function(data, assert) {
+            var runner      = runnerFactory(providerName),
+                plugin      = pluginFactory(runner, runner.getAreaBroker()),
+                areaBroker  = runner.getAreaBroker(),
+                toolbox     = areaBroker.getToolbox(),
+                $container  = areaBroker.getToolboxArea(),
+                buttonSelector = '[data-control="formula"]',
+                $button,
+                loadedDocument;
+
+            QUnit.expect(4);
+
+            runner.setTestContext({
+                options: data.qtiCategories
+            });
+
+            runner.setTestData({
+                config: {
+                    plugins: {
+                        formula: data.pluginOptions
+                    }
+                }
+            });
+
+            runner
+                .on('tool-documentViewer', function(options) {
+                    loadedDocument = options.document;
+                })
+                .after('tool-formula', function() {
+                    assert.equal(loadedDocument, data.document, 'correct document has been loaded');
+                    QUnit.start();
+                });
+
+            plugin.init()
+                .then(function() {
+                    toolbox.render($container);
+
+                    $button = $container.find(buttonSelector);
+
+                    runner.trigger('renderitem');
+
+                    assert.equal($button.length, 1, 'The plugin button has been inserted in the right place');
+                    assert.notEqual($button.css('display'), 'none', 'The plugin button is visible');
+                    assert.equal($button.hasClass('disabled'), false, 'The button is not disabled');
+
+                    runner.trigger('tool-formula'); // simulate click
+                })
+                .catch(function(err) {
+                    assert.ok(false, 'An error has occurred: ' + err);
+                    QUnit.start();
+                });
+        });
 
 });
