@@ -251,14 +251,13 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('3.0.0');
         }
+        $this->skip('3.0.0', '6.0.0');
 
-        $this->skip('3.0.0', '5.0.0');
-
-        if ($this->isVersion('5.0.0')) {
+        if ($this->isVersion('6.0.0')) {
 
             $this->runExtensionScript(SetupBookletConfigService::class);
 
-            $this->setVersion('5.1.0');
+            $this->setVersion('6.1.0');
         }
     }
 
