@@ -29,9 +29,8 @@ define([
 ], function ($, _, __, pluginFactory) {
     'use strict';
 
-    var defaults = {
-        documentUrl: ''
-    };
+    var categoryPrefix = 'formula';
+    var documentUrlPrefix = 'documentUrl';
 
     /**
      * Returns the configured plugin
@@ -50,17 +49,41 @@ define([
             var testData        = testRunner.getTestData() || {};
             var testConfig      = testData.config || {};
             var pluginsConfig   = testConfig.plugins || {};
-            var config          = _.defaults(pluginsConfig.formula || {}, defaults);
+            var config          = pluginsConfig.formula || {};
             var areaBroker      = testRunner.getAreaBroker();
 
+            var formulaFile;
+
             /**
-             * Checks if the plugin is currently available
-             * activate with category: x-tao-option-formula
+             * To be enabled, this plugin needs 2 things:
+             * - a category starting with x-tao-option-formulaXXX
+             * - a corresponding plugin option starting with documentUrlXXX
+             * both 'XXX' strings have to match for the plugin to be enabled
              * @returns {Boolean}
              */
             function isEnabled() {
-                var context = testRunner.getTestContext();
-                return context && context.options && !!context.options.formula;
+                formulaFile = getFormulaFile();
+                return ! _.isUndefined(formulaFile);
+            }
+
+            /**
+             * Returns the plugin option corresponding to the Qti category, if any
+             * @returns {String}
+             */
+            function getFormulaFile() {
+                var context = testRunner.getTestContext() || {},
+                    options = context.options || {},
+                    formulaOption;
+
+                _.find(options, function(optionValue, optionName) {
+                    if ((optionName.indexOf(categoryPrefix) === 0) && (optionValue === true)) {
+                        formulaOption = documentUrlPrefix + optionName.replace(categoryPrefix, '');
+                    }
+                });
+
+                if (formulaOption) {
+                    return config[formulaOption];
+                }
             }
 
             /**
@@ -105,7 +128,7 @@ define([
                     if (isEnabled()) {
                         testRunner.trigger('tool-documentViewer', {
                             label : __('Formula'),
-                            document : config.documentUrl
+                            document : formulaFile
                         });
                     }
                 });

@@ -16,6 +16,7 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
+use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
@@ -251,6 +252,27 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('3.0.0');
         }
         $this->skip('3.0.0', '6.0.0');
+
+        if ($this->isVersion('6.0.0')) {
+            
+            $this->runExtensionScript(SetupBookletConfigService::class);
+
+            $this->setVersion('6.1.0');
+        }
+        
+        if ($this->isVersion('6.1.0')) {
+            
+            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
+                'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
+                'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
+            ];
+            $extension->setConfig('testRunner', $config);
+            
+            $this->setVersion('6.2.0');
+        }
     }
 
 }
