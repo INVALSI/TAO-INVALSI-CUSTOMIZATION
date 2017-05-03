@@ -3,12 +3,21 @@
  * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
+use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
+use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
+use oat\taoInvalsi\scripts\install\SetQtiCreatorConfig;
+use oat\taoInvalsi\scripts\install\SetNewTestRunner;
+use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
+use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
+use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
+use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
+
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.0.0',
+    'version' => '6.1.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
@@ -18,6 +27,7 @@ return array(
         'taoQtiItem' => '>=6.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
+        'taoBooklet' => '>=1.1.0',
         'taoMonitoring' => '>=0.2.0'
     ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
@@ -28,13 +38,14 @@ return array(
         'php' => array(
             __DIR__.'/scripts/install/setThemeConfig.php',
             __DIR__ . '/scripts/install/addHook.php',
-            'oat\\taoInvalsi\\scripts\\install\\SetQtiCreatorConfig',
-            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunner',
-            'oat\\taoInvalsi\\scripts\\install\\SetNewTestRunnerConfig',
-            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerPlugins',
-            'oat\\taoInvalsi\\scripts\\install\\RegisterTestRunnerFeatures',
-            'oat\\taoInvalsi\\scripts\\install\\SetPasswordPolicy',
-            'oat\\taoMonitoring\\scripts\\install\\RegisterAwsFileSystem',
+            SetQtiCreatorConfig::class,
+            SetNewTestRunner::class,
+            SetNewTestRunnerConfig::class,
+            RegisterTestRunnerPlugins::class,
+            RegisterTestRunnerFeatures::class,
+            SetPasswordPolicy::class,
+            RegisterAwsFileSystem::class,
+            SetupBookletConfigService::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
