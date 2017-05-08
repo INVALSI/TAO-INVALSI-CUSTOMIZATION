@@ -6,7 +6,6 @@
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoInvalsi\scripts\install\SetQtiCreatorConfig;
-use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
