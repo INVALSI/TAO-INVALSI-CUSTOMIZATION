@@ -18,6 +18,7 @@ use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
+use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
 use oat\tao\model\mvc\DefaultUrlService;
@@ -272,6 +273,20 @@ class Updater extends common_ext_ExtensionUpdater {
             $extension->setConfig('testRunner', $config);
             
             $this->setVersion('6.2.0');
+        }
+
+        if($this->isVersion('6.2.0')){
+
+            if(\common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->hasConfig(ItemModel::COMPILER)){
+                $compilerConfig = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->getConfig(ItemModel::COMPILER);
+                /** @var ItemModel $itemModelService */
+                $itemModelService = $this->getServiceManager()->get(ItemModel::SERVICE_ID);
+                $itemModelService->setOption(ItemModel::COMPILER, $compilerConfig);
+                $this->getServiceManager()->register(ItemModel::SERVICE_ID, $itemModelService);
+                \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->unsetConfig(ItemModel::COMPILER);
+            }
+
+            $this->setVersion('6.3.0');
         }
     }
 
