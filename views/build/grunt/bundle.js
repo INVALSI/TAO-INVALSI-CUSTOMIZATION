@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     var testPlugins = ext.getExtensionSources('taoInvalsi', ['views/js/runner/plugins/**/*.js'], true);
 
     var paths = {
+        'taoInvalsi' : root + '/taoInvalsi/views/js',
         'taoTests' : root + '/taoTests/views/js'
     };
 
@@ -35,5 +36,5 @@ module.exports = function(grunt) {
     });
 
     // bundle task
-    grunt.registerTask('taoinvalsibundle', ['clean:bundle', 'requirejs:taoinvalsiplugins', 'copy:taoactbundle']);
+    grunt.registerTask('taoinvalsibundle', ['clean:bundle', 'requirejs:taoinvalsiplugins', 'copy:taoinvalsibundle']);
 };
