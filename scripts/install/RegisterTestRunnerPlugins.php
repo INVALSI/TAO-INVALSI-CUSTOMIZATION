@@ -40,6 +40,7 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'id' => 'disableRightClick',
                 'name' => 'Disable right click',
                 'module' => 'taoQtiTest/runner/plugins/security/disableRightClick',
+                'bundle' => 'taoQtiTest/loader/testPlugins.min',
                 'description' => 'Disable right click context menu on items',
                 'category' => 'security',
                 'active' => true,
@@ -61,6 +62,7 @@ class RegisterTestRunnerPlugins extends InstallAction
             [
                 'id' => 'documentViewer',
                 'module' => 'taoQtiTest/runner/plugins/tools/documentViewer/documentViewer',
+                'bundle' => 'taoQtiTest/loader/testPlugins.min',
                 'name' => 'Document Viewer',
                 'description' => 'Display a document as requested by an event',
                 'category' => 'tools',
@@ -79,7 +81,7 @@ class RegisterTestRunnerPlugins extends InstallAction
         $registry = PluginRegistry::getRegistry();
         $count = 0;
 
-        foreach(self::$plugins as $category => $categoryPlugins) {
+        foreach(self::$plugins as $categoryPlugins) {
             foreach($categoryPlugins as $pluginData){
                 if( $registry->register(TestPlugin::fromArray($pluginData)) ) {
                     $count++;
