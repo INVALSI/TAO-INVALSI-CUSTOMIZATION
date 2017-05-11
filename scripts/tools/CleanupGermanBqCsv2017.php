@@ -41,7 +41,7 @@ class CleanupGermanBqCsv2017 implements Action
         
         $filePrefix = '';
         if (isset($params[1])) {
-            $filePrefix = $params[3];
+            $filePrefix = $params[1];
         }
         
         $realSource = realpath($source);
