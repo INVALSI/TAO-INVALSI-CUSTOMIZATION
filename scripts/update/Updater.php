@@ -18,6 +18,7 @@ use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
+use oat\taoQtiTest\scripts\install\SetNewTestRunner;
 use oat\taoTests\models\runner\plugins\PluginRegistry;
 use oat\taoTests\models\runner\plugins\TestPlugin;
 use oat\tao\model\mvc\DefaultUrlService;
@@ -301,7 +302,7 @@ class Updater extends common_ext_ExtensionUpdater {
             }
             $this->setVersion('6.5.0');
         }
-        
+
         $this->skip('6.5.0', '6.5.1');
     }
 
