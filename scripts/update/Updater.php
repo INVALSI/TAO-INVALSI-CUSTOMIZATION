@@ -8,19 +8,21 @@ namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
 use oat\oatbox\filesystem\FileSystemService;
-use oat\tao\model\theme\ThemeService;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
-use oat\taoInvalsi\scripts\install\RegisterTestPluginService;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
-use oat\taoInvalsi\scripts\install\SetNewTestRunner;
 use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
-use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
+use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
+use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
+use oat\taoQtiTest\scripts\install\SetNewTestRunner;
+use oat\taoTests\models\runner\plugins\PluginRegistry;
+use oat\taoTests\models\runner\plugins\TestPlugin;
 use oat\tao\model\mvc\DefaultUrlService;
+use oat\tao\model\theme\ThemeService;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -254,14 +256,14 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('3.0.0', '6.0.0');
 
         if ($this->isVersion('6.0.0')) {
-            
+
             $this->runExtensionScript(SetupBookletConfigService::class);
 
             $this->setVersion('6.1.0');
         }
-        
+
         if ($this->isVersion('6.1.0')) {
-            
+
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
@@ -270,9 +272,38 @@ class Updater extends common_ext_ExtensionUpdater {
                 'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
             ];
             $extension->setConfig('testRunner', $config);
-            
+
             $this->setVersion('6.2.0');
         }
+
+        if($this->isVersion('6.2.0')){
+
+            if(\common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->hasConfig(ItemModel::COMPILER)){
+                $compilerConfig = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->getConfig(ItemModel::COMPILER);
+                /** @var ItemModel $itemModelService */
+                $itemModelService = $this->getServiceManager()->get(ItemModel::SERVICE_ID);
+                $itemModelService->setOption(ItemModel::COMPILER, $compilerConfig);
+                $this->getServiceManager()->register(ItemModel::SERVICE_ID, $itemModelService);
+                \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->unsetConfig(ItemModel::COMPILER);
+            }
+
+            $this->setVersion('6.3.0');
+        }
+
+        $this->skip('6.3.0', '6.4.0');
+
+        if($this->isVersion('6.4.0')){
+            $registry = PluginRegistry::getRegistry();
+            foreach($registry->getMap() as $module => $plugin){
+                if(preg_match("/^taoInvalsi/", $module) && is_null($plugin['bundle'])){
+                    $plugin['bundle'] = 'taoInvalsi/loader/testPlugins.min';
+                    $registry->register(TestPlugin::fromArray($plugin));
+                }
+            }
+            $this->setVersion('6.5.0');
+        }
+
+        $this->skip('6.5.0', '6.5.1');
     }
 
 }
