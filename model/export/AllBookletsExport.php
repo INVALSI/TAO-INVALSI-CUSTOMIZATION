@@ -79,6 +79,8 @@ class AllBookletsExport
     private $alternateMissingDataEncodings = [];
     
     private $globalAlternateMissingDataEncodings = [];
+    
+    private $missingDataEncodingsEnabled = [];
 
     /**
      * @var array
@@ -100,6 +102,7 @@ class AllBookletsExport
     {
         $this->deliveries = $deliveries;
         $this->identifierStrategy = $identifierStrategy;
+        $this->missingDataEncodingsEnabled = [self::NOT_REQUIRED, self::NOT_ATTEMPTED, self::NOT_RESPONDED];
     }
     
     public function setVariablePolicy($variablePolicy)
@@ -669,17 +672,17 @@ class AllBookletsExport
         }
         
         foreach ($neededColumns as $column) {
-            if (!in_array($column, array_keys($row))) {
+            if ($this->isMissingDataEncodingEnabled(self::NOT_ATTEMPTED) && !in_array($column, array_keys($row))) {
                 $row[$column] = $this->determineMissingDataEncoding(self::NOT_ATTEMPTED, $column);
             }
             
-            if ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>') {
+            if ($this->isMissingDataEncodingEnabled(self::NOT_RESPONDED) && ($row[$column] === '' || $row[$column] === '[]' || $row[$column] === '<>')) {
                 $row[$column] = $this->determineMissingDataEncoding(self::NOT_RESPONDED, $column);
             }
         }
 
         foreach ($emptyColumns as $column) {
-            if (!in_array($column, array_keys($row))) {
+            if ($this->isMissingDataEncodingEnabled(self::NOT_REQUIRED) && !in_array($column, array_keys($row))) {
                 $row[$column] = $this->determineMissingDataEncoding(self::NOT_REQUIRED, $column);
             }
         }
@@ -789,5 +792,25 @@ class AllBookletsExport
         } else {
             return false;
         }
+    }
+    
+    public function setEnabledMissingDataEncoding(array $missingDataEncodings)
+    {
+        $check = [self::NOT_REQUIRED, self::NOT_ATTEMPTED, self::NOT_RESPONDED];
+        
+        for ($i = 0; $i < count($missingDataEncodings); $i++) {
+            if (!in_array($missingDataEncodings[$i], $check)) {
+                unset($missingDataEncodings[$i]);
+            }
+        }
+        
+        // Reset keys in proper order...
+        $missingDataEncodings = array_values($missingDataEncodings);
+        $this->missingDataEncodingsEnabled = $missingDataEncodings;
+    }
+    
+    protected function isMissingDataEncodingEnabled($missindDataEncoding)
+    {
+        return in_array($missingDataEncoding, $this->missingDataEncodingsEnabled);
     }
 }

@@ -64,8 +64,31 @@ class generateCsvFile implements Action
         // Param 4: Variable blacklist.
         $variableBlacklist = array_shift($params);
         if (is_null($variableBlacklist) === false) {
-            $bookletExporter->setVariableBlacklist(explode(',', $variableBlacklist));
+            $variableBlacklist = explode(',', $variableBlacklist);
+            
+            // Set the variable blacklist only if the explode
+            // worked correctly.
+            if ($variableBlacklist !== ['']) {
+                $bookletExporter->setVariableBlacklist($variableBlacklist);
+            }
         }
+        
+        // Param 5: Missing Data Encodings.
+        $missingDataEncodings = array_shift($params);
+        if (is_null($missingDataEncodings) === false) {
+            $missingDataEncodings = explode(',', $missingDataEncodings);
+            $missingDataEncodings = array_walk(
+                $missingDataEncodings,
+                function (&$missingDataEncoding) {
+                    $missingDataEncoding = trim(strtolower($missingDataEncoding));
+                } 
+            );
+            $missingDataEncodings = self::transformStringMissingDataEncodingsIntoConstants($missingDataEncodings);
+            
+            if (count($missingDataEncodings)) {
+                $bookletExporter->setEnabledMissingDataEncoding($missingDataEncodings);
+            }
+        } 
         
         $exportReport = $bookletExporter->export();
 
@@ -95,5 +118,27 @@ class generateCsvFile implements Action
         }
         
         return $variablePolicy;
+    }
+    
+    private static function transformStringMissingDataEncodingsIntoConstants(array $missingDataEncodings) {
+        $constants = [];
+        
+        foreach ($missingDataEncodings as $missingDataEncoding) {
+            switch ($missingDataEncoding) {
+                case 'notrequired':
+                    $constants[] = AllBookletsExport::NOT_REQUIRED;
+                    break;
+                    
+                case 'notresponded':
+                    $constants[] = AllBookletsExport::NOT_RESPONDED;
+                    break;
+                    
+                case 'notattempted':
+                    $constants[] = AllBookletsExport::NOT_ATTEMPTED;
+                    break;
+            }
+        }
+        
+        return $constants;
     }
 }
