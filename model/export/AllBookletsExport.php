@@ -809,7 +809,7 @@ class AllBookletsExport
         $this->missingDataEncodingsEnabled = $missingDataEncodings;
     }
     
-    protected function isMissingDataEncodingEnabled($missindDataEncoding)
+    protected function isMissingDataEncodingEnabled($missingDataEncoding)
     {
         return in_array($missingDataEncoding, $this->missingDataEncodingsEnabled);
     }
