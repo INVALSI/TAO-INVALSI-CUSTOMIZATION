@@ -67,6 +67,12 @@ class generateCsvFile implements Action
             $bookletExporter->setVariableBlacklist(explode(',', $variableBlacklist));
         }
         
+        // Param 5: Raw mode.
+        $rawMode = array_shift($params);
+        if (is_null($rawMode) === false) {
+            $bookletExporter->addAlternateMissingDataEnconding(AllBookletsExport::NOT_RESPONDED, '');
+        }
+        
         $exportReport = $bookletExporter->export();
 
 
