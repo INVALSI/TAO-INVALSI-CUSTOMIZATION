@@ -304,6 +304,13 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.5.0', '6.6.0');
+
+        if($this->isVersion('6.6.0')) {
+            $taoQtiItem = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem');
+            $config = ['multi-column' => true];
+            $taoQtiItem->setConfig('qtiCreator', $config);
+            $this->setVersion('6.6.1');
+        }
     }
 
 }

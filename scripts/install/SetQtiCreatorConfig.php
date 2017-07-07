@@ -31,6 +31,10 @@ class SetQtiCreatorConfig extends common_ext_action_InstallAction
         $registry = QtiCreatorClientConfigRegistry::getRegistry();
         $registry->registerPlugin('cssBlocks', 'taoInvalsi/qtiCreator/plugins/panel/cssBlocks', 'panel');
 
+        $taoQtiItem = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem');
+        $config = ['multi-column' => true];
+        $taoQtiItem->setConfig('qtiCreator', $config);
+
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Qti Creator\'s Plugins settings added to Tao Qti Item extension');
     }
 }
