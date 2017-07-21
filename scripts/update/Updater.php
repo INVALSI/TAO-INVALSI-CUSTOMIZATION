@@ -311,6 +311,8 @@ class Updater extends common_ext_ExtensionUpdater {
             $taoQtiItem->setConfig('qtiCreator', $config);
             $this->setVersion('6.6.1');
         }
+
+        $this->skip('6.6.1', '6.7.0');
     }
 
 }
