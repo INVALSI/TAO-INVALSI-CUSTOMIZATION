@@ -317,9 +317,22 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if($this->isVersion('6.7.1')){
             $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
-
-            $pluginService->activatePlugin('warnBeforeLeaving');
-
+            $plugin = $pluginService->getPlugin('warnBeforeLeaving');
+            //either register or activate the "warning plugin"
+            if(is_null($plugin)){
+                $pluginService->registerPlugins([[
+                    'id' => 'warnBeforeLeaving',
+                    'name' => 'Warn before leaving',
+                    'module' => 'taoQtiTest/runner/plugins/navigation/warnBeforeLeaving',
+                    'bundle' => 'taoQtiTest/loader/testPlugins.min',
+                    'description' => 'Warn the test taker when closing the browser',
+                    'category' => 'navigation',
+                    'active' => true,
+                    'tags' => [ ]
+                ]]);
+            } else {
+                $pluginService->activatePlugin($plugin);
+            }
             $this->setVersion('6.8.0');
         }
     }
