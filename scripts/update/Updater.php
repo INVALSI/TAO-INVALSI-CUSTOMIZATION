@@ -21,6 +21,7 @@ use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiTest\scripts\install\SetNewTestRunner;
 use oat\taoTests\models\runner\plugins\PluginRegistry;
 use oat\taoTests\models\runner\plugins\TestPlugin;
+use oat\taoTests\models\runner\plugins\TestPluginService;
 use oat\tao\model\mvc\DefaultUrlService;
 use oat\tao\model\theme\ThemeService;
 
@@ -313,6 +314,14 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.6.1', '6.7.1');
+
+        if($this->isVersion('6.7.1')){
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+
+            $pluginService->activatePlugin('warnBeforeLeaving');
+
+            $this->setVersion('6.8.0');
+        }
     }
 
 }
