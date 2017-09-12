@@ -60,6 +60,14 @@ html {
                 .qti-textEntryInteraction {
                     border: 2px solid $textColor;
                 }
+                .qti-customInteraction {
+                    .mathEntryInteraction {
+                        .mq-editable-field {
+                            border: 2px solid black;
+                        }
+                    }
+                }
+
                 table {
                     margin-bottom: 25px;
                 }
