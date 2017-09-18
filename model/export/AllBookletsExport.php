@@ -190,7 +190,7 @@ class AllBookletsExport
                 $this->matchTypeByDeliveries[$deliveryUri] = [];
                 $this->hottextTypeByDeliveries[$deliveryUri] = [];
                 $this->choiceTypeByDeliveries[$deliveryUri] = [];
-                $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(DeliveryAssemblyService::DELIVERY_DIRECTORY));
+                $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(DeliveryAssemblyService::PROPERTY_DELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
                     $dir = $storageService->getDirectoryById($directory);
