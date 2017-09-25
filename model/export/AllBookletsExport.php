@@ -18,6 +18,7 @@ use qtism\data\ExtendedAssessmentItemRef;
 use qtism\data\state\OutcomeDeclaration;
 use qtism\data\state\ResponseDeclaration;
 use qtism\runtime\common\MultipleContainer;
+use oat\taoDelivery\model\execution\ServiceProxy;
 
 class AllBookletsExport
 {
@@ -424,7 +425,7 @@ class AllBookletsExport
                 // get each row and write it to the csv
 
                 foreach($results as $result){
-                    $execution = $execution = \taoDelivery_models_classes_execution_ServiceProxy::singleton()->getDeliveryExecution($result['deliveryResultIdentifier']);
+                    $execution = $execution = ServiceProxy::singleton()->getDeliveryExecution($result['deliveryResultIdentifier']);
                     $row = array();
 
                     $user = new \core_kernel_classes_Resource($execution->getUserIdentifier());
