@@ -19,6 +19,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'path-tracking' => true,
             'always-allow-jumps' => true,
             'keep-timer-up-to-timeout' => true,
+            'enable-allow-skipping' => false,
+            'enable-validate-responses' => false
         );
 
         $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
