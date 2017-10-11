@@ -63,6 +63,16 @@ html {
             -webkit-overflow-scrolling: touch;
         }
 
+        .test-runner-scope {
+            #qti-content {
+                max-width: none;
+
+                .qti-item {
+                    max-width: none;
+                }
+            }
+        }
+
     }
 }
 
