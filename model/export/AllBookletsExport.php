@@ -321,8 +321,10 @@ class AllBookletsExport
                                     /** @var ResponseDeclaration $response */
                                     foreach ($responses as $response) {
                                         
-                                        if ($this->isVariableNameBlacklisted($response->getIdentifier()) === false) {                                        
-                                            $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
+                                        $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
+                                        
+                                        if ($this->isVariableNameBlacklisted($response->getIdentifier(), $headerResponseIdentifier) === false) {                                        
+                                            
                                             
                                             if (isset($choices[$identifier . $response->getIdentifier()])) {
                                                 
@@ -365,16 +367,18 @@ class AllBookletsExport
                                 if ($this->variablePolicy === self::VARIABLE_POLICY_ALL || $this->variablePolicy === self::VARIABLE_POLICY_OUTCOME) {
                                     /** @var OutcomeDeclaration $outcome */
                                     foreach ($outcomes as $outcome) {
-                                        if ($this->isVariableNameBlacklisted($outcome->getIdentifier()) === false) {
-                                            $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $outcome->getIdentifier();
+                                        $headerOutcomeIdentifier = $identifier . '-' . $outcome->getIdentifier();
+                                        if ($this->isVariableNameBlacklisted($outcome->getIdentifier(), $headerOutcomeIdentifier) === false) {
+                                            $this->variablesByDeliveries[$delivery->getUri()][] = $headerOutcomeIdentifier;
                                         }
                                     }
                                 }
 
                                 // Deal with variables that are QTI built-in.
                                 foreach($this->expectedVariables as $expectedVariable){
-                                    if ($this->isVariableNameBlacklisted($expectedVariable) === false) {
-                                        $this->variablesByDeliveries[$delivery->getUri()][] = $identifier . '-' . $expectedVariable;
+                                    $headerExpectedVariable = $identifier . '-' . $expectedVariable;
+                                    if ($this->isVariableNameBlacklisted($expectedVariable, $headerExpectedVariable) === false) {
+                                        $this->variablesByDeliveries[$delivery->getUri()][] = $headerExpectedVariable;
                                     }
                                 }
                             }
@@ -446,16 +450,16 @@ class AllBookletsExport
                             $itemResult = array_pop($itemResult);
                             /** @var \taoResultServer_models_classes_Variable $variable */
                             $variable = $itemResult->variable;
+                            $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             // Deal with variable policy...
                             if (($variable instanceof \taoResultServer_models_classes_ResponseVariable && $this->variablePolicy === self::VARIABLE_POLICY_OUTCOME) ||
                                 ($variable instanceof \taoResultServer_models_classes_OutcomeVariable && $this->variablePolicy === self::VARIABLE_POLICY_RESPONSE) ||
-                                $this->isVariableNameBlacklisted($variable->getIdentifier())) {
+                                $this->isVariableNameBlacklisted($variable->getIdentifier(), $headerIdentifier)) {
                                 continue;
                             }
                             
                             // The variable has to be exported!
-                            $headerIdentifier = $itemIdentifier . '-' . $variable->getIdentifier();
                             
                             if (isset($this->variablesByDeliveries[$deliveryUri]) && in_array($headerIdentifier, $this->variablesByDeliveries[$deliveryUri])){
                                 // Not modified variable header.
@@ -766,9 +770,15 @@ class AllBookletsExport
         return $ts[1];
     }
     
-    protected function isVariableNameBlacklisted($variableName)
+    protected function isVariableNameBlacklisted($variableName, $fullVariableName = '')
     {
-        return in_array($variableName, $this->variableBlacklist);
+        if ($this->isWhiteListed($fullVariableName)) {
+            return false;
+        } else {
+            $blackListed = in_array($fullVariableName, $this->variableBlacklist) || in_array($variableName, $this->variableBlacklist);
+
+            return $blackListed;
+        }
     }
     
     private static function formatTime($s)
@@ -790,5 +800,19 @@ class AllBookletsExport
         } else {
             return false;
         }
+    }
+    
+    private function isWhiteListed($fullVariableName) {
+        $white = false;
+        
+        foreach ($this->variableBlacklist as $vbl) {
+            
+            if ($vbl === "*${fullVariableName}") {
+                $white = true;
+                break;
+            }
+        }
+        
+        return $white;
     }
 }

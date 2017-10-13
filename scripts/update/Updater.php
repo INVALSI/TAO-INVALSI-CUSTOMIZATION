@@ -337,19 +337,19 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.8.0', '6.8.1');
-        
+
         if ($this->isVersion('6.8.1')) {
-            
+
             $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['enable-allow-skipping'] = false;
             $config['enable-validate-responses'] = false;
             $extension->setConfig('testRunner', $config);
-            
+
             $this->setVersion('6.8.2');
         }
         
-        $this->skip('6.8.2', '6.8.4');
+        $this->skip('6.8.2', '6.10.0');
     }
 
 }
