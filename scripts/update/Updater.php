@@ -357,9 +357,11 @@ class Updater extends common_ext_ExtensionUpdater {
             
             // Disable feature in Test Runner not required for this project.
             $script = new DisableAllowShortcut();
+            $this->getServiceManager()->propagate($script);
             $script([]);
             
             $script = new DisableConnectivity();
+            $this->getServiceManager()->propagate($script);
             $script([]);
             
             $this->setVersion('6.11.0');
