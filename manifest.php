@@ -10,6 +10,8 @@ use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
+use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
+use oat\taoQtiTest\scripts\install\DisableConnectivity;
 
 return array(
     'name' => 'taoInvalsi',
@@ -45,7 +47,9 @@ return array(
             RegisterTestRunnerFeatures::class,
             SetPasswordPolicy::class,
             RegisterAwsFileSystem::class,
-            SetupBookletConfigService::class
+            SetupBookletConfigService::class,
+            DisableAllowShortcut::class,
+            DisableConnectivity::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
