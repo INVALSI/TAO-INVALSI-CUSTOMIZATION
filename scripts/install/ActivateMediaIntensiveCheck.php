@@ -23,7 +23,7 @@ use oat\oatbox\extension\InstallAction;
 
 /**
  * Class ActivateMediaIntensiveCheck
- * @package oat\taoClientDiagnostic\scripts\install
+ * @package oat\taoInvalsi\scripts\install
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
 class ActivateMediaIntensiveCheck extends InstallAction
