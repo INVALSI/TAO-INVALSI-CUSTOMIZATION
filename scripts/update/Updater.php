@@ -350,24 +350,50 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.8.2');
         }
-        
+
         $this->skip('6.8.2', '6.10.0');
-        
+
         if ($this->isVersion('6.10.0')) {
-            
+
             // Disable feature in Test Runner not required for this project.
             $script = new DisableAllowShortcut();
             $this->getServiceManager()->propagate($script);
             $script([]);
-            
+
             $script = new DisableConnectivity();
             $this->getServiceManager()->propagate($script);
             $script([]);
-            
+
             $this->setVersion('6.11.0');
         }
-        
+
         $this->skip('6.11.0', '6.12.0');
+
+        if ($this->isVersion('6.12.0')) {
+
+            $extensionManager = \common_ext_ExtensionsManager::singleton();
+            if ($extensionManager->isInstalled('taoClientDiagnostic')) {
+                $extension = $extensionManager->getExtensionById('taoClientDiagnostic');
+                $config = $extension->getConfig('clientDiag');
+
+                if (!isset($config['testers']) || !isset($config['testers']['intensive_bandwidth'])) {
+                    $config['testers']['intensive_bandwidth'] = [
+                        'enabled' => false,
+                        'level' => 2,
+                        'tester' => 'taoClientDiagnostic/tools/bandwidth/tester',
+                        'unit' => 1.2,
+                        'ideal' => 45,
+                        'max' => 100
+                    ];
+                }
+
+                $config['testers']['intensive_bandwidth']['enabled'] = true;
+
+                $extension->setConfig('clientDiag', $config);
+            }
+
+            $this->setVersion('6.13.0');
+        }
     }
 
 }
