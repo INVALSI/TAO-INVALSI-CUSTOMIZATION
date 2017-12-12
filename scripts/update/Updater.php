@@ -19,6 +19,8 @@ use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiTest\scripts\install\SetNewTestRunner;
+use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
+use oat\taoQtiTest\scripts\install\DisableConnectivity;
 use oat\taoTests\models\runner\plugins\PluginRegistry;
 use oat\taoTests\models\runner\plugins\TestPlugin;
 use oat\taoTests\models\runner\plugins\TestPluginService;
@@ -348,8 +350,24 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.8.2');
         }
+        
+        $this->skip('6.8.2', '6.10.0');
 
-        $this->skip('6.8.2', '6.8.5');
+        if ($this->isVersion('6.10.0')) {
+
+            // Disable feature in Test Runner not required for this project.
+            $script = new DisableAllowShortcut();
+            $this->getServiceManager()->propagate($script);
+            $script([]);
+
+            $script = new DisableConnectivity();
+            $this->getServiceManager()->propagate($script);
+            $script([]);
+
+            $this->setVersion('6.11.0');
+        }
+
+        $this->skip('6.11.0', '6.13.0');
     }
 
 }
