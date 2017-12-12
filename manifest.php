@@ -22,7 +22,7 @@ return array(
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=10.0.0',
+        'tao' => '>=14.3.1',
         'taoMediaManager' => '*',
         'taoQtiTest' => '>=17.7.0',
         'taoQtiItem' => '>=6.2.0',
