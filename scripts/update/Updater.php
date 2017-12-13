@@ -405,6 +405,8 @@ class Updater extends common_ext_ExtensionUpdater {
             $setPrecachingConfig([]);
 
             //enable the communicator, but does not define grouped actions
+            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
             $config['bootstrap']['communication'] = [
                 'enabled'     => true,
                 'type'        => 'poll',
@@ -414,6 +416,7 @@ class Updater extends common_ext_ExtensionUpdater {
                 'syncActions' => [],
                 'params'      => []
             ];
+            $qtiTest->setConfig('testRunner', $config);
 
             $this->setVersion('6.14.0');
         }
