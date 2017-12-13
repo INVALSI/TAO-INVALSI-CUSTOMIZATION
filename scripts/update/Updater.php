@@ -401,6 +401,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
             //set the precaching config
             $setPrecachingConfig = new SetPreCachingConfig();
+            $setPrecachingConfig->setServiceLocator($this->getServiceManager());
             $setPrecachingConfig([]);
 
             //enable the communicator, but does not define grouped actions
