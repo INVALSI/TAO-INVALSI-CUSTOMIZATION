@@ -37,6 +37,16 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
         );
 
+        $config['bootstrap']['communication'] = [
+            'enabled'     => true,
+            'type'        => 'poll',
+            'extension'   => 'taoQtiTest',
+            'controller'  => 'Runner',
+            'action'      => 'messages',
+            'syncActions' => [],
+            'params'      => []
+        ];
+
         $qtiTest->setConfig('testRunner', $config);
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Test runner config saved');
