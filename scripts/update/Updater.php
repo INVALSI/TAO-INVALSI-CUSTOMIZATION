@@ -396,14 +396,12 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.13.0');
         }
 
-
         if ($this->isVersion('6.13.0')) {
 
-            //set the precaching config
+            //enables the precaching config (the proxy)
             $setPrecachingConfig = new SetPreCachingConfig();
             $setPrecachingConfig->setServiceLocator($this->getServiceManager());
             $setPrecachingConfig([]);
-
 
             $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
             $config = $qtiTest->getConfig('testRunner');
@@ -427,5 +425,4 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.14.0');
         }
     }
-
 }
