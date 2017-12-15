@@ -20,7 +20,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'always-allow-jumps' => true,
             'keep-timer-up-to-timeout' => true,
             'enable-allow-skipping' => false,
-            'enable-validate-responses' => false
+            'enable-validate-responses' => false,
+            'item-cache-size' => 3
         );
 
         $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
@@ -36,6 +37,16 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config['plugins']['calculator'] = array(
             'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
         );
+
+        $config['bootstrap']['communication'] = [
+            'enabled'     => true,
+            'type'        => 'poll',
+            'extension'   => 'taoQtiTest',
+            'controller'  => 'Runner',
+            'action'      => 'messages',
+            'syncActions' => [],
+            'params'      => []
+        ];
 
         $qtiTest->setConfig('testRunner', $config);
 

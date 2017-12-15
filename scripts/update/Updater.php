@@ -26,6 +26,7 @@ use oat\taoTests\models\runner\plugins\TestPlugin;
 use oat\taoTests\models\runner\plugins\TestPluginService;
 use oat\tao\model\mvc\DefaultUrlService;
 use oat\tao\model\theme\ThemeService;
+use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -394,6 +395,34 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.13.0');
         }
-    }
 
+        if ($this->isVersion('6.13.0')) {
+
+            //enables the precaching config (the proxy)
+            $setPrecachingConfig = new SetPreCachingConfig();
+            $setPrecachingConfig->setServiceLocator($this->getServiceManager());
+            $setPrecachingConfig([]);
+
+            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+
+            //number of item to cache
+            $config['item-cache-size'] = 3;
+
+            //enable the communicator, but does not define grouped actions
+            $config['bootstrap']['communication'] = [
+                'enabled'     => true,
+                'type'        => 'poll',
+                'extension'   => 'taoQtiTest',
+                'controller'  => 'Runner',
+                'action'      => 'messages',
+                'syncActions' => [],
+                'params'      => []
+            ];
+
+            $qtiTest->setConfig('testRunner', $config);
+
+            $this->setVersion('6.14.0');
+        }
+    }
 }
