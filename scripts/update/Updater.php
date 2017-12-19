@@ -424,5 +424,42 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.14.0');
         }
+
+        if ($this->isVersion('6.14.0')) {
+
+            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+
+
+            // use the request provider for the communicator
+            $config['bootstrap']['communication']['type'] = 'request';
+
+            //disable the connectivity indicator
+            $config['plugins']['connectivity'] = [
+                'indicator' => false
+            ];
+
+            $qtiTest->setConfig('testRunner', $config);
+
+            //reactivate the connectivity plugin, but with the indicator disabled
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $plugin = $pluginService->getPlugin('connectivity');
+            if(is_null($plugin)){
+                $pluginService->registerPlugins([[
+                    'id' => 'connectivity',
+                    'name' => 'Connectivity check',
+                    'module' => 'taoQtiTest/runner/plugins/controls/connectivity/connectivity',
+                    'bundle' => 'taoQtiTest/loader/testPlugins.min',
+                    'description' => 'Pause the test when the network loose the connection',
+                    'category' => 'controls',
+                    'active' => true,
+                    'tags' => [ 'core', 'technical' ]
+                ]]);
+            } else {
+                $pluginService->activatePlugin($plugin);
+            }
+
+            $this->setVersion('6.15.0');
+        }
     }
 }
