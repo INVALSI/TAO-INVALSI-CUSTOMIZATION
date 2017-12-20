@@ -38,9 +38,13 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'template' => 'taoInvalsi/runner/plugins/tools/calculator/template.tpl'
         );
 
+        $config['plugins']['connectivity'] = array(
+            'indicator' => false
+        );
+
         $config['bootstrap']['communication'] = [
             'enabled'     => true,
-            'type'        => 'poll',
+            'type'        => 'request',
             'extension'   => 'taoQtiTest',
             'controller'  => 'Runner',
             'action'      => 'messages',
