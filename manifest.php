@@ -25,7 +25,7 @@ return array(
         'taoCe' => '>=1.2.0',
         'tao' => '>=14.13.0',
         'taoMediaManager' => '*',
-        'taoQtiTest' => '>=18.3.0',
+        'taoQtiTest' => '>=18.4.0',
         'taoQtiItem' => '>=6.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
