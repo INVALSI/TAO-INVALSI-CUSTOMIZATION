@@ -26,6 +26,7 @@ use oat\taoTests\models\runner\plugins\TestPlugin;
 use oat\taoTests\models\runner\plugins\TestPluginService;
 use oat\tao\model\mvc\DefaultUrlService;
 use oat\tao\model\theme\ThemeService;
+use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -350,24 +351,115 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.8.2');
         }
-        
+
         $this->skip('6.8.2', '6.10.0');
-        
+
         if ($this->isVersion('6.10.0')) {
-            
+
             // Disable feature in Test Runner not required for this project.
             $script = new DisableAllowShortcut();
             $this->getServiceManager()->propagate($script);
             $script([]);
-            
+
             $script = new DisableConnectivity();
             $this->getServiceManager()->propagate($script);
             $script([]);
-            
+
             $this->setVersion('6.11.0');
         }
-        
-        $this->skip('6.11.0', '6.12.0');
-    }
 
+        $this->skip('6.11.0', '6.12.0');
+
+        if ($this->isVersion('6.12.0')) {
+
+            $extensionManager = \common_ext_ExtensionsManager::singleton();
+            if ($extensionManager->isInstalled('taoClientDiagnostic')) {
+                $extension = $extensionManager->getExtensionById('taoClientDiagnostic');
+                $config = $extension->getConfig('clientDiag');
+
+                if (!isset($config['testers']) || !isset($config['testers']['intensive_bandwidth'])) {
+                    $config['testers']['intensive_bandwidth'] = [
+                        'enabled' => false,
+                        'level' => 2,
+                        'tester' => 'taoClientDiagnostic/tools/bandwidth/tester',
+                        'unit' => 1.2,
+                        'ideal' => 45,
+                        'max' => 100
+                    ];
+                }
+
+                $config['testers']['intensive_bandwidth']['enabled'] = true;
+
+                $extension->setConfig('clientDiag', $config);
+            }
+
+            $this->setVersion('6.13.0');
+        }
+
+        if ($this->isVersion('6.13.0')) {
+
+            //enables the precaching config (the proxy)
+            $setPrecachingConfig = new SetPreCachingConfig();
+            $setPrecachingConfig->setServiceLocator($this->getServiceManager());
+            $setPrecachingConfig([]);
+
+            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+
+            //number of item to cache
+            $config['item-cache-size'] = 3;
+
+            //enable the communicator, but does not define grouped actions
+            $config['bootstrap']['communication'] = [
+                'enabled'     => true,
+                'type'        => 'poll',
+                'extension'   => 'taoQtiTest',
+                'controller'  => 'Runner',
+                'action'      => 'messages',
+                'syncActions' => [],
+                'params'      => []
+            ];
+
+            $qtiTest->setConfig('testRunner', $config);
+
+            $this->setVersion('6.14.0');
+        }
+
+        if ($this->isVersion('6.14.0')) {
+
+            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+
+
+            // use the request provider for the communicator
+            $config['bootstrap']['communication']['type'] = 'request';
+
+            //disable the connectivity indicator
+            $config['plugins']['connectivity'] = [
+                'indicator' => false
+            ];
+
+            $qtiTest->setConfig('testRunner', $config);
+
+            //reactivate the connectivity plugin, but with the indicator disabled
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $plugin = $pluginService->getPlugin('connectivity');
+            if(is_null($plugin)){
+                $pluginService->registerPlugins([[
+                    'id' => 'connectivity',
+                    'name' => 'Connectivity check',
+                    'module' => 'taoQtiTest/runner/plugins/controls/connectivity/connectivity',
+                    'bundle' => 'taoQtiTest/loader/testPlugins.min',
+                    'description' => 'Pause the test when the network loose the connection',
+                    'category' => 'controls',
+                    'active' => true,
+                    'tags' => [ 'core', 'technical' ]
+                ]]);
+            } else {
+                $pluginService->activatePlugin($plugin);
+            }
+
+            $this->setVersion('6.15.0');
+        }
+    }
 }
