@@ -11,20 +11,21 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
-use oat\taoQtiTest\scripts\install\DisableConnectivity;
+use oat\taoInvalsi\scripts\install\ActivateMediaIntensiveCheck;
+use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.13.0',
+    'version' => '6.16.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=12.21.0',
+        'tao' => '>=14.13.0',
         'taoMediaManager' => '*',
-        'taoQtiTest' => '>=17.7.0',
+        'taoQtiTest' => '>=18.4.0',
         'taoQtiItem' => '>=6.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
@@ -50,7 +51,8 @@ return array(
             RegisterAwsFileSystem::class,
             SetupBookletConfigService::class,
             DisableAllowShortcut::class,
-            DisableConnectivity::class
+            ActivateMediaIntensiveCheck::class,
+            SetPreCachingConfig::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
