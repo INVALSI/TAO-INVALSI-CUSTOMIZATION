@@ -22,7 +22,7 @@ return array(
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=12.21.4',
+        'tao' => '>=12.21.0',
         'taoMediaManager' => '*',
         'taoQtiTest' => '>=17.7.0',
         'taoQtiItem' => '>=6.2.0',
@@ -30,7 +30,8 @@ return array(
         'pciSamples' => '>=1.3.0',
         'taoBooklet' => '>=1.1.0',
         'taoMonitoring' => '>=0.2.0',
-        'taoDacSimple' => '>=2.0.1'
+        'taoDacSimple' => '>=2.0.1',
+        'taoDeliveryRdf' => '>=3.12.0'
     ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
