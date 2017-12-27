@@ -9,7 +9,9 @@
 namespace oat\taoInvalsi\scripts\tools;
 
 
+use oat\generis\model\GenerisRdf;
 use oat\oatbox\action\Action;
+use oat\tao\model\TaoOntology;
 
 class SubstituteTestTakersPasswords implements Action
 {
@@ -53,21 +55,21 @@ class SubstituteTestTakersPasswords implements Action
         }
 
         $userService = \tao_models_classes_UserService::singleton();
-        $userClass = new \core_kernel_classes_Class(TAO_SUBJECT_CLASS);
+        $userClass = new \core_kernel_classes_Class(TaoOntology::SUBJECT_CLASS_URI);
         
         foreach ($data as $tt) {
             if (!$userService->loginExists($tt[0])) {
                 $this->report->add(new \common_report_Report(\common_report_Report::TYPE_WARNING, 'User not found ' . $tt[0]));
             } else {
                 $user = $userClass->searchInstances([
-                    PROPERTY_USER_LOGIN => $tt[0]
+                    GenerisRdf::PROPERTY_USER_LOGIN => $tt[0]
                 ]);
                 
                 if ($user) {
                     $user = current($user);
                 }
                 
-                if (!$user || !$userService->userHasRoles($user, INSTANCE_ROLE_DELIVERY)) {
+                if (!$user || !$userService->userHasRoles($user, TaoOntology::PROPERTY_INSTANCE_ROLE_DELIVERY)) {
                     $this->report->add(new \common_report_Report(\common_report_Report::TYPE_WARNING, 'User ' . $tt[0] . ' not a test taker'));
                 } else {
                 

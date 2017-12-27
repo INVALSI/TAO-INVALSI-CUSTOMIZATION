@@ -8,10 +8,10 @@ namespace oat\taoInvalsi\model\export;
 
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceManager;
+use oat\taoDeliveryRdf\model\DeliveryAssemblyService;
 use oat\taoResultServer\models\classes\ResultServerService;
 use oat\taoResultServer\models\classes\ResultManagement;
 use oat\oatbox\filesystem\File;
-use qtism\common\datatypes\QtiPair;
 use qtism\data\storage\php\PhpDocument;
 use qtism\data\AssessmentTest;
 use qtism\data\ExtendedAssessmentItemRef;
@@ -192,7 +192,7 @@ class AllBookletsExport
                 $this->matchTypeByDeliveries[$deliveryUri] = [];
                 $this->hottextTypeByDeliveries[$deliveryUri] = [];
                 $this->choiceTypeByDeliveries[$deliveryUri] = [];
-                $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(PROPERTY_COMPILEDDELIVERY_DIRECTORY));
+                $directories = $delivery->getPropertyValues(new \core_kernel_classes_Property(DeliveryAssemblyService::PROPERTY_DELIVERY_DIRECTORY));
                 
                 foreach ($directories as $directory) {
                     $dir = $storageService->getDirectoryById($directory);
