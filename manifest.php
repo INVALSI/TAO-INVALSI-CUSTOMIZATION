@@ -32,8 +32,7 @@ return array(
         'taoBooklet' => '>=1.1.0',
         'taoMonitoring' => '>=0.2.0',
         'taoDacSimple' => '>=2.0.1',
-        'taoDeliveryRdf' => '>=3.12.0',
-        'taoClientDiagnostic' => '>=2.12.0'
+        'taoDeliveryRdf' => '>=3.12.0'
     ),
 	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
