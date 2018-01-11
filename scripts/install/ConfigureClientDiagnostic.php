@@ -22,11 +22,11 @@ namespace oat\taoInvalsi\scripts\install;
 use oat\oatbox\extension\InstallAction;
 
 /**
- * Class ActivateMediaIntensiveCheck
+ * Class ConfigureClientDiagnostic
  * @package oat\taoInvalsi\scripts\install
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
-class ActivateMediaIntensiveCheck extends InstallAction
+class ConfigureClientDiagnostic extends InstallAction
 {
     /**
      * @param $params
