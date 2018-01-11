@@ -22,11 +22,11 @@ namespace oat\taoInvalsi\scripts\install;
 use oat\oatbox\extension\InstallAction;
 
 /**
- * Class ActivateMediaIntensiveCheck
+ * Class ConfigureClientDiagnostic
  * @package oat\taoInvalsi\scripts\install
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
-class ActivateMediaIntensiveCheck extends InstallAction
+class ConfigureClientDiagnostic extends InstallAction
 {
     /**
      * @param $params
@@ -35,11 +35,13 @@ class ActivateMediaIntensiveCheck extends InstallAction
     public function __invoke($params)
     {
         try {
-            $extensionManager = \common_ext_ExtensionsManager::singleton();
+            /** @var \common_ext_ExtensionsManager $extensionManager */
+            $extensionManager = $this->getServiceLocator()->get(\common_ext_ExtensionsManager::SERVICE_ID);
             if ($extensionManager->isInstalled('taoClientDiagnostic')) {
                 $extension = $extensionManager->getExtensionById('taoClientDiagnostic');
                 $config = $extension->getConfig('clientDiag');
 
+                // Activate intensive bandwidth test.
                 if (!isset($config['testers']) || !isset($config['testers']['intensive_bandwidth'])) {
                     $config['testers']['intensive_bandwidth'] = [
                         'enabled' => false,
@@ -53,11 +55,14 @@ class ActivateMediaIntensiveCheck extends InstallAction
 
                 $config['testers']['intensive_bandwidth']['enabled'] = true;
 
+                // Activate data collection via HTTP GET.
+                $config['customInput']['istituto'] = 'school';
+
                 $extension->setConfig('clientDiag', $config);
 
                 return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, "The Media Intensive check has been activated!");
             } else {
-                return new \common_report_Report(\common_report_Report::TYPE_WARNING, "Cannot activate the Media Intensive check, the extension taoClientDiagnostic is not installed!");
+                return new \common_report_Report(\common_report_Report::TYPE_WARNING, "Cannot configure extension taoClientDiagnostic. It is not installed!");
             }
         } catch (\Exception $e) {
             return new \common_report_Report(\common_report_Report::TYPE_ERROR, $e->getMessage());
