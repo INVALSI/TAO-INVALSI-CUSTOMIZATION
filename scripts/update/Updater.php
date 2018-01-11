@@ -465,7 +465,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('6.15.0', '6.16.0');
 
         if ($this->isVersion('6.16.0')) {
-            $extensionManager = $this->getServiceLocator()->get(\common_ext_ExtensionsManager::SERVICE_ID);
+            $extensionManager = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID);
             if ($extensionManager->isInstalled('taoClientDiagnostic')) {
                 $extension = $extensionManager->getExtensionById('taoClientDiagnostic');
                 $config = $extension->getConfig('clientDiag');
