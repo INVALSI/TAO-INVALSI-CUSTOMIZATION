@@ -11,7 +11,7 @@ use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
-use oat\taoInvalsi\scripts\install\ActivateMediaIntensiveCheck;
+use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 
 return array(
@@ -19,7 +19,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.16.0',
+    'version' => '6.17.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
@@ -51,7 +51,7 @@ return array(
             RegisterAwsFileSystem::class,
             SetupBookletConfigService::class,
             DisableAllowShortcut::class,
-            ActivateMediaIntensiveCheck::class,
+            ConfigureClientDiagnostic::class,
             SetPreCachingConfig::class
         )
     ),
