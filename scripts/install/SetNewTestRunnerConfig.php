@@ -12,6 +12,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'test-taker-review' => true,
             'test-taker-review-region' => 'left',
             'test-taker-review-force-title' => false,
+            'test-taker-review-item-title' => 'Domanda %d',
             'test-taker-review-scope' => 'testSection',
             'test-taker-review-prevents-unseen' => true,
             'test-taker-review-can-collapse' => true,
