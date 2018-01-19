@@ -475,5 +475,12 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.17.0');
         }
+
+        if ($this->isVersion('6.17.0')) {
+            $qtiTest = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+
+            $this->setVersion('6.18.0');
+        }
     }
 }

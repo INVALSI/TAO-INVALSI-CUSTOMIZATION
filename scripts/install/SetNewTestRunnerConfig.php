@@ -25,7 +25,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'item-cache-size' => 3
         );
 
-        $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+        $qtiTest = $this->getServiceManager()->get(common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
         $config = $qtiTest->getConfig('testRunner');
         $config = array_merge($config, $invalsiConfig);
 
