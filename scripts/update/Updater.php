@@ -481,6 +481,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $config = $qtiTest->getConfig('testRunner');
             $config['test-taker-review-item-title'] = 'Domanda %d';
 
+            $qtiTest->setConfig('testRunner', $config);
             $this->setVersion('6.18.0');
         }
     }
