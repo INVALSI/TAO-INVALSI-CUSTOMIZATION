@@ -479,6 +479,7 @@ class Updater extends common_ext_ExtensionUpdater {
         if ($this->isVersion('6.17.0')) {
             $qtiTest = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $qtiTest->getConfig('testRunner');
+            $config['test-taker-review-force-title'] = true;
             $config['test-taker-review-item-title'] = 'Domanda %d';
 
             $qtiTest->setConfig('testRunner', $config);
