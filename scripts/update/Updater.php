@@ -49,7 +49,7 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('1.2.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['disableExitMessage'] = array(
                 'test' => true,
@@ -72,7 +72,7 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('1.4.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['disableExitMessage'] = array(
                 'test' => false,
@@ -111,7 +111,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('1.6.3', '1.6.4');
 
         if ($this->isVersion('1.6.4')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
 
             $config = $extension->getConfig('testRunner');
             $config['check-informational'] = true;
@@ -124,7 +124,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('1.7.0', '1.7.2');
 
         if ($this->isVersion('1.7.2')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
 
             $config = $extension->getConfig('testRunner');
             $config['force-branchrules'] = true;
@@ -145,7 +145,7 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('1.9.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
 
             $config = $extension->getConfig('testRunner');
             $config['keep-timer-up-to-timeout'] = true;
@@ -157,7 +157,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('1.10.0', '1.13.0');
 
         if ($this->isVersion('1.13.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['test-taker-review-force-title'] = false;
             $extension->setConfig('testRunner', $config);
@@ -171,7 +171,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $registerTestRunnerPlugins = new RegisterTestRunnerPlugins();
             $registerTestRunnerPlugins([]);
 
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
                 'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/sample.pdf'
@@ -184,7 +184,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('1.15.0', '1.16.0');
 
         if ($this->isVersion('1.16.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
                 'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulario.pdf'
@@ -220,7 +220,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('1.19.0', '1.24.0');
 
         if ($this->isVersion('1.24.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
                 'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
@@ -231,7 +231,7 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('1.25.0')) {
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
 
             $config = $extension->getConfig('testRunner');
             $config['plugins']['calculator'] = array(
@@ -268,7 +268,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if ($this->isVersion('6.1.0')) {
 
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
                 'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
@@ -282,13 +282,13 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if($this->isVersion('6.2.0')){
 
-            if(\common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->hasConfig(ItemModel::COMPILER)){
-                $compilerConfig = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->getConfig(ItemModel::COMPILER);
+            if($this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiItem')->hasConfig(ItemModel::COMPILER)){
+                $compilerConfig = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiItem')->getConfig(ItemModel::COMPILER);
                 /** @var ItemModel $itemModelService */
                 $itemModelService = $this->getServiceManager()->get(ItemModel::SERVICE_ID);
                 $itemModelService->setOption(ItemModel::COMPILER, $compilerConfig);
                 $this->getServiceManager()->register(ItemModel::SERVICE_ID, $itemModelService);
-                \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem')->unsetConfig(ItemModel::COMPILER);
+                $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiItem')->unsetConfig(ItemModel::COMPILER);
             }
 
             $this->setVersion('6.3.0');
@@ -310,7 +310,7 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('6.5.0', '6.6.0');
 
         if($this->isVersion('6.6.0')) {
-            $taoQtiItem = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiItem');
+            $taoQtiItem = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiItem');
             $config = ['multi-column' => true];
             $taoQtiItem->setConfig('qtiCreator', $config);
             $this->setVersion('6.6.1');
@@ -343,7 +343,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if ($this->isVersion('6.8.1')) {
 
-            $extension = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['enable-allow-skipping'] = false;
             $config['enable-validate-responses'] = false;
@@ -372,7 +372,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if ($this->isVersion('6.12.0')) {
 
-            $extensionManager = \common_ext_ExtensionsManager::singleton();
+            $extensionManager = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID);
             if ($extensionManager->isInstalled('taoClientDiagnostic')) {
                 $extension = $extensionManager->getExtensionById('taoClientDiagnostic');
                 $config = $extension->getConfig('clientDiag');
@@ -403,7 +403,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $setPrecachingConfig->setServiceLocator($this->getServiceManager());
             $setPrecachingConfig([]);
 
-            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $qtiTest = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $qtiTest->getConfig('testRunner');
 
             //number of item to cache
@@ -427,7 +427,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
         if ($this->isVersion('6.14.0')) {
 
-            $qtiTest = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+            $qtiTest = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $qtiTest->getConfig('testRunner');
 
 
@@ -474,6 +474,16 @@ class Updater extends common_ext_ExtensionUpdater {
             }
 
             $this->setVersion('6.17.0');
+        }
+
+        if ($this->isVersion('6.17.0')) {
+            $qtiTest = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
+            $config = $qtiTest->getConfig('testRunner');
+            $config['test-taker-review-force-title'] = true;
+            $config['test-taker-review-item-title'] = 'Domanda %d';
+
+            $qtiTest->setConfig('testRunner', $config);
+            $this->setVersion('6.18.0');
         }
     }
 }
