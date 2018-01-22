@@ -31,7 +31,8 @@ class AllBookletsExportUtils
             'endAttemptInteraction',
             'inlineChoiceInteraction',
             'textEntryInteraction',
-            'positionObjectInteraction'
+            'positionObjectInteraction',
+            'customInteraction'
         );
         
         $result = array();
