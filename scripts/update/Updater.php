@@ -485,5 +485,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $qtiTest->setConfig('testRunner', $config);
             $this->setVersion('6.18.0');
         }
+
+        $this->skip('6.18.0', '6.19.0');
     }
 }
