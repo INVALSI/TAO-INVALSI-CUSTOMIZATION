@@ -11,7 +11,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'check-informational' => true,
             'test-taker-review' => true,
             'test-taker-review-region' => 'left',
-            'test-taker-review-force-title' => false,
+            'test-taker-review-force-title' => true,
+            'test-taker-review-item-title' => 'Domanda %d',
             'test-taker-review-scope' => 'testSection',
             'test-taker-review-prevents-unseen' => true,
             'test-taker-review-can-collapse' => true,
@@ -24,7 +25,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'item-cache-size' => 3
         );
 
-        $qtiTest = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQtiTest');
+        $qtiTest = $this->getServiceManager()->get(common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
         $config = $qtiTest->getConfig('testRunner');
         $config = array_merge($config, $invalsiConfig);
 
