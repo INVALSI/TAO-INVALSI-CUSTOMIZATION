@@ -113,6 +113,11 @@ class AllBookletsExport
         $this->variableBlacklist = $blacklist;
     }
 
+    public function addVariableToBlacklist($variableName)
+    {
+        $this->variableBlacklist[] = $variableName;
+    }
+
     /**
      * Generate array with statistics for all deliveries
      * @return \common_report_Report
@@ -307,6 +312,18 @@ class AllBookletsExport
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->orderTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
+                                            }
+                                        }
+
+                                        if (isset($interactions['mediaInteraction'])) {
+                                            foreach (array_keys($interactions['mediaInteraction']) as $responseIdentifier) {
+                                                $this->addVariableToBlacklist($identifier . '-' . $responseIdentifier);
+                                            }
+                                        }
+
+                                        if (isset($interactions['customInteraction'])) {
+                                            foreach (array_keys($interactions['customInteraction']) as $responseIdentifier) {
+                                                $this->addVariableToBlacklist($identifier . '-' . $responseIdentifier);
                                             }
                                         }
 
