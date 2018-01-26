@@ -14,7 +14,7 @@
     ],
     "homepage" : "http://www.taotesting.com",
     "license" : [
-        "GPL-2.0"
+        "proprietary"
     ],
     "extra" : {
         "tao-extension-name" : "taoInvalsi"
