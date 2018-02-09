@@ -12,7 +12,15 @@ use \common_report_Report as Report;
 use oat\oatbox\extension\AbstractAction;
 use oat\taoInvalsi\model\session\SessionExporter;
 
-
+/**
+ *
+ * Accepts only two required params
+ *   --path file location
+ *   --login must contain semicolon separated list of users expected to be included to output
+ * $ sudo -u www-data php index.php 'oat\taoInvalsi\scripts\tools\ExportSessions' --path='<path to the file>' --login='<user1;user2;user3>'
+ *
+ *
+ */
 class ExportSessions extends AbstractAction
 {
     private $path;
