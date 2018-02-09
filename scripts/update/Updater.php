@@ -7,7 +7,11 @@
 namespace oat\taoInvalsi\scripts\update;
 
 use \common_ext_ExtensionUpdater;
+use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\tao\model\event\LoginSucceedEvent;
+use oat\tao\model\event\LogoutSucceedEvent;
+use oat\taoInvalsi\model\session\Capture;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
@@ -487,5 +491,18 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.18.0', '6.19.2');
+
+        if ($this->isVersion('6.19.2')) {
+
+            $this->getServiceManager()->register(Capture::SERVICE_ID, new Capture([Capture::OPTION_PERSISTENCE => 'cache']));
+
+            /** @var EventManager $eventManager */
+            $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
+            $eventManager->attach(LoginSucceedEvent::class,[Capture::SERVICE_ID,'storeLogin']);
+            $eventManager->attach(LogoutSucceedEvent::class,[Capture::SERVICE_ID,'storeLogout']);
+            $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
+
+            $this->setVersion('6.20.0');
+        }
     }
 }
