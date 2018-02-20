@@ -19,11 +19,11 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.20.0',
+    'version' => '6.21.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
-        'tao' => '>=14.13.0',
+        'tao' => '>=16.4.0',
         'taoMediaManager' => '*',
         'taoQtiTest' => '>=18.4.0',
         'taoQtiItem' => '>=6.2.0',
