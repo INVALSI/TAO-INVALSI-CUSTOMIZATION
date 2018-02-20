@@ -161,6 +161,13 @@ table {
     &.center {
         margin-left: auto;
         margin-right: auto;
+        input {
+            display: block;
+        }
+    }
+
+    &.width_25 {
+        width: 25%;
     }
 
     &.width_50 {
