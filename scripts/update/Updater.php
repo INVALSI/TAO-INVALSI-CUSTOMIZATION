@@ -490,9 +490,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.18.0');
         }
 
-        $this->skip('6.18.0', '6.19.2');
+        $this->skip('6.18.0', '6.20.0');
 
-        if ($this->isVersion('6.19.2')) {
+        if ($this->isVersion('6.20.0')) {
 
             $this->getServiceManager()->register(Capture::SERVICE_ID, new Capture([Capture::OPTION_PERSISTENCE => 'cache']));
 
@@ -502,7 +502,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $eventManager->attach(LogoutSucceedEvent::class,[Capture::SERVICE_ID,'storeLogout']);
             $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
 
-            $this->setVersion('6.20.0');
+            $this->setVersion('6.21.0');
         }
     }
 }
