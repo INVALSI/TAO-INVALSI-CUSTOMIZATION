@@ -517,5 +517,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.22.0');
         }
+
+        $this->skip('6.22.0', '6.23.0');
     }
 }
