@@ -522,13 +522,38 @@ class Updater extends common_ext_ExtensionUpdater {
         $this->skip('6.22.0', '6.23.0');
 
         if ($this->isVersion('6.23.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['language'] = 'it-IT';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.24.0');
+        }
+
+        if ($this->isVersion('6.24.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['test-taker-review-scope'] = 'testPart';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.25.0');
+        }
+
+        if ($this->isVersion('6.25.0')) {
 
             //enables the precaching config (the proxy)
             $setGuidedNavigation = new SetGuidedNavigation();
             $setGuidedNavigation->setServiceLocator($this->getServiceManager());
             $setGuidedNavigation([]);
 
-            $this->setVersion('6.24.0');
+            $this->setVersion('6.26.0');
         }
+
     }
 }
