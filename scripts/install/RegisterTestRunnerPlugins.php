@@ -47,7 +47,7 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'tags' => [ 'core' ]
             ]
         ],
-        'formula' => [
+        'tools' => [
             [
                 'id' => 'formula',
                 'name' => 'Formula PDF',
@@ -57,9 +57,7 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'category' => 'tools',
                 'active' => true,
                 'tags' => [ ]
-            ]
-        ],
-        'documentViewer' => [
+            ],
             [
                 'id' => 'documentViewer',
                 'module' => 'taoQtiTest/runner/plugins/tools/documentViewer/documentViewer',
@@ -69,6 +67,16 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'category' => 'tools',
                 'active' => true,
                 'tags' => [ ]
+            ],
+            [
+                'id' => 'textToSpeech',
+                'name' => 'Text to Speech',
+                'module' => 'taoTextHelp/runner/plugins/tools/textToSpeech/plugin',
+                'bundle' => 'taoTextHelp/loader/testPlugins.min',
+                'description' => 'Enables text-to-speech via Texthelp',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => []
             ]
         ]
     ];
