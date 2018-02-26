@@ -31,6 +31,7 @@ use oat\taoTests\models\runner\plugins\TestPluginService;
 use oat\tao\model\mvc\DefaultUrlService;
 use oat\tao\model\theme\ThemeService;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
+use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -519,5 +520,15 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.22.0', '6.23.0');
+
+        if ($this->isVersion('6.23.0')) {
+
+            //enables the precaching config (the proxy)
+            $setGuidedNavigation = new SetGuidedNavigation();
+            $setGuidedNavigation->setServiceLocator($this->getServiceManager());
+            $setGuidedNavigation([]);
+
+            $this->setVersion('6.24.0');
+        }
     }
 }
