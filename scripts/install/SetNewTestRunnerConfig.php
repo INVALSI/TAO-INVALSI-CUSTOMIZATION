@@ -46,24 +46,21 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         );
 
         //*** TextHelp Setup
-        // - set to customer specific domain  (i.e. "customerxtoolbar.speechstream.net")
-        $config['plugins']['textToSpeech']['server'] = 'taotoolbar.speechstream.net';
-        // - set to latest release build version.
-        $config['plugins']['textToSpeech']['build'] = '211';
-        // - set to customer ID value
-        $config['plugins']['textToSpeech']['custId'] = '2600premium';
-        // - set to customer user name
-        $config['plugins']['textToSpeech']['loginName'] = 'tao';
+        // - URI of the config file that should contain the right setup for the customer
+        $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configQA.js';
         // - override the default language crosswalk
         $config['plugins']['textToSpeech']['languagesCrosswalk'] = [
             // "yy" => "xx-XX"
         ];
         // - rely on TextHelp to detect the language based on the content
-        $config['plugins']['textToSpeech']['voiceFromLangFlag'] = false;
+        $config['plugins']['textToSpeech']['allowTextHelpLangCheck'] = false;
+        // - take care of QTI lang attribute
+        $config['plugins']['textToSpeech']['allowQtiLangCheck'] = true;
         // - setup the default language for the platform
+        $config['plugins']['textToSpeech']['forceLanguage'] = true;
         $config['plugins']['textToSpeech']['voiceLanguage'] = 'it-IT'; // language code
         $config['plugins']['textToSpeech']['voiceGender'] = 'female';  // voice gender: 'female' or 'male'
-        $config['plugins']['textToSpeech']['voiceIndex'] = 0;           // when several voices are available for the same gender (cf. languages.json)
+        $config['plugins']['textToSpeech']['voiceIndex'] = 0;          // when several voices are available for the same gender (cf. languages.json)
         //*** end TextHelp Setup
 
         $config['bootstrap']['communication'] = [
