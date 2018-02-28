@@ -52,7 +52,7 @@ define([
                         var testContext = testRunner.getTestContext();
                         var key = testContext.itemIdentifier;
 
-                        if (itemRunner && !currentItem.isAnswered(testRunner)) {
+                        if (itemRunner) {
                             itemRunner.on('responsechange', function () {
                                 self.storage.setItem(key, itemRunner.getState());
                             });
