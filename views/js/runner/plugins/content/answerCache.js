@@ -18,15 +18,12 @@
 /**
  * Plugin that puts in cache the current item's state upon move.
  * After a page refresh, the cached state is loaded to restore the previously set state.
- * However if the item has already been responded no change is made.
  * The cache is cleared when the item attempt is finished.
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
 define([
-    'util/namespace',
-    'taoTests/runner/plugin',
-    'taoQtiTest/runner/helpers/currentItem'
-], function (namespaceHelper, pluginFactory, currentItem) {
+    'taoTests/runner/plugin'
+], function (pluginFactory) {
     'use strict';
 
     /**
