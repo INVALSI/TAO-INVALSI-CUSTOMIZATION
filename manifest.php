@@ -13,20 +13,21 @@ use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
 use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
+use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.26.0',
+    'version' => '6.27.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
         'taoCe' => '>=1.2.0',
         'tao' => '>=16.4.0',
         'taoMediaManager' => '*',
-        'taoQtiTest' => '>=23.1.0',
-        'taoQtiItem' => '>=6.2.0',
+        'taoQtiTest' => '>=24.0.0',
+        'taoQtiItem' => '>=13.3.2',
         'taoTextHelp' => '>=0.2.0',
         'taoTests' => '>=3.5.0',
         'pciSamples' => '>=1.3.0',
@@ -53,7 +54,8 @@ return array(
             SetupBookletConfigService::class,
             DisableAllowShortcut::class,
             ConfigureClientDiagnostic::class,
-            SetPreCachingConfig::class
+            SetPreCachingConfig::class,
+            SetGuidedNavigation::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
