@@ -555,5 +555,16 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.26.0');
         }
 
+        if ($this->isVersion('6.26.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA211.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.27.0');
+        }
     }
 }
