@@ -578,5 +578,21 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.28.0');
         }
+
+        if ($this->isVersion('6.28.0')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'answerCache',
+                'name' => 'Answers cache',
+                'module' => 'taoInvalsi/runner/plugins/content/answerCache',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Cache the answers to restore them after refresh',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ]]);
+            $this->setVersion('6.29.0');
+        }
     }
 }
