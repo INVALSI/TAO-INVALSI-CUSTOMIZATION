@@ -555,5 +555,44 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.26.0');
         }
 
+        if ($this->isVersion('6.26.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA211.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.27.0');
+        }
+
+        if ($this->isVersion('6.27.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['overrideMathExpr'] = "Please watch the formula";
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.28.0');
+        }
+
+        if ($this->isVersion('6.28.0')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'answerCache',
+                'name' => 'Answers cache',
+                'module' => 'taoInvalsi/runner/plugins/content/answerCache',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Cache the answers to restore them after refresh',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ]]);
+            $this->setVersion('6.29.0');
+        }
     }
 }

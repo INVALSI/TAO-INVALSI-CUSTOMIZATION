@@ -35,6 +35,18 @@ class RegisterTestRunnerPlugins extends InstallAction
 {
 
     public static $plugins = [
+        'content' => [
+            [
+                'id' => 'answerCache',
+                'name' => 'Answers cache',
+                'module' => 'taoInvalsi/runner/plugins/content/answerCache',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Cache the answers to restore them after refresh',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ]
+        ],
         'security' => [
             [
                 'id' => 'disableRightClick',
