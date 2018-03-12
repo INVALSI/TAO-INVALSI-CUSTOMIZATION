@@ -595,6 +595,16 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.29.0');
         }
 
-        $this->skip('6.29.0', '6.29.1');
+        if ($this->isVersion('6.29.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['overrideMathExpr'] = "Guarda la formula";
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.29.1');
+        }
     }
 }
