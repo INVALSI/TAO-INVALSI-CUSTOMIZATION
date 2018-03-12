@@ -48,6 +48,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         //*** TextHelp Setup
         // - URI of the config file that should contain the right setup for the customer
         $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA211.js';
+        // - override math expressions with an alternative text
+        $config['plugins']['textToSpeech']['overrideMathExpr'] = "Guarda la formula";
         // - override the default language crosswalk
         $config['plugins']['textToSpeech']['languagesCrosswalk'] = [
             // "yy" => "xx-XX"
