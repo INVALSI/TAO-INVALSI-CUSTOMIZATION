@@ -5,20 +5,18 @@
 
 namespace oat\taoInvalsi\model\export;
 
-
+use oat\oatbox\filesystem\File;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceManager;
+use oat\taoDelivery\model\execution\ServiceProxy;
 use oat\taoDeliveryRdf\model\DeliveryAssemblyService;
-use oat\taoResultServer\models\classes\ResultServerService;
 use oat\taoResultServer\models\classes\ResultManagement;
-use oat\oatbox\filesystem\File;
-use qtism\data\storage\php\PhpDocument;
+use oat\taoResultServer\models\classes\ResultServerService;
 use qtism\data\AssessmentTest;
 use qtism\data\ExtendedAssessmentItemRef;
 use qtism\data\state\OutcomeDeclaration;
 use qtism\data\state\ResponseDeclaration;
-use qtism\runtime\common\MultipleContainer;
-use oat\taoDelivery\model\execution\ServiceProxy;
+use qtism\data\storage\php\PhpDocument;
 
 class AllBookletsExport
 {
@@ -36,15 +34,15 @@ class AllBookletsExport
     const MATCH_TYPE_MATRIX = 2;
 
     /**
-     * // 77 - not needed for current delivery
+     * // Z - not needed for current delivery
      * //      #1# (should be set in the getAllDeliveryData on merge results)
      * //      #2# (or if item was skipped (branchRule))
-     * // 88 - not attempted
-     * // 99 - student didn't
+     * // Y - not attempted
+     * // W - student didn't
      */
-    const NOT_REQUIRED = 77;
-    const NOT_ATTEMPTED = 88;
-    const NOT_RESPONDED = 99;
+    const NOT_REQUIRED = 'Z';
+    const NOT_ATTEMPTED = 'Y';
+    const NOT_RESPONDED = 'W';
 
     /**
      * Order and expected columns
@@ -120,7 +118,12 @@ class AllBookletsExport
 
     /**
      * Generate array with statistics for all deliveries
+     *
      * @return \common_report_Report
+     *
+     * @throws \common_exception_Error
+     * @throws \common_exception_NotFound
+     * @throws \qtism\data\storage\php\PhpStorageException
      */
     public function export()
     {
@@ -137,7 +140,7 @@ class AllBookletsExport
         $rowsReport = $this->getRows();
         $report->add($rowsReport);
 
-        if($report->containsError()){
+        if ($report->containsError()) {
             $report->setType(\common_report_Report::TYPE_ERROR);
             $report->setMessage('Some errors occurred during export :');
         }
@@ -174,13 +177,13 @@ class AllBookletsExport
 
     /**
      * Get the list of headers for all deliveries that we want to export
+     *
      * @return array $headers
-     * @throws \common_exception_Error
+     * @throws \qtism\data\storage\php\PhpStorageException
      */
     private function getHeaders()
     {
-
-        if(is_null($this->headers)){
+        if (is_null($this->headers)) {
             $headers = array('ID', 'IDFORM', 'STARTTIME', 'FINISHTIME');
             $report = \common_report_Report::createSuccess();
 
@@ -188,7 +191,7 @@ class AllBookletsExport
             /** @var \tao_models_classes_service_FileStorage $storageService */
             $storageService = $this->getServiceManager()->get(\tao_models_classes_service_FileStorage::SERVICE_ID);
 
-            foreach($this->deliveries as $delivery){
+            foreach ($this->deliveries as $delivery) {
                 $this->assessmentItemRefIdentifierMapping[$delivery->getUri()] = [];
                 
                 //Get item list
@@ -205,9 +208,7 @@ class AllBookletsExport
                     
                     /** @var File $file */
                     foreach ($files as $file) {
-                        
                         if ($file->getBasename() === 'compact-test.php') {
-                            
                             $phpDocument = new PhpDocument();
                             $phpDocument->loadFromString($file->read());
                             /** @var AssessmentTest $assementTest */
@@ -216,24 +217,20 @@ class AllBookletsExport
 
                             /** @var ExtendedAssessmentItemRef $component */
                             foreach ($components as $component) {
-                                
-                                $href = explode('|',$component->getHref());
+                                $href = explode('|', $component->getHref());
                                 $private = $href[2];
                                 $itemJsonDir = $storageService->getDirectoryById($private);
                                 $itemJsonFiles = $itemJsonDir->getFlyIterator(3);
                                 $choices = array();
 
                                 foreach ($itemJsonFiles as $itemJsonFile) {
-                                    
                                     if ($itemJsonFile->getBasename() === 'item.json') {
-                                        
                                         $itemJson = json_decode($itemJsonFile->read());
                                         $identifier = $this->getAssessmentItemRefIdentifier($delivery, $component, $itemJson, $this->identifierStrategy);
                                         $this->assessmentItemRefIdentifierMapping[$delivery->getUri()][$component->getIdentifier()] = $identifier;
                                         $interactions = AllBookletsExportUtils::getInteractions($itemJson);
                                         
                                         if (isset($interactions['matchInteraction'])) {
-                                            
                                             foreach ($interactions['matchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
@@ -242,7 +239,7 @@ class AllBookletsExport
                                                     // By column strategy.
                                                     $strategy = self::MATCH_TYPE_COLUMN;
                                                     $choices[$identifier . $responseIdentifier] = $matchSets[0];
-                                                    
+
                                                 } elseif (AllBookletsExportUtils::isMatchByRow($jsonInteraction)) {
                                                     // By row strategy.
                                                     $strategy = self::MATCH_TYPE_ROW;
@@ -255,12 +252,11 @@ class AllBookletsExport
                                                 
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $strategy;
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
-                                                
+
                                             }
-                                        } 
+                                        }
                                         
                                         if (isset($interactions['gapMatchInteraction'])) {
-
                                             foreach ($interactions['gapMatchInteraction'] as $responseIdentifier => $jsonInteraction) {
                                                 $headerResponseIdentifier = $identifier . '-' . $responseIdentifier;
                                                 $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = self::MATCH_TYPE_ROW;
@@ -269,7 +265,7 @@ class AllBookletsExport
                                                 $this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets;
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
-                                        } 
+                                        }
                                         
                                         if (isset($interactions['hottextInteraction'])) {
                                             foreach ($interactions['hottextInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -279,7 +275,7 @@ class AllBookletsExport
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $choices[$identifier . $responseIdentifier] = $matchSets[0];
                                             }
-                                        } 
+                                        }
                                         
                                         if (isset($interactions['choiceInteraction'])) {
                                             foreach ($interactions['choiceInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -296,7 +292,7 @@ class AllBookletsExport
                                                     $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                                 }
                                             }
-                                        } 
+                                        }
                                         
                                         if (isset($interactions['inlineChoiceInteraction'])) {
                                             foreach ($interactions['inlineChoiceInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -304,7 +300,7 @@ class AllBookletsExport
                                                 $matchSets = AllBookletsExportUtils::getMatchSets($jsonInteraction, $responseIdentifier);
                                                 $this->choiceTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] = $matchSets[0];
                                             }
-                                        } 
+                                        }
                                         
                                         if (isset($interactions['orderInteraction'])) {
                                             foreach ($interactions['orderInteraction'] as $responseIdentifier => $jsonInteraction) {
@@ -337,14 +333,11 @@ class AllBookletsExport
                                 if ($this->variablePolicy === self::VARIABLE_POLICY_ALL || $this->variablePolicy === self::VARIABLE_POLICY_RESPONSE) {
                                     /** @var ResponseDeclaration $response */
                                     foreach ($responses as $response) {
-                                        
                                         $headerResponseIdentifier = $identifier . '-' . $response->getIdentifier();
                                         
-                                        if ($this->isVariableNameBlacklisted($response->getIdentifier(), $headerResponseIdentifier) === false) {                                        
-                                            
+                                        if ($this->isVariableNameBlacklisted($response->getIdentifier(), $headerResponseIdentifier) === false) {
                                             
                                             if (isset($choices[$identifier . $response->getIdentifier()])) {
-                                                
                                                 // Non default response variable structure (e.g. matchInteraction, gapMatchInteraction, ...)
                                                 if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier]) && isset($this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier]) && $this->matchTypeByDeliveries[$deliveryUri][$headerResponseIdentifier] === self::MATCH_TYPE_MATRIX) {
                                                     // Match Matrix specific case.
@@ -359,7 +352,6 @@ class AllBookletsExport
                                                         }
                                                     }
                                                 } else {
-                                                    
                                                     foreach ($choices[$identifier . $response->getIdentifier()] as $choiceId) {
                                                         if (isset($this->matchSetsByDeliveries[$deliveryUri][$headerResponseIdentifier])) {
                                                             $alpha = range('a', 'z');
@@ -372,7 +364,6 @@ class AllBookletsExport
                                                         $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier . '-' . $choiceId;
                                                     }
                                                 }
-                                                
                                             } else {
                                                 // Default response variable structure.
                                                 $this->variablesByDeliveries[$delivery->getUri()][] = $headerResponseIdentifier;
@@ -427,7 +418,12 @@ class AllBookletsExport
 
     /**
      * Get all the rows of all executions of all deliveries
+     *
      * @return \common_report_Report
+     *
+     * @throws \common_exception_Error
+     * @throws \common_exception_NotFound
+     * @throws \qtism\data\storage\php\PhpStorageException
      */
     private function getRows()
     {
@@ -580,8 +576,11 @@ class AllBookletsExport
 
     /**
      * Write the row provided in the csv file
+     *
      * @param array $row
      * @param bool $isHeader
+     *
+     * @throws \qtism\data\storage\php\PhpStorageException
      */
     private function writeToCsv(array $row, $isHeader = false)
     {
@@ -638,9 +637,9 @@ class AllBookletsExport
         // Do nothing, it's just an opportunity to delegate some 
         // post-processing on more specific implementations.
     }
-    
+
     /**
-     * 
+     * @param array $header
      */
     protected function headerPostProcessing(array &$header)
     {
@@ -650,7 +649,9 @@ class AllBookletsExport
 
     /**
      * Format the variable value to correspond to what invalsi want
+     *
      * @param \taoResultServer_models_classes_Variable $variable
+     *
      * @return string $variable
      */
     private function formatVariable($variable)
