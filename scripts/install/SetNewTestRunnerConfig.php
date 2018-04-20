@@ -24,7 +24,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'keep-timer-up-to-timeout' => true,
             'enable-allow-skipping' => false,
             'enable-validate-responses' => false,
-            'item-cache-size' => 3
+            'item-cache-size' => 3,
+            'test-session' => 'oat\\taoInvalsi\\model\\runner\\session\\InvalsiTestSession'
         );
 
         $qtiTest = $this->getServiceManager()->get(common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');

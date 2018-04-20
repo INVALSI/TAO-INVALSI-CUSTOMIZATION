@@ -608,5 +608,17 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.29.1', '6.31.2');
+
+        if ($this->isVersion('6.31.2')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['test-session'] = 'oat\\taoInvalsi\\model\\runner\\session\\InvalsiTestSession';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.31.3');
+        }
     }
 }
