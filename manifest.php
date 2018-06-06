@@ -21,7 +21,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.31.2',
+    'version' => '6.32.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	    'generis' => '7.6.0',
