@@ -24,6 +24,7 @@ return array(
     'version' => '6.31.2',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
+	    'generis' => '7.6.0',
         'taoCe' => '>=1.2.0',
         'tao' => '>=16.4.0',
         'taoMediaManager' => '*',
