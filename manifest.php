@@ -14,6 +14,7 @@ use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
 use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
+use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 
 return array(
     'name' => 'taoInvalsi',
@@ -56,7 +57,8 @@ return array(
             DisableAllowShortcut::class,
             ConfigureClientDiagnostic::class,
             SetPreCachingConfig::class,
-            SetGuidedNavigation::class
+            SetGuidedNavigation::class,
+            [ToggleGuestAccess::class, ['off']]
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
