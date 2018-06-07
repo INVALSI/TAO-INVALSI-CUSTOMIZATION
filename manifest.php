@@ -14,15 +14,17 @@ use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
 use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
+use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.31.2',
+    'version' => '6.32.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
+	    'generis' => '7.6.0',
         'taoCe' => '>=1.2.0',
         'tao' => '>=16.4.0',
         'taoMediaManager' => '*',
@@ -56,7 +58,8 @@ return array(
             DisableAllowShortcut::class,
             ConfigureClientDiagnostic::class,
             SetPreCachingConfig::class,
-            SetGuidedNavigation::class
+            SetGuidedNavigation::class,
+            [ToggleGuestAccess::class, ['off']]
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
