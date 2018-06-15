@@ -11,6 +11,7 @@ use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\event\LoginSucceedEvent;
 use oat\tao\model\event\LogoutSucceedEvent;
+use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\model\session\Capture;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
@@ -608,5 +609,13 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.29.1', '6.31.2');
+
+        if ($this->isVersion('6.31.2')) {
+            $this->runExtensionScript(ToggleGuestAccess::class, ['off']);
+
+            $this->setVersion('6.32.0');
+        }
+
+        $this->skip('6.32.0', '6.32.1');
     }
 }
