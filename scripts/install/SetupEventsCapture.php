@@ -26,7 +26,7 @@ use oat\tao\model\event\LoginSucceedEvent;
 use oat\tao\model\event\LogoutSucceedEvent;
 use oat\taoInvalsi\model\session\Capture;
 
-class SetupEventsCaptur extends InstallAction
+class SetupEventsCapture extends InstallAction
 {
     public function __invoke($params)
     {

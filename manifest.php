@@ -3,7 +3,7 @@
  * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
-use oat\taoInvalsi\scripts\install\SetupEventsCaptur;
+use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoInvalsi\scripts\install\SetQtiCreatorConfig;
@@ -60,7 +60,7 @@ return array(
             ConfigureClientDiagnostic::class,
             SetPreCachingConfig::class,
             SetGuidedNavigation::class,
-            SetupEventsCaptur::class,
+            SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
         )
     ),
