@@ -3,6 +3,7 @@
  * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
+use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoInvalsi\scripts\install\SetQtiCreatorConfig;
@@ -21,7 +22,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.32.1',
+    'version' => '6.32.2',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	    'generis' => '>=7.6.0',
@@ -59,7 +60,8 @@ return array(
             ConfigureClientDiagnostic::class,
             SetPreCachingConfig::class,
             SetGuidedNavigation::class,
-            [ToggleGuestAccess::class, ['off']]
+            SetupEventsCapture::class,
+            [ToggleGuestAccess::class, ['off']],
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
