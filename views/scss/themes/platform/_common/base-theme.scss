@@ -76,7 +76,7 @@ html {
     }
 }
 
-.delivery-scope [data-control="skip"] {
+.delivery-scope [data-control="skip"], [data-control="skip-end"] {
     display: none;
 }
 
