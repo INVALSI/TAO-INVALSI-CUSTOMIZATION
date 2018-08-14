@@ -76,6 +76,9 @@ html {
     }
 }
 
+.delivery-scope [data-control="skip"] {
+    display: none;
+}
 
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
