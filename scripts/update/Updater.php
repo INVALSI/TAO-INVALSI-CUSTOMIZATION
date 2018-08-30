@@ -22,6 +22,7 @@ use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
+use oat\taoQtiTest\models\runner\time\TimerLabelFormatterService;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiTest\scripts\install\SetNewTestRunner;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
@@ -617,5 +618,15 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.32.0', '6.33.0');
+
+        if ($this->isVersion('6.33.0')){
+            /** @var TimerLabelFormatterService $timerLabel */
+            $timerLabel = $this->getServiceManager()->get(TimerLabelFormatterService::SERVICE_ID);
+            $timerLabel->setOption(TimerLabelFormatterService::OPTION_DEFAULT_TIMER_LABEL, '');
+
+            $this->getServiceManager()->register(TimerLabelFormatterService::SERVICE_ID, $timerLabel);
+
+            $this->setVersion('6.33.1');
+        }
     }
 }
