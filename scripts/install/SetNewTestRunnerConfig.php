@@ -22,7 +22,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'path-tracking' => true,
             'always-allow-jumps' => true,
             'keep-timer-up-to-timeout' => true,
-            'enable-allow-skipping' => false,
+            'enable-allow-skipping' => true,
             'enable-validate-responses' => false,
             'item-cache-size' => 3
         );

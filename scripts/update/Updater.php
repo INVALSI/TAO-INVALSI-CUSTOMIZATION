@@ -617,5 +617,17 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.32.0', '6.33.0');
+
+        if ($this->isVersion('6.33.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['enable-allow-skipping'] = true;
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.34.0');
+        }
     }
 }
