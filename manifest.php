@@ -11,6 +11,7 @@ use oat\taoInvalsi\scripts\install\SetNewTestRunnerConfig;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerPlugins;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
 use oat\taoInvalsi\scripts\install\SetPasswordPolicy;
+use oat\taoInvalsi\scripts\install\SetupResourceSelector;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
 use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
@@ -22,7 +23,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '6.34.1',
+    'version' => '6.35.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	    'generis' => '>=7.6.0',
@@ -62,6 +63,7 @@ return array(
             SetGuidedNavigation::class,
             SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
+            SetupResourceSelector::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
