@@ -9,6 +9,7 @@ namespace oat\taoInvalsi\scripts\update;
 use \common_ext_ExtensionUpdater;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\tao\model\ClientLibConfigRegistry;
 use oat\tao\model\event\LoginSucceedEvent;
 use oat\tao\model\event\LogoutSucceedEvent;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
@@ -631,5 +632,15 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.34.0', '6.34.1');
+
+        if ($this->isVersion('6.34.1')) {
+            ClientLibConfigRegistry::getRegistry()->register(
+                'layout/tree/loader', array(
+                    'treeProvider' => 'resource-selector'
+                )
+            );
+
+            $this->setVersion('6.35.0');
+        }
     }
 }
