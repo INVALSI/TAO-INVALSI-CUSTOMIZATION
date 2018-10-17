@@ -29,7 +29,7 @@ return array(
         'taoCe'           => '>=5.0.0',
         'tao'             => '>=21.0.0',
         'taoMediaManager' => '*',
-        'taoQtiTest'      => '>=28.0.0',
+        'taoQtiTest'      => '>=29.0.0',
         'taoQtiItem'      => '>=17.0.0',
         'taoTextHelp'     => '>=0.4.0',
         'taoTests'        => '>=8.0.0',
