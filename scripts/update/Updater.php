@@ -658,5 +658,18 @@ class Updater extends common_ext_ExtensionUpdater {
             ]]);
             $this->setVersion('6.36.0');
         }
+
+        if ($this->isVersion('6.36.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['test-taker-review-force-informational-title'] = true;
+            $config['test-taker-review-informational-item-title'] = false;
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.37.0');
+        }
     }
 }

@@ -14,7 +14,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'test-taker-review-force-title' => true,
             'test-taker-review-item-title' => 'Domanda %d',
             'test-taker-review-force-informational-title' => true,
-            'test-taker-review-informational-item-title' => 'Istruzioni',
+            'test-taker-review-informational-item-title' => false,
             'test-taker-review-scope' => 'testPart',
             'test-taker-review-prevents-unseen' => true,
             'test-taker-review-can-collapse' => true,
