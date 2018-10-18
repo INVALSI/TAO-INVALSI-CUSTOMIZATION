@@ -89,6 +89,16 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'category' => 'tools',
                 'active' => true,
                 'tags' => []
+            ],
+            [
+                'id' => 'preventDropToInput',
+                'name' => 'Prevent Drop To Input',
+                'module' => 'taoTestRunnerPlugins/runner/plugins/tools/preventDropToInput',
+                'bundle' => 'taoTestRunnerPlugins/loader/testPlugins.min',
+                'description' => 'Prevent images movement to inputs',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => []
             ]
         ]
     ];
