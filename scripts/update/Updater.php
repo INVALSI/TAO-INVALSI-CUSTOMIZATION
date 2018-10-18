@@ -642,5 +642,21 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('6.35.0');
         }
+
+        if ($this->isVersion('6.35.0')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'preventDropToInput',
+                'name' => 'Prevent Drop To Input',
+                'module' => 'taoTestRunnerPlugins/runner/plugins/tools/preventDropToInput',
+                'bundle' => 'taoTestRunnerPlugins/loader/testPlugins.min',
+                'description' => 'Prevent images movement to inputs',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => []
+            ]]);
+            $this->setVersion('6.36.0');
+        }
     }
 }
