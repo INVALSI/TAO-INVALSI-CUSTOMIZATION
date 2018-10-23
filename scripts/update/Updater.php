@@ -9,6 +9,7 @@ namespace oat\taoInvalsi\scripts\update;
 use \common_ext_ExtensionUpdater;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\tao\model\ClientLibConfigRegistry;
 use oat\tao\model\event\LoginSucceedEvent;
 use oat\tao\model\event\LogoutSucceedEvent;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
@@ -630,6 +631,47 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('6.34.0');
         }
 
-        $this->skip('6.34.0', '7.0.0');
+        $this->skip('6.34.0', '6.34.1');
+
+        if ($this->isVersion('6.34.1')) {
+            ClientLibConfigRegistry::getRegistry()->register(
+                'layout/tree/loader', array(
+                    'treeProvider' => 'resource-selector'
+                )
+            );
+
+            $this->setVersion('6.35.0');
+        }
+
+        if ($this->isVersion('6.35.0')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'preventDropToInput',
+                'name' => 'Prevent Drop To Input',
+                'module' => 'taoTestRunnerPlugins/runner/plugins/tools/preventDropToInput',
+                'bundle' => 'taoTestRunnerPlugins/loader/testPlugins.min',
+                'description' => 'Prevent images movement to inputs',
+                'category' => 'tools',
+                'active' => true,
+                'tags' => []
+            ]]);
+            $this->setVersion('6.36.0');
+        }
+
+        if ($this->isVersion('6.36.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['test-taker-review-force-informational-title'] = true;
+            $config['test-taker-review-informational-item-title'] = false;
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('6.37.0');
+        }
+
+        $this->skip('6.37.0', '7.0.0');
     }
 }

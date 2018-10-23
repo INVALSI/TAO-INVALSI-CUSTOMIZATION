@@ -40,7 +40,7 @@ return array(
         'taoDeliveryRdf'  => '>=6.0.0',
         'taoDelivery'     => '>=11.0.0'
     ),
-	'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
+    'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi'))
     ),
@@ -62,6 +62,7 @@ return array(
             SetGuidedNavigation::class,
             SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
+            SetResourceSelector::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
