@@ -3,6 +3,7 @@
  * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
+use oat\tao\scripts\install\SetResourceSelector;
 use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
