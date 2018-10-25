@@ -21,8 +21,7 @@
 
 namespace oat\taoInvalsi\scripts\install;
 
-use common_ext_action_InstallAction as InstallAction;
-//use oat\oatbox\extension\InstallAction;
+use oat\oatbox\extension\InstallAction;
 use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 
@@ -30,8 +29,6 @@ class addAssignmentSettings extends InstallAction
 {
     public function __invoke($params)
     {
-        \common_Logger::i('function ran');
-
         /** @var GroupAssignment $assignment */
         $assignment = $this->getServiceManager()->get(AssignmentService::SERVICE_ID);
         $assignment->setOption(GroupAssignment::DISPLAY_DATES_OPTION, false);
