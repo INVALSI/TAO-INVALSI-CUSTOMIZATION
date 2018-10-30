@@ -3,6 +3,7 @@
  * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
  */
 
+use oat\tao\scripts\install\SetResourceSelector;
 use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
@@ -31,15 +32,16 @@ return array(
         'tao'             => '>=21.0.0',
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.0.0',
-        'taoQtiItem'      => '>=17.0.0',
-        'taoTextHelp'     => '>=0.4.0',
+        'taoQtiItem'      => '>=18.0.0',
+        'taoTextHelp'     => '>=1.0.0',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
-        'taoMonitoring'   => '>=1.0.0',
+        'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.1.0',
         'taoDelivery'     => '>=11.0.0'
+        'taoTestRunnerPlugins' => '>=2.0.0',
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
