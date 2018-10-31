@@ -17,13 +17,14 @@ use oat\taoInvalsi\scripts\install\ConfigureClientDiagnostic;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
+use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '7.0.0',
+    'version' => '7.1.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	    'generis'         => '>=7.6.0',
@@ -38,9 +39,9 @@ return array(
         'taoBooklet'      => '>=2.0.0',
         'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
-        'taoDeliveryRdf'  => '>=6.0.0',
+        'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=11.0.0',
-        'taoTestRunnerPlugins' => '>=2.0.0',
+        'taoTestRunnerPlugins' => '>=2.0.0'
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -65,6 +66,7 @@ return array(
             SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
             SetResourceSelector::class,
+            addAssignmentSettings::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',

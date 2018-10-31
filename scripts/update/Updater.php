@@ -34,6 +34,8 @@ use oat\tao\model\mvc\DefaultUrlService;
 use oat\tao\model\theme\ThemeService;
 use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
+use oat\taoDelivery\model\AssignmentService;
+use oat\taoDeliveryRdf\model\GroupAssignment;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -673,5 +675,13 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.37.0', '7.0.0');
+
+        if ($this->isVersion('7.0.0')) {
+            /** @var GroupAssignment $assignment */
+            $assignment = $this->getServiceManager()->get(AssignmentService::SERVICE_ID);
+            $assignment->setOption(GroupAssignment::DISPLAY_DATES_OPTION, false);
+            $this->getServiceManager()->register(AssignmentService::SERVICE_ID, $assignment);
+            $this->setVersion('7.1.0');
+        }
     }
 }
