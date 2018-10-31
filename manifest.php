@@ -39,7 +39,7 @@ return array(
         'taoBooklet'      => '>=2.0.0',
         'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
-        'taoDeliveryRdf'  => '>=7.2.0',
+        'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=11.0.0',
         'taoTestRunnerPlugins' => '>=2.0.0'
     ),
