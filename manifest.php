@@ -41,6 +41,7 @@ return array(
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=11.0.0',
+        'taoClientDiagnostic'  => '>=3.0.2',
         'taoTestRunnerPlugins' => '>=2.0.0'
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',

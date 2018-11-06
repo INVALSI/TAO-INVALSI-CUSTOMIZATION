@@ -1,0 +1,176 @@
+<?php
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2018 (original work) Open Assessment Technologies SA;
+ *
+ */
+
+namespace oat\taoInvalsi\model\launchLog;
+
+use Doctrine\DBAL\Query\QueryBuilder;
+use oat\oatbox\service\ConfigurableService;
+use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
+use oat\taoClientDiagnostic\model\browserDetector\WebBrowserService;
+use oat\taoClientDiagnostic\model\browserDetector\OSService;
+
+/**
+ * Interface RdsLaunchLogService
+ *
+ * @package oat\taoInvalsi\model\lauchLog
+ * @author Aleh Hutnikau <hutnikau@1pt.com>
+ */
+class RdsLaunchLogService extends ConfigurableService implements LaunchLog
+{
+    const OPTION_PERSISTENCE = 'persistence';
+    const TABLE_NAME = 'launch_log';
+    const OPTION_FIELDS = 'fields';
+
+    /**
+     * @param DeliveryExecutionInterface $deliveryExecution
+     * @return bool
+     * @throws \common_exception_NotFound
+     */
+    public function log(DeliveryExecutionInterface $deliveryExecution)
+    {
+        $osService = OSService::singleton();
+        $browserService = WebBrowserService::singleton();
+        $result = $this->getPersistence()->insert(
+            self::TABLE_NAME,
+            [
+                self::DELIVERY_EXECUTION_ID => $deliveryExecution->getIdentifier(),
+                self::DELIVERY_ID => $deliveryExecution->getDelivery()->getUri(),
+                self::TEST_TAKER_ID => $deliveryExecution->getUserIdentifier(),
+                self::BROWSER => $browserService->getClientName(),
+                self::BROWSER_VERSION => $browserService->getClientVersion(),
+                self::OS => $osService->getClientName(),
+                self::OS_VERSION => $osService->getClientVersion(),
+                self::CREATED_AT => \tao_helpers_Date::getTimeStamp($deliveryExecution->getStartTime(), true),
+            ]
+        );
+
+        return $result === 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function search($params = [], $options = [])
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
+            ->select('*')
+            ->from(static::TABLE_NAME)
+        ;
+
+        $fields = $this->getFields();
+        foreach ($params as $key => $val) {
+            if (in_array($key, $fields)) {
+                $queryBuilder->andWhere($key . '= :'.$key);
+                $queryBuilder->setParameter($key, $val);
+            }
+        }
+
+        if (isset($params['from'])) {
+            $queryBuilder->andWhere(self::CREATED_AT . ' >=:createdAtMore');
+            $queryBuilder->setParameter('createdAtMore', $params['from']);
+        }
+
+        if (isset($params['to'])) {
+            $queryBuilder->andWhere(self::CREATED_AT . ' <=:createdAtLess');
+            $queryBuilder->setParameter('createdAtLess', $params['to']);
+        }
+
+        if (isset($options['limit'])) {
+            $queryBuilder->setMaxResults($options['limit']);
+        }
+
+        if (isset($options['offset'])) {
+            $queryBuilder->setFirstResult($options['offset']);
+        }
+
+        if (isset($options['order']) && isset($options['dir'])) {
+            $queryBuilder->orderBy($options['order'], strtoupper($options['dir']));
+        }
+
+        $result = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getFields()
+    {
+        $fields = $this->getOption(static::OPTION_FIELDS);
+
+        return is_null($fields) ? [] : $fields;
+    }
+
+    /**
+     * @return \common_persistence_SqlPersistence
+     */
+    private function getPersistence()
+    {
+        $persistenceId = $this->getOption(self::OPTION_PERSISTENCE);
+        $persistenceManager = $this->getServiceLocator()->get(\common_persistence_Manager::SERVICE_ID);
+        return $persistenceManager->getPersistenceById($persistenceId);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    private function getQueryBuilder()
+    {
+        return $this->getPersistence()->getPlatform()->getQueryBuilder();
+    }
+
+
+    /**
+     * Initialize log storage
+     *
+     * @param \common_persistence_Persistence $persistence
+     * @return \common_report_Report
+     */
+    public static function install($persistence)
+    {
+        $schemaManager = $persistence->getDriver()->getSchemaManager();
+        $schema = $schemaManager->createSchema();
+        $fromSchema = clone $schema;
+
+        try {
+            $table = $schema->createTable(self::TABLE_NAME);
+            $table->addOption('engine', 'InnoDB');
+            $table->addColumn(static::DELIVERY_EXECUTION_ID, 'string', ['length' => 255]);
+            $table->addColumn(static::DELIVERY_ID, 'string', ['length' => 255]);
+            $table->addColumn(static::TEST_TAKER_ID, 'string', ['length' => 255]);
+            $table->addColumn(static::BROWSER, 'text');
+            $table->addColumn(static::BROWSER_VERSION, 'string', ['length' => 255]);
+            $table->addColumn(static::OS, "text");
+            $table->addColumn(static::OS_VERSION, 'string', ['length' => 255]);
+            $table->addColumn(static::CREATED_AT, 'decimal', ['precision' => 16, 'scale' => 6, "notnull" => true]);
+        } catch(SchemaException $e) {
+            \common_Logger::i('Database Schema already up to date.');
+        }
+
+        $queries = $persistence->getPlatform()->getMigrateSchemaSql($fromSchema, $schema);
+
+        foreach ($queries as $query) {
+            $persistence->exec($query);
+        }
+
+        return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('RDS scheduler storage successfully installed'));
+    }
+}
