@@ -77,6 +77,14 @@ class ExportLaunchLog extends ScriptAction
                 'required' => false,
                 'description' => 'Start time - to (timestamp)'
             ],
+            'chunk_size' => [
+                'prefix' => 'c',
+                'longPrefix' => 'chunk_size',
+                'defaultValue' => 1000,
+                'cast' => 'integer',
+                'required' => false,
+                'description' => 'chunk size'
+            ],
         ];
     }
 
@@ -89,20 +97,31 @@ class ExportLaunchLog extends ScriptAction
     {
         $from = $this->getOption('from');
         $to = $this->getOption('to');
+        $chunkSize = (int) $this->getOption('chunk_size');
         $pathInfo = pathinfo($this->getOption('destination'));
         $destination = realpath($pathInfo['dirname']) . DIRECTORY_SEPARATOR . $pathInfo['basename'];
         /** @var LaunchLog $logService */
         $logService = $this->getServiceLocator()->get(LaunchLog::class);
-        $launches = $logService->search(['from' => $from, 'to' => $to]);
 
-        if (count($launches) === 0) {
+        $limit = $chunkSize;
+        $offset = 0;
+        $total = 0;
+        file_put_contents($destination, '');
+        
+        do {
+            $launches = $logService->search(['from' => $from, 'to' => $to], ['limit' => $limit, 'offset' => $offset]);
+            $exporter = new CsvExporter($this->prepareData($launches));
+            $csv = $exporter->export($total === 0);
+            file_put_contents($destination, $csv . PHP_EOL, FILE_APPEND);
+            $offset += $limit;
+            $total += count($launches);
+        } while (!empty($launches));
+
+        if ($total === 0) {
             return new Report(Report::TYPE_WARNING, __('No entries found'));
         }
 
-        $exporter = new CsvExporter($this->prepareData($launches));
-        $csv = $exporter->export(true);
-        file_put_contents($destination, $csv);
-        return new Report(Report::TYPE_SUCCESS, __('%d entries have been exported. File path: %s', count($launches), $destination));
+        return new Report(Report::TYPE_SUCCESS, __('%d entries have been exported. File path: %s', $total, $destination));
     }
 
     /**

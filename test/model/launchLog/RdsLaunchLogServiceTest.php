@@ -77,6 +77,8 @@ class RdsLaunchLogServiceTest extends TestCase
         $this->assertEquals(0, count($service->search([RdsLaunchLogService::DELIVERY_ID => 'foo1'])));
         $this->assertEquals('foo1', $service->search(['from' => '1541514390', 'to' => '1541514391'])[0][RdsLaunchLogService::DELIVERY_EXECUTION_ID]);
         $this->assertEquals(1, count($service->search(['from' => '1541514390', 'to' => '1541514391'])));
+        $this->assertEquals(1, count($service->search([], ['limit' => 1])));
+        $this->assertEquals(1, count($service->search([], ['offset' => 1])));
     }
 
     /**
