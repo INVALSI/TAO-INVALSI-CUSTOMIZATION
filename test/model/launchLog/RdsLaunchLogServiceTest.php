@@ -24,6 +24,7 @@ use oat\taoInvalsi\model\launchLog\RdsLaunchLogService;
 use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
 use oat\oatbox\service\ServiceManager;
 use oat\generis\test\TestCase;
+
 /**
  * Interface RdsLaunchLogServiceTest
  *
@@ -79,6 +80,7 @@ class RdsLaunchLogServiceTest extends TestCase
     }
 
     /**
+     * @throws
      * @return DeliveryExecutionInterface
      */
     protected function mockDeliveryExecution($id, $deliveryId, $userId, $startTime)

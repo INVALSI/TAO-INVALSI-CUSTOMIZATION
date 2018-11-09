@@ -25,6 +25,7 @@ use oat\oatbox\service\ConfigurableService;
 use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
 use oat\taoClientDiagnostic\model\browserDetector\WebBrowserService;
 use oat\taoClientDiagnostic\model\browserDetector\OSService;
+use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionCreated;
 
 /**
  * Interface RdsLaunchLogService
@@ -107,6 +108,19 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
 
         $result = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    /**
+     * Catch DeliveryExecutionCreated event and log it.
+     *
+     * @param DeliveryExecutionCreated $event
+     * @return bool
+     * @throws \common_exception_NotFound
+     */
+    public function catchDeliveryExecutionCreated(DeliveryExecutionCreated $event)
+    {
+        $de = $event->getDeliveryExecution();
+        return $this->log($de);
     }
 
     /**
