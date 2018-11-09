@@ -31,6 +31,8 @@ use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
 interface LaunchLog
 {
     const SERVICE_ID = 'taoInvalsi/LaunchLog';
+    const OPTION_PERSISTENCE = 'persistence';
+    const OPTION_FIELDS = 'fields';
 
     const DELIVERY_EXECUTION_ID = 'delivery_execution_id';
     const DELIVERY_ID = 'delivery_id';
@@ -62,4 +64,10 @@ interface LaunchLog
      * @return mixed
      */
     public function search($params = [], $options = []);
+
+    /**
+     * @param \common_persistence_Persistence $persistence
+     * @return mixed
+     */
+    public static function install(\common_persistence_Persistence $persistence);
 }

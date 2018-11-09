@@ -35,9 +35,7 @@ use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionCreated;
  */
 class RdsLaunchLogService extends ConfigurableService implements LaunchLog
 {
-    const OPTION_PERSISTENCE = 'persistence';
     const TABLE_NAME = 'launch_log';
-    const OPTION_FIELDS = 'fields';
 
     /**
      * @param DeliveryExecutionInterface $deliveryExecution
@@ -169,7 +167,7 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
      * @param \common_persistence_Persistence $persistence
      * @return \common_report_Report
      */
-    public static function install($persistence)
+    public static function install(\common_persistence_Persistence $persistence)
     {
         $schemaManager = $persistence->getDriver()->getSchemaManager();
         $schema = $schemaManager->createSchema();
