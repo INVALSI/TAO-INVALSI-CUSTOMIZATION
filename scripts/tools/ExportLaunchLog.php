@@ -24,7 +24,7 @@ use common_report_Report as Report;
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\extension\script\ScriptAction;
 use oat\tao\model\export\implementation\CsvExporter;
-use oat\taoInvalsi\model\launchLog\RdsLaunchLogService;
+use oat\taoInvalsi\model\launchLog\LaunchLog;
 
 /**
  * Class ExportLaunchLog
@@ -91,8 +91,8 @@ class ExportLaunchLog extends ScriptAction
         $to = $this->getOption('to');
         $pathInfo = pathinfo($this->getOption('destination'));
         $destination = realpath($pathInfo['dirname']) . DIRECTORY_SEPARATOR . $pathInfo['basename'];
-        /** @var RdsLaunchLogService $logService */
-        $logService = $this->getServiceLocator()->get(RdsLaunchLogService::class);
+        /** @var LaunchLog $logService */
+        $logService = $this->getServiceLocator()->get(LaunchLog::class);
         $launches = $logService->search(['from' => $from, 'to' => $to]);
 
         if (count($launches) === 0) {
@@ -114,21 +114,21 @@ class ExportLaunchLog extends ScriptAction
         $data = [];
         $cache = [];
         foreach ($launches as $launch) {
-            if (!isset($cache['tt'][$launch[RdsLaunchLogService::TEST_TAKER_ID]])) {
-                $tt = $this->getResource($launch[RdsLaunchLogService::TEST_TAKER_ID]);
-                $cache['tt'][$launch[RdsLaunchLogService::TEST_TAKER_ID]] = $tt->getLabel();
+            if (!isset($cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]])) {
+                $tt = $this->getResource($launch[LaunchLog::TEST_TAKER_ID]);
+                $cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]] = $tt->getLabel();
             }
-            if (!isset($cache['delivery'][$launch[RdsLaunchLogService::TEST_TAKER_ID]])) {
-                $delivery = $this->getResource($launch[RdsLaunchLogService::DELIVERY_ID]);
-                $cache['delivery'][$launch[RdsLaunchLogService::DELIVERY_ID]] = $delivery->getLabel();
+            if (!isset($cache['delivery'][$launch[LaunchLog::TEST_TAKER_ID]])) {
+                $delivery = $this->getResource($launch[LaunchLog::DELIVERY_ID]);
+                $cache['delivery'][$launch[LaunchLog::DELIVERY_ID]] = $delivery->getLabel();
             }
             $data[] = [
-                'test_taker' => $cache['tt'][$launch[RdsLaunchLogService::TEST_TAKER_ID]],
-                'delivery_label' => $cache['delivery'][$launch[RdsLaunchLogService::DELIVERY_ID]],
-                'OS' => $launch[RdsLaunchLogService::OS],
-                'OS_version' => $launch[RdsLaunchLogService::OS_VERSION],
-                'browser' => $launch[RdsLaunchLogService::BROWSER],
-                'browser_version' => $launch[RdsLaunchLogService::BROWSER_VERSION],
+                'test_taker' => $cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]],
+                'delivery_label' => $cache['delivery'][$launch[LaunchLog::DELIVERY_ID]],
+                'OS' => $launch[LaunchLog::OS],
+                'OS_version' => $launch[LaunchLog::OS_VERSION],
+                'browser' => $launch[LaunchLog::BROWSER],
+                'browser_version' => $launch[LaunchLog::BROWSER_VERSION],
             ];
         }
         return $data;

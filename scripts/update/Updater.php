@@ -36,6 +36,7 @@ use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
+use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -684,6 +685,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('7.1.0');
         }
 
-        $this->skip('7.1.0', '7.2.0');
+        if ($this->isVersion('7.1.0')) {
+            $this->addReport(\common_report_Report::createInfo('launch log service need to be enabled (see '.RegisterRdsLaunchLog::class.')'));
+            $this->setVersion('7.2.0');
+        }
     }
 }
