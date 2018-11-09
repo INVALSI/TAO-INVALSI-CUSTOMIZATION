@@ -53,7 +53,7 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
             [
                 self::DELIVERY_EXECUTION_ID => $deliveryExecution->getIdentifier(),
                 self::DELIVERY_ID => $deliveryExecution->getDelivery()->getUri(),
-                self::TEST_TAKER_ID => $deliveryExecution->getUserIdentifier(),
+                self::TEST_TAKER_ID => $this->getTestTakerId($deliveryExecution),
                 self::BROWSER => $browserService->getClientName(),
                 self::BROWSER_VERSION => $browserService->getClientVersion(),
                 self::OS => $osService->getClientName(),
@@ -121,6 +121,17 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
     {
         $de = $event->getDeliveryExecution();
         return $this->log($de);
+    }
+
+    /**
+     * Get test taker id by delivery execution
+     * @param DeliveryExecutionInterface $deliveryExecution
+     * @return string
+     * @throws \common_exception_NotFound
+     */
+    protected function getTestTakerId(DeliveryExecutionInterface $deliveryExecution)
+    {
+        return $deliveryExecution->getUserIdentifier();
     }
 
     /**

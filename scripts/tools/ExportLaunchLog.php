@@ -89,6 +89,18 @@ class ExportLaunchLog extends ScriptAction
     }
 
     /**
+     * @return array
+     */
+    protected function provideUsage()
+    {
+        return [
+            'prefix' => 'h',
+            'longPrefix' => 'help',
+            'description' => 'Prints a help statement'
+        ];
+    }
+
+    /**
      * Export launch log to csv
      * @return Report|void
      * @throws \common_exception_InvalidArgumentType
@@ -107,7 +119,7 @@ class ExportLaunchLog extends ScriptAction
         $offset = 0;
         $total = 0;
         file_put_contents($destination, '');
-        
+
         do {
             $launches = $logService->search(['from' => $from, 'to' => $to], ['limit' => $limit, 'offset' => $offset]);
             $exporter = new CsvExporter($this->prepareData($launches));
