@@ -92,6 +92,13 @@ class TaoInvalsiDefaultTheme extends DefaultTheme
                 );
                 break;
 
+            case 'user-menu' :
+                $template = Template::getTemplate(
+                    'themes/platform/' . self::THEME_ID . '/user-menu.tpl',
+                    self::EXTENSION_ID
+                );
+                break;
+
             case 'footer' :
                 $template = Template::getTemplate(
                     'themes/platform/' . self::THEME_ID . '/footer.tpl',

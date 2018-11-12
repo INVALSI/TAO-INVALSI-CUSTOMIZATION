@@ -73,13 +73,195 @@ html {
             }
         }
 
+        &.delivery-scope {
+            [data-control="skip"], [data-control="skip-end"] {
+                display: none;
+            }
+            .content-wrap {
+                //padding: 10em; // test
+                // Remove footer:
+                margin-bottom: 0;
+                &:after {
+                    content: none;
+                }
+                // Amendment of header:
+                header.dark-bar {
+                    height: 50px;
+                    border-bottom: 2px solid #3B576D;
+                    nav {
+                        li {
+                            & > a, & >.a {
+                                border-top: 5px transparent solid;
+                                &:hover {
+                                    border-color: none;
+                                }
+                            }
+                        }
+                    }
+                }
+                .runner {
+                    .test-runner-scope {
+                        height: 100%;
+                        // .test-runner-sections {
+                        //     overflow-y: scroll;
+                        // }
+                    }
+                    // &:after {
+                    //     content: none;
+                    // }
+                }
+                .top-action-bar.action-bar.horizontal-action-bar {
+                    // Action bar repositioning "in" header:
+                    position: relative;
+                    top: -40px;
+                    height: 36px;
+                    width: calc(100vw - 320px); // logo is <150, menu <170
+                    color: #3B576D !important;
+                    //background: white;
+
+                    // display: flex;
+                    // flex-direction: row;
+                    // flex-wrap: nowrap;
+                    // justify-content: space-between;
+                    // align-items: center;
+
+                    &:before, &:after {
+                        content: none;
+                    }
+                    
+                    // New (moved) items:
+                    // .title-box {
+                    //     max-width: 25%;
+                    // }
+                    .control-box {
+                        color: #3B576D !important;
+                        // display: flex;
+                        // flex-direction: row;
+                        // flex-wrap: nowrap;
+                        // justify-content: flex-end;
+                        // align-items: center; 
+                        //overflow: hidden;
+                        //float: left;
+                        //max-width: 40%;
+                        border: 1px dotted #ccc;    // temp
+                    }
+                }    
+            }
+            // Smaller logo always, in delivery scope:
+            #tao-main-logo {
+                margin: 6px 15px;
+                max-width: 130px;
+                height: 40px;
+            }
+            // Removal of footer:
+            footer.dark-bar {
+                display: none;
+            }
+        }
+        .modal-body {
+            .content {
+                #info-dialog-content {
+                    h3 {
+                        font-size: 1.8rem;
+                    }
+                    img {
+                        margin: 1rem 1rem 2rem;
+                    }
+                    p {
+                        font-size: 0.9rem;
+                        color: #444;
+                    }    
+                }
+            }
+        }
     }
 }
 
-.delivery-scope [data-control="skip"], [data-control="skip-end"] {
-    display: none;
+// Dropdown styles:
+.dropdown-container {
+    position: relative;
+    .dropdown {
+        position: absolute; // to overcome overflow: hidden
+        top: 0;
+        right: 0;
+        z-index: 1;
+        min-width: 170px;
+        padding: 0.4rem;
+        margin: 0 0.5rem;
+        height: 32px;
+        background: transparent;
+        &.open {
+            height: auto;
+            background: white;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+            border: 1px solid #ccc;
+        }
+        & > .dropdown-submenu {
+            display: none;
+        }
+        &.open > .dropdown-submenu {
+            display: block;
+        }
+        a, .a {
+            cursor: pointer;
+            height: auto;
+            padding: 1.2rem 0.5rem;
+        }
+        a:focus, .a:focus {
+            outline: 2px dotted blue; // temp
+            border: 2px dotted green; // temp
+        }
+        .dropdown-header, .dropdown-submenu li {
+            display: block;
+            text-align: center;
+            font-size: 1.4rem;
+            padding: 0;
+            margin: 0;
+            height: auto;
+            float: unset;
+            & > a:hover, .a:hover {
+                border-color: none;
+                background: #f0f0f0;
+            }
+            .icon {
+                font-size: 1.2em;
+            }
+        }
+        .dropdown-header {
+            padding-top: 1.2rem;
+        }
+        .sep-before:before {
+            content: "";
+            display: block;
+            height: 1px;
+            width: 70%;
+            margin: 0.75rem auto;
+            background: #999;
+        }
+    }
 }
 
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
 @import './inc/mediaqueries/max-width-1024';
+
+@media (max-width: 800px) {
+    html {
+        body.delivery-scope {
+            .content-wrap {
+                .top-action-bar.action-bar.horizontal-action-bar {
+                    width: calc(100% - 200px); // logo is <150, menu <70
+                }            
+            }
+        }
+    }
+    // Reduce menu header to icon only:
+    .dropdown {
+        min-width: 50px;
+        .dropdown-header {
+            .text {
+                display: none;
+            }
+        }
+    }
+}
