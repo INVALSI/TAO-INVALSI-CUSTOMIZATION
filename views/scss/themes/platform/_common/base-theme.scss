@@ -103,10 +103,10 @@ html {
                 }
                 .runner {
                     .test-runner-scope {
-                        height: 100%;
-                        // .test-runner-sections {
-                        //     overflow-y: scroll;
-                        // }
+                        height: calc(100vh - 53px);
+                        .test-runner-sections {
+                            overflow-y: scroll;
+                        }
                     }
                     // &:after {
                     //     content: none;
@@ -114,45 +114,29 @@ html {
                 }
                 .top-action-bar.action-bar.horizontal-action-bar {
                     // Action bar repositioning "in" header:
-                    position: relative;
+                    position: absolute;
                     top: -40px;
+                    left: 80px;
                     height: 36px;
-                    width: calc(100vw - 320px); // logo is <150, menu <170
+                    width: calc(100vw - 300px); // logo is <130, menu <170
                     color: $brand;
-                    //background: white;
-
-                    // display: flex;
-                    // flex-direction: row;
-                    // flex-wrap: nowrap;
-                    // justify-content: space-between;
-                    // align-items: center;
-
+                    background: white;
+                    .control-box {
+                        color: $brand !important;
+                        //border: 1px dotted #ccc;    // temp
+                    }
                     &:before, &:after {
                         content: none;
                     }
-                    
-                    // New (moved) items:
-                    // .title-box {
-                    //     max-width: 25%;
-                    // }
-                    .control-box {
-                        color: $brand;
-                        // display: flex;
-                        // flex-direction: row;
-                        // flex-wrap: nowrap;
-                        // justify-content: flex-end;
-                        // align-items: center; 
-                        //overflow: hidden;
-                        //float: left;
-                        //max-width: 40%;
-                        border: 1px dotted #ccc;    // temp
-                    }
-                }    
+                }
+                .bottom-action-bar {
+                    overflow: hidden;
+                }
             }
             // Smaller logo always, in delivery scope:
             #tao-main-logo {
-                margin: 6px 15px;
-                max-width: 130px;
+                margin: 6px 15px 0;
+                max-width: 100px;
                 height: 40px;
             }
             // Removal of footer:
@@ -177,6 +161,10 @@ html {
             }
         }
     }
+}
+
+.test-runner-scope .action-bar.content-action-bar.horizontal-action-bar.bottom-action-bar {
+    overflow: hidden;
 }
 
 // Dropdown styles:
