@@ -4,6 +4,8 @@
 /// @group Platform themes
 ////
 
+//@import './inc/colors/_base.scss';
+
 html {
     body {
 
@@ -87,7 +89,7 @@ html {
                 // Amendment of header:
                 header.dark-bar {
                     height: 50px;
-                    border-bottom: 2px solid #3B576D;
+                    border-bottom: 2px solid $brand;// #3B576D;
                     nav {
                         li {
                             & > a, & >.a {
@@ -116,7 +118,7 @@ html {
                     top: -40px;
                     height: 36px;
                     width: calc(100vw - 320px); // logo is <150, menu <170
-                    color: #3B576D !important;
+                    color: $brand;
                     //background: white;
 
                     // display: flex;
@@ -134,7 +136,7 @@ html {
                     //     max-width: 25%;
                     // }
                     .control-box {
-                        color: #3B576D !important;
+                        color: $brand;
                         // display: flex;
                         // flex-direction: row;
                         // flex-wrap: nowrap;
@@ -207,9 +209,8 @@ html {
             height: auto;
             padding: 1.2rem 0.5rem;
         }
-        a:focus, .a:focus {
-            outline: 2px dotted blue; // temp
-            border: 2px dotted green; // temp
+        a:hover, a:focus, .a:hover, .a:focus {
+            background: whiten($brand, 0.9) !important;   // import?
         }
         .dropdown-header, .dropdown-submenu li {
             display: block;
@@ -221,7 +222,6 @@ html {
             float: unset;
             & > a:hover, .a:hover {
                 border-color: none;
-                background: #f0f0f0;
             }
             .icon {
                 font-size: 1.2em;

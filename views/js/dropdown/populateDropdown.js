@@ -46,10 +46,15 @@ define([
     }
 
     // 2. populate dropdown with data extracted from original menu structure
+    // This is quite specific to the Invalsi menu design
     function populate() {
+        var data;
         var $menu = $('.settings-menu');
         var $ul = $menu.children('ul').first();
-        var data;
+        $ul.children(':nth-child(1)').find('span:nth-child(2)').removeClass('hidden');
+        $ul.children(':nth-child(1)').addClass('sep-before');
+        $ul.children(':nth-child(2)').removeClass('sep-before');
+        $ul.children(':nth-child(3)').removeClass('sep-before');
 
         if ($ul.length) {
             data = {

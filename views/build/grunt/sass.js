@@ -8,10 +8,7 @@ module.exports = function(grunt) {
         sass : {
             taoinvalsi: {
                 files : [
-                    { dest : root + 'css/themes/platform/taoInvalsiDefaultTheme/theme.css', src : root + 'scss/themes/platform/taoInvalsiDefaultTheme/theme.scss' },
-                    { dest : root + 'css/themes/platform/taoInvalsiTestRunnerTheme/theme.css', src : root + 'scss/themes/platform/taoInvalsiTestRunnerTheme/theme.scss' },
-                    // { dest : root + 'css/test-runner.css', src : root + 'scss/test-runner.scss' },
-                    // { dest : root + 'css/new-test-runner.css', src :  root + 'scss/new-test-runner.scss'}
+                    { dest : root + 'css/themes/platform/taoInvalsiDefaultTheme/theme.css', src : root + 'scss/themes/platform/taoInvalsiDefaultTheme/theme.scss' }
                 ]
             },
         },
