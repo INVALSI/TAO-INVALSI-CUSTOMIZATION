@@ -26,31 +26,27 @@ define([
 ], function ($, __, dropdown, dialog){
     'use strict';
 
-    var ddMenu;
-
     if (!$(document.body).hasClass('delivery-scope')) {
         return false;
     }
 
-    // 1. initialise dropdown component in specified div
+    // 1. initialise dropdown component
     function init() {
-        ddMenu = dropdown({
-            id: 'user-menu',
-            headerItem: {icon: 'test-taker', text: 'Username'},
-            innerItems: [{html: "hello"}],
-            renderTo: '#user-menu-placeholder',
-            replace: true,
-            activatedBy: 'hover'
-        });
+        // prepare container element, sibling to existing menu
+        $('.settings-menu').addClass('hidden');
+        $('<div id="user-menu" class="hidden"></div>').insertAfter($('.settings-menu').first());
+
         populate();
     }
 
     // 2. populate dropdown with data extracted from original menu structure
-    // This is quite specific to the Invalsi menu design
+    // This part is quite specific to both the original menu structure and the Invalsi menu design
     function populate() {
         var data;
-        var $menu = $('.settings-menu');
-        var $ul = $menu.children('ul').first();
+        var ddMenu;
+        var $oldMenu = $('.settings-menu');
+        var $ul = $oldMenu.children('ul').first();
+        // make some alterations in-place:
         $ul.children(':nth-child(1)').find('span:nth-child(2)').removeClass('hidden');
         $ul.children(':nth-child(1)').addClass('sep-before');
         $ul.children(':nth-child(2)').removeClass('sep-before');
@@ -58,12 +54,22 @@ define([
 
         if ($ul.length) {
             data = {
-                userHtml:  $ul.children(':nth-child(2)').html(),    // discard wrapping <li> for header
+                userHtml:  $ul.children(':nth-child(2)').html(),    // discarded wrapping <li>, for header
                 homeHtml: $ul.children(':nth-child(1)')[0].outerHTML,
                 logoutHtml: $ul.children(':nth-child(3)')[0].outerHTML,
                 exitHtml: $ul.children(':nth-child(4)')[0].outerHTML,
                 aboutData: {text: __('About'), icon: 'info', cls: 'about-trigger sep-before'}
             };
+            // initialise dropdown:
+            ddMenu = dropdown({
+                id: 'user-menu',
+                headerItem: {icon: 'test-taker', text: 'Username'},
+                innerItems: [],
+                renderTo: '#user-menu',
+                replace: true,
+                activatedBy: 'hover'
+            });
+
             ddMenu.setHtmlHeader(data.userHtml);
             ddMenu.clearItems();
             ddMenu.addItem(data.aboutData);
@@ -71,12 +77,14 @@ define([
             ddMenu.addHtmlItem(data.logoutHtml);
             ddMenu.addHtmlItem(data.exitHtml);
             ddMenu.render();
-            $menu.remove();
+
+            $oldMenu.remove();
+            $('#user-menu').removeClass('hidden');
         }
         prepDialog();
     }
 
-    // 3. wire up About link to dialog:
+    // 3. wire up About link to About dialog:
     function prepDialog() {
 
         var $aboutDialog = dialog({
@@ -90,27 +98,7 @@ define([
             $aboutDialog.render();
         });
 
-        $('#info-dialog-content').remove();
-
-        /* testing:
-        $(document).on('keypress', function(e) {
-            console.log(e.key);
-            switch (e.key) {
-                case 'n':
-                    ddMenu.addItem({text: 'another', icon: 'folder'});
-                    break;
-                case 'h':
-                    ddMenu.addHtmlItem('<li><marquee>yeah</marquee></li>');
-                    break;
-                case 'r':
-                    ddMenu.removeItem(0);
-                    break;
-                case 'c':
-                    ddMenu.clearItems();
-                    break;
-            }
-        });
-        */
+        //$('#info-dialog-content').remove();
     }
 
     return {

@@ -1,11 +1,3 @@
-<div id="user-menu-placeholder"></div>
-<script>
-    require(['/tao/ClientConfig/config'], function () {
-        require(['/taoInvalsi/views/js/dropdown/populateDropdown.js'], function (populateDropdown) {
-            populateDropdown.init();
-        });
-    });
-</script>
 <!-- hidden element hack to get the info I need into dialog: -->
 <div id="info-dialog-content" class="hidden">
     <h3 class="tao-version">TAO <?= oat\tao\helpers\ApplicationHelper::getVersionName() ?></h3>
@@ -14,3 +6,10 @@
     <p>© Contenuto: <?= date('Y') ?> INVALSI - Tutti i diritti riservati </p>
     <p>© TAO Platform: 2013 - <?= date('Y') ?> · Open Assessment Technologies S.A. · Tutti i diritti riservati</p>
 </div>
+<script>
+    require(['/tao/ClientConfig/config'], function () {
+        require(['/taoInvalsi/views/js/dropdown/populateDropdown.js'], function (populateDropdown) {
+            populateDropdown.init();
+        });
+    });
+</script>

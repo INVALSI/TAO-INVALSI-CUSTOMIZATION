@@ -4,8 +4,6 @@
 /// @group Platform themes
 ////
 
-//@import './inc/colors/_base.scss';
-
 html {
     body {
 
@@ -75,10 +73,8 @@ html {
             }
         }
 
-        &.delivery-scope {
-            [data-control="skip"], [data-control="skip-end"] {
-                display: none;
-            }
+        // Amendment of header (login page & logged in as test-taker):
+        &.small-navi, &.delivery-scope {
             .content-wrap {
                 //padding: 10em; // test
                 // Remove footer:
@@ -89,7 +85,28 @@ html {
                 // Amendment of header:
                 header.dark-bar {
                     height: 50px;
-                    border-bottom: 2px solid $brand;// #3B576D;
+                    border-bottom: 2px solid $brand; 
+                }
+            }
+            // Smaller logo always:
+            #tao-main-logo {
+                margin: 6px 15px 0;
+                max-width: 100px;
+                height: 36px;
+            }
+            // Removal of footer:
+            footer.dark-bar {
+                display: none;
+            }
+        }
+
+        // logged-in as test-taker
+        &.delivery-scope {
+            [data-control="skip"], [data-control="skip-end"] {
+                display: none;
+            }
+            .content-wrap {
+                header.dark-bar {
                     nav {
                         li {
                             & > a, & >.a {
@@ -107,10 +124,10 @@ html {
                         .test-runner-sections {
                             overflow-y: scroll;
                         }
+                        .bottom-action-bar {
+                            overflow: hidden;   // temp
+                        }                        
                     }
-                    // &:after {
-                    //     content: none;
-                    // }
                 }
                 .top-action-bar.action-bar.horizontal-action-bar {
                     // Action bar repositioning "in" header:
@@ -124,6 +141,15 @@ html {
                     .control-box {
                         color: $brand !important;
                         //border: 1px dotted #ccc;    // temp
+                        .title-box {
+                            font-weight: bold;
+                        }
+                        .progressbar.info {
+                            height: 0.8em;
+                            & > span {
+                                background-color: $brand; // was #0e5d91;
+                            }
+                        }
                     }
                     &:before, &:after {
                         content: none;
@@ -133,98 +159,38 @@ html {
                     overflow: hidden;
                 }
             }
-            // Smaller logo always, in delivery scope:
-            #tao-main-logo {
-                margin: 6px 15px 0;
-                max-width: 100px;
-                height: 40px;
-            }
-            // Removal of footer:
-            footer.dark-bar {
-                display: none;
-            }
         }
         .modal-body {
             .content {
-                #info-dialog-content {
+                //#info-dialog-content {
                     h3 {
                         font-size: 1.8rem;
                     }
                     img {
+                        height: 36px;
                         margin: 1rem 1rem 2rem;
                     }
                     p {
                         font-size: 0.9rem;
                         color: #444;
                     }    
-                }
+                //}
             }
         }
     }
 }
 
-.test-runner-scope .action-bar.content-action-bar.horizontal-action-bar.bottom-action-bar {
-    overflow: hidden;
+.loading-bar {
+    &.loading {
+        top: 50px !important;
+    }
 }
-
-// Dropdown styles:
-.dropdown-container {
-    position: relative;
-    .dropdown {
-        position: absolute; // to overcome overflow: hidden
-        top: 0;
-        right: 0;
-        z-index: 1;
-        min-width: 170px;
-        padding: 0.4rem;
-        margin: 0 0.5rem;
-        height: 32px;
-        background: transparent;
-        &.open {
-            height: auto;
-            background: white;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.5);
-            border: 1px solid #ccc;
-        }
-        & > .dropdown-submenu {
-            display: none;
-        }
-        &.open > .dropdown-submenu {
-            display: block;
-        }
-        a, .a {
-            cursor: pointer;
-            height: auto;
-            padding: 1.2rem 0.5rem;
-        }
-        a:hover, a:focus, .a:hover, .a:focus {
-            background: whiten($brand, 0.9) !important;   // import?
-        }
-        .dropdown-header, .dropdown-submenu li {
-            display: block;
-            text-align: center;
-            font-size: 1.4rem;
-            padding: 0;
-            margin: 0;
-            height: auto;
-            float: unset;
-            & > a:hover, .a:hover {
-                border-color: none;
+.no-version-warning {
+    .loading-bar {
+        &.loadingbar-covered {
+            &:before {
+                top: 50px !important;
             }
-            .icon {
-                font-size: 1.2em;
-            }
-        }
-        .dropdown-header {
-            padding-top: 1.2rem;
-        }
-        .sep-before:before {
-            content: "";
-            display: block;
-            height: 1px;
-            width: 70%;
-            margin: 0.75rem auto;
-            background: #999;
         }
     }
 }
@@ -233,23 +199,4 @@ html {
 /// @see ./inc/mediaqueries/template.scss
 @import './inc/mediaqueries/max-width-1024';
 
-@media (max-width: 800px) {
-    html {
-        body.delivery-scope {
-            .content-wrap {
-                .top-action-bar.action-bar.horizontal-action-bar {
-                    width: calc(100% - 200px); // logo is <150, menu <70
-                }            
-            }
-        }
-    }
-    // Reduce menu header to icon only:
-    .dropdown {
-        min-width: 50px;
-        .dropdown-header {
-            .text {
-                display: none;
-            }
-        }
-    }
-}
+@import './inc/mediaqueries/max-width-800';
