@@ -689,5 +689,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->addReport(\common_report_Report::createInfo('launch log service need to be enabled (see '.RegisterRdsLaunchLog::class.')'));
             $this->setVersion('7.2.0');
         }
+
+        $this->skip('7.2.0', '7.2.1');
     }
 }

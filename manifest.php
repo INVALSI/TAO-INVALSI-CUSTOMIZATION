@@ -24,10 +24,10 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '7.2.0',
-	'author' => 'Open Assessment Technologies SA',
-	'requires' => array(
-	    'generis'         => '>=7.6.0',
+    'version' => '7.2.1',
+    'author' => 'Open Assessment Technologies SA',
+    'requires' => array(
+        'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
         'tao'             => '>=21.0.0',
         'taoMediaManager' => '*',
@@ -42,7 +42,7 @@ return array(
         'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=11.0.0',
         'taoClientDiagnostic'  => '>=3.0.2',
-        'taoTestRunnerPlugins' => '>=2.0.0'
+        'taoTestRunnerPlugins' => '>=2.0.2'
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -76,13 +76,13 @@ return array(
     'routes' => array(
         '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
-	'constants' => array(
-	    # views directory
-	    "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
+    'constants' => array(
+        # views directory
+        "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
 
         #BASE URL (usually the domain root)
         'BASE_URL' => ROOT_URL.'taoInvalsi/',
-	),
+    ),
     'extra' => array(
         'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
     )
