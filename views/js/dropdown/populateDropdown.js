@@ -26,34 +26,31 @@ define([
 ], function ($, __, dropdown, dialog){
     'use strict';
 
-    if (!$(document.body).hasClass('delivery-scope')) {
-        return false;
-    }
+    // we will switch between 2 menus (classic -> dropdown), carrying some content across...
+    var $oldMenu = $('.settings-menu').first();
+    var newMenuTarget = '#user-menu';
 
-    // 1. initialise dropdown component
+    // 1. add dropdown container to page, sibling to existing menu
     function init() {
-        // prepare container element, sibling to existing menu
-        $('.settings-menu').addClass('hidden');
-        $('<div id="user-menu" class="hidden"></div>').insertAfter($('.settings-menu').first());
+        $oldMenu.addClass('hidden');
+        $('<div id="user-menu" class="hidden"></div>').insertAfter($oldMenu);
 
-        populate();
+        extractData($oldMenu);
     }
 
-    // 2. populate dropdown with data extracted from original menu structure
+    // 2. extract HTML list items from old menu
     // This part is quite specific to both the original menu structure and the Invalsi menu design
-    function populate() {
+    function extractData($menu) {
         var data;
-        var ddMenu;
-        var $aboutHtml;
-        var $oldMenu = $('.settings-menu');
-        var $ul = $oldMenu.children('ul').first();
-        // make some alterations in-place:
-        $ul.children(':nth-child(1)').find('span:nth-child(2)').removeClass('hidden');
-        $ul.children(':nth-child(1)').addClass('sep-before');
-        $ul.children(':nth-child(2)').removeClass('sep-before');
-        $ul.children(':nth-child(3)').removeClass('sep-before');
+        var $ul = $menu.children('ul').first();
 
         if ($ul.length) {
+            // make some alterations in-place:
+            $ul.children(':nth-child(1)').find('span:nth-child(2)').removeClass('hidden');
+            $ul.children(':nth-child(1)').addClass('sep-before');
+            $ul.children(':nth-child(2)').removeClass('sep-before');
+            $ul.children(':nth-child(3)').removeClass('sep-before');
+
             data = {
                 userHtml:  $ul.children(':nth-child(2)').html(),    // discarded wrapping <li>, for header
                 homeHtml: $ul.children(':nth-child(1)')[0].outerHTML,
@@ -61,46 +58,55 @@ define([
                 exitHtml: $ul.children(':nth-child(4)')[0].outerHTML
             };
             // build brand new list item:
-            $aboutHtml = $('<li>').addClass('about-trigger sep-before');
-            $aboutHtml.append(
+            data.$aboutHtml = $('<li>').addClass('about-trigger sep-before');
+            data.$aboutHtml.append(
                 $('<span>').addClass('a clickable').attr('tabindex', '0')
                 .append($('<span>').addClass('icon icon-info'))
                 .append($('<span>').addClass('text').html(__('About')))
             );
 
-            // initialise dropdown:
-            ddMenu = dropdown({
-                id: 'user-menu',
-                renderTo: '#user-menu',
-                replace: true,
-                activatedBy: 'hover'
-            });
-
-            ddMenu.setHeader(data.userHtml);
-            ddMenu.clearItems();
-            ddMenu.addItem($aboutHtml[0].outerHTML);
-            ddMenu.addItem(data.homeHtml);
-            ddMenu.addItem(data.logoutHtml);
-            ddMenu.addItem(data.exitHtml);
-            ddMenu.render();
-
-            $oldMenu.remove();
-            $('#user-menu').removeClass('hidden');
+            populate(data);
         }
+    }
+
+    // 3. populate dropdown with data extracted from original menu structure
+    function populate(data) {
+        // initialise dropdown:
+        var ddMenu = dropdown({
+            //id: 'user-menu',
+            renderTo: newMenuTarget,
+            replace: true,
+            activatedBy: 'hover'
+        });
+
+        ddMenu.setHeader(data.userHtml);
+        ddMenu.clearItems();
+        ddMenu.addItem(data.$aboutHtml[0].outerHTML);
+        ddMenu.addItem(data.homeHtml);
+        ddMenu.addItem(data.logoutHtml);
+        ddMenu.addItem(data.exitHtml);
+
+        cleanUp();
         prepDialog();
     }
 
-    // 3. wire up About link to About dialog:
-    function prepDialog() {
+    // 4. switch to display new menu
+    function cleanUp() {
+        $oldMenu.remove();
+        $(newMenuTarget).removeClass('hidden');
+    }
 
+    // 5. wire up About link to About dialog
+    function prepDialog() {
         var $dialogContent = $('<div>')
         .addClass('platform-info')
         .html(
             $('#info-dialog-content').html()
         );
 
+        // init dialog
         var $aboutDialog = dialog({
-            content: $dialogContent[0].outerHTML,  // content still needs wrapper for styles
+            content: $dialogContent[0].outerHTML,  // keep its wrapper, for inner styling
             buttons: 'ok',
             autoRender: false,
             autoDestroy: false
