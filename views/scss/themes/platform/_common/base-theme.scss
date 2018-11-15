@@ -76,7 +76,6 @@ html {
         // Amendment of header (login page & logged in as test-taker):
         &.small-navi, &.delivery-scope {
             .content-wrap {
-                //padding: 10em; // test
                 // Remove footer:
                 margin-bottom: 0;
                 &:after {
@@ -106,6 +105,7 @@ html {
                 display: none;
             }
             .content-wrap {
+                overflow-y: hidden;
                 header.dark-bar {
                     nav {
                         li {
@@ -119,14 +119,9 @@ html {
                     }
                 }
                 .runner {
+                    // scroll inside, not body
                     .test-runner-scope {
-                        height: calc(100vh - 53px);
-                        .test-runner-sections {
-                            overflow-y: scroll;
-                        }
-                        .bottom-action-bar {
-                            overflow: hidden;   // temp
-                        }                        
+                        height: calc(100vh - 50px);                     
                     }
                 }
                 .top-action-bar.action-bar.horizontal-action-bar {
@@ -140,14 +135,13 @@ html {
                     background: white;
                     .control-box {
                         color: $brand !important;
-                        //border: 1px dotted #ccc;    // temp
                         .title-box {
                             font-weight: bold;
                         }
                         .progressbar.info {
                             height: 0.8em;
                             & > span {
-                                background-color: $brand; // was #0e5d91;
+                                background-color: $brand;
                             }
                         }
                     }
@@ -162,7 +156,7 @@ html {
         }
         .modal-body {
             .content {
-                //#info-dialog-content {
+                .platform-info {
                     h3 {
                         font-size: 1.8rem;
                     }
@@ -171,10 +165,10 @@ html {
                         margin: 1rem 1rem 2rem;
                     }
                     p {
-                        font-size: 0.9rem;
+                        font-size: 1rem;
                         color: #444;
                     }    
-                //}
+                }
             }
         }
     }
@@ -183,14 +177,8 @@ html {
 .loading-bar {
     &.loading {
         top: 50px !important;
-    }
-}
-.no-version-warning {
-    .loading-bar {
-        &.loadingbar-covered {
-            &:before {
-                top: 50px !important;
-            }
+        &:before {
+            top: 0px !important;
         }
     }
 }
@@ -198,5 +186,3 @@ html {
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
 @import './inc/mediaqueries/max-width-1024';
-
-@import './inc/mediaqueries/max-width-800';

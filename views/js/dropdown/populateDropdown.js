@@ -44,6 +44,7 @@ define([
     function populate() {
         var data;
         var ddMenu;
+        var $aboutHtml;
         var $oldMenu = $('.settings-menu');
         var $ul = $oldMenu.children('ul').first();
         // make some alterations in-place:
@@ -57,25 +58,30 @@ define([
                 userHtml:  $ul.children(':nth-child(2)').html(),    // discarded wrapping <li>, for header
                 homeHtml: $ul.children(':nth-child(1)')[0].outerHTML,
                 logoutHtml: $ul.children(':nth-child(3)')[0].outerHTML,
-                exitHtml: $ul.children(':nth-child(4)')[0].outerHTML,
-                aboutData: {text: __('About'), icon: 'info', cls: 'about-trigger sep-before'}
+                exitHtml: $ul.children(':nth-child(4)')[0].outerHTML
             };
+            // build brand new list item:
+            $aboutHtml = $('<li>').addClass('about-trigger sep-before');
+            $aboutHtml.append(
+                $('<span>').addClass('a clickable').attr('tabindex', '0')
+                .append($('<span>').addClass('icon icon-info'))
+                .append($('<span>').addClass('text').html(__('About')))
+            );
+
             // initialise dropdown:
             ddMenu = dropdown({
                 id: 'user-menu',
-                headerItem: {icon: 'test-taker', text: 'Username'},
-                innerItems: [],
                 renderTo: '#user-menu',
                 replace: true,
                 activatedBy: 'hover'
             });
 
-            ddMenu.setHtmlHeader(data.userHtml);
+            ddMenu.setHeader(data.userHtml);
             ddMenu.clearItems();
-            ddMenu.addItem(data.aboutData);
-            ddMenu.addHtmlItem(data.homeHtml);
-            ddMenu.addHtmlItem(data.logoutHtml);
-            ddMenu.addHtmlItem(data.exitHtml);
+            ddMenu.addItem($aboutHtml[0].outerHTML);
+            ddMenu.addItem(data.homeHtml);
+            ddMenu.addItem(data.logoutHtml);
+            ddMenu.addItem(data.exitHtml);
             ddMenu.render();
 
             $oldMenu.remove();
@@ -87,8 +93,14 @@ define([
     // 3. wire up About link to About dialog:
     function prepDialog() {
 
+        var $dialogContent = $('<div>')
+        .addClass('platform-info')
+        .html(
+            $('#info-dialog-content').html()
+        );
+
         var $aboutDialog = dialog({
-            content: $('#info-dialog-content').html(),  // content still needs wrapper for styles
+            content: $dialogContent[0].outerHTML,  // content still needs wrapper for styles
             buttons: 'ok',
             autoRender: false,
             autoDestroy: false
@@ -97,8 +109,6 @@ define([
         $('.about-trigger').on('click', function() {
             $aboutDialog.render();
         });
-
-        //$('#info-dialog-content').remove();
     }
 
     return {

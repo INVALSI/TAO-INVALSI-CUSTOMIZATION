@@ -1,4 +1,3 @@
-<!-- hidden element hack to get the info I need into dialog: -->
 <div id="info-dialog-content" class="hidden">
     <h3 class="tao-version">TAO <?= oat\tao\helpers\ApplicationHelper::getVersionName() ?></h3>
     <img src="<?=oat\tao\helpers\Template::img('themes/platform/taoInvalsiDefaultTheme/logo-invalsi.jpg', 'taoInvalsi')?>" alt="Invalsi Logo">
