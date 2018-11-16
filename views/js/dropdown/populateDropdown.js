@@ -25,7 +25,8 @@ define([
     'ui/dialog',
     'tpl!taoInvalsi/dropdown/list-header',
     'tpl!taoInvalsi/dropdown/list-item',
-], function ($, __, dropdown, dialog, listHeaderTpl, listItemTpl){
+    'tpl!taoInvalsi/dropdown/dialog-content'
+], function ($, __, dropdown, dialog, listHeaderTpl, listItemTpl, dialogTpl){
     'use strict';
 
     // 1. add dropdown container to page, sibling to existing menu
@@ -98,14 +99,10 @@ define([
 
     // 5. wire up About link to About dialog
     function prepDialog() {
-        var $dialogContent = $('<div>')
-        .addClass('platform-info')
-        .html(
-            $('#info-dialog-content').html()
-        );
-
         var $aboutDialog = dialog({
-            content: $dialogContent[0].outerHTML,  // keep its wrapper, for inner styling
+            content: dialogTpl({
+                year: new Date().getFullYear()
+            }),
             buttons: 'ok',
             autoRender: false,
             autoDestroy: false
