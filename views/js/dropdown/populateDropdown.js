@@ -23,8 +23,9 @@ define([
     'i18n',
     'ui/dropdown',
     'ui/dialog',
-    'tpl!taoInvalsi/dropdown/list-item'
-], function ($, __, dropdown, dialog, listItemTpl){
+    'tpl!taoInvalsi/dropdown/list-header',
+    'tpl!taoInvalsi/dropdown/list-item',
+], function ($, __, dropdown, dialog, listHeaderTpl, listItemTpl){
     'use strict';
 
     // we will switch between 2 menus (classic -> dropdown), carrying some content across...
@@ -45,20 +46,24 @@ define([
         var $ul = $menu.children('ul').first();
 
         if ($ul.length) {
-            // make some alterations in-place:
-            $ul.children(':nth-child(1)').find('span:nth-child(2)').removeClass('hidden');
-            $ul.children(':nth-child(1)').addClass('sep-before');
-            $ul.children(':nth-child(2)').removeClass('sep-before');
-            $ul.children(':nth-child(3)').removeClass('sep-before');
+            // make some alterations in-place to the items we need to copy:
+            $ul.children().removeClass('sep-before');
+            $ul.children('[data-control="home"]').addClass('sep-before');
+            $ul.children('[data-control="home"]').find('.text').removeClass('hidden');
 
             data = {
-                userHtml:  $ul.children(':nth-child(2)').html(),    // discarded wrapping <li>, for header
-                homeHtml: $ul.children(':nth-child(1)')[0].outerHTML,
-                logoutHtml: $ul.children(':nth-child(3)')[0].outerHTML,
-                exitHtml: $ul.children(':nth-child(4)')[0].outerHTML
+                homeHtml: $ul.children('[data-control="home"]')[0].outerHTML,
+                logoutHtml: $ul.children('[data-control="logout"]')[0].outerHTML,
+                exitHtml: $ul.children('[data-control="exit"]')[0].outerHTML
             };
+            // build brand new list header:
+            data.userHtml = listHeaderTpl({
+                cls: 'a',
+                icon: 'text-taker',
+                text: $ul.find('.icon-test-taker').next('.text').text()
+            });
             // build brand new list item:
-            data.$aboutHtml = listItemTpl({
+            data.aboutHtml = listItemTpl({
                 cls: 'about-trigger sep-before',
                 icon: 'info',
                 text: __('About')
@@ -80,7 +85,7 @@ define([
 
         ddMenu.setHeader(data.userHtml);
         ddMenu.clearItems();
-        ddMenu.addItem(data.$aboutHtml);
+        ddMenu.addItem(data.aboutHtml);
         ddMenu.addItem(data.homeHtml);
         ddMenu.addItem(data.logoutHtml);
         ddMenu.addItem(data.exitHtml);
