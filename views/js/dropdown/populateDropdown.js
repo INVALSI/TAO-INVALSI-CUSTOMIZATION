@@ -22,8 +22,9 @@ define([
     'jquery',
     'i18n',
     'ui/dropdown',
-    'ui/dialog'
-], function ($, __, dropdown, dialog){
+    'ui/dialog',
+    'tpl!taoInvalsi/dropdown/list-item'
+], function ($, __, dropdown, dialog, listItemTpl){
     'use strict';
 
     // we will switch between 2 menus (classic -> dropdown), carrying some content across...
@@ -57,12 +58,11 @@ define([
                 exitHtml: $ul.children(':nth-child(4)')[0].outerHTML
             };
             // build brand new list item:
-            data.$aboutHtml = $('<li>').addClass('about-trigger sep-before');
-            data.$aboutHtml.append(
-                $('<span>').addClass('a clickable').attr('tabindex', '0')
-                .append($('<span>').addClass('icon icon-info'))
-                .append($('<span>').addClass('text').html(__('About')))
-            );
+            data.$aboutHtml = listItemTpl({
+                cls: 'about-trigger sep-before',
+                icon: 'info',
+                text: __('About')
+            });
 
             populate(data);
         }
@@ -80,7 +80,7 @@ define([
 
         ddMenu.setHeader(data.userHtml);
         ddMenu.clearItems();
-        ddMenu.addItem(data.$aboutHtml[0].outerHTML);
+        ddMenu.addItem(data.$aboutHtml);
         ddMenu.addItem(data.homeHtml);
         ddMenu.addItem(data.logoutHtml);
         ddMenu.addItem(data.exitHtml);
