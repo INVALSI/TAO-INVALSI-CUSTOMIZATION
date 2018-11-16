@@ -1,3 +1,4 @@
+<div id="user-menu" class="hidden"></div>
 <div id="info-dialog-content" style="display:none">
     <h3 class="tao-version">TAO <?= oat\tao\helpers\ApplicationHelper::getVersionName() ?></h3>
     <img src="<?=oat\tao\helpers\Template::img('themes/platform/taoInvalsiDefaultTheme/logo-invalsi.jpg', 'taoInvalsi')?>" alt="Invalsi Logo">

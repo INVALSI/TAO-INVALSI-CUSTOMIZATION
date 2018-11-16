@@ -33,7 +33,6 @@ define([
     // 1. add dropdown container to page, sibling to existing menu
     function init() {
         $oldMenu.addClass('hidden');
-        $('<div id="user-menu" class="hidden"></div>').insertAfter($oldMenu);
 
         extractData($oldMenu);
     }
