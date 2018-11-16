@@ -28,21 +28,26 @@ define([
 ], function ($, __, dropdown, dialog, listHeaderTpl, listItemTpl){
     'use strict';
 
-    // we will switch between 2 menus (classic -> dropdown), carrying some content across...
-    var $oldMenu = $('.settings-menu').first();
-    var newMenuTarget = '#user-menu';
-
     // 1. add dropdown container to page, sibling to existing menu
     function init() {
+        // we will switch between 2 menus (classic -> dropdown), carrying some content across...
+        var $oldMenu = $('.settings-menu').first();
+        var newMenuTarget = '#user-menu';
+        var menuData;
+
         $oldMenu.addClass('hidden');
 
-        extractData($oldMenu);
+        menuData = extractData($oldMenu);
+        populate(newMenuTarget, menuData);
+
+        // switch to display new menu
+        $oldMenu.remove();
+        $(newMenuTarget).removeClass('hidden');
     }
 
     // 2. extract HTML list items from old menu
-    // This part is quite specific to both the original menu structure and the Invalsi menu design
     function extractData($menu) {
-        var data;
+        var data = {};
         var $ul = $menu.children('ul').first();
 
         if ($ul.length) {
@@ -68,17 +73,15 @@ define([
                 icon: 'info',
                 text: __('About')
             });
-
-            populate(data);
         }
+        return data;
     }
 
     // 3. populate dropdown with data extracted from original menu structure
-    function populate(data) {
+    function populate(target, data) {
         // initialise dropdown:
         var ddMenu = dropdown({
-            //id: 'user-menu',
-            renderTo: newMenuTarget,
+            renderTo: target,
             replace: true,
             activatedBy: 'hover'
         });
@@ -90,14 +93,7 @@ define([
         ddMenu.addItem(data.logoutHtml);
         ddMenu.addItem(data.exitHtml);
 
-        cleanUp();
         prepDialog();
-    }
-
-    // 4. switch to display new menu
-    function cleanUp() {
-        $oldMenu.remove();
-        $(newMenuTarget).removeClass('hidden');
     }
 
     // 5. wire up About link to About dialog
@@ -108,7 +104,6 @@ define([
             $('#info-dialog-content').html()
         );
 
-        // init dialog
         var $aboutDialog = dialog({
             content: $dialogContent[0].outerHTML,  // keep its wrapper, for inner styling
             buttons: 'ok',
