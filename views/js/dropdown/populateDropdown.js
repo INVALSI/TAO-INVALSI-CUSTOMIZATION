@@ -72,7 +72,8 @@ define([
             data.aboutHtml = listItemTpl({
                 cls: 'about-trigger sep-before',
                 icon: 'info',
-                text: __('About')
+                text: __('About'),
+                dataControl: 'about'
             });
         }
         return data;
@@ -86,6 +87,7 @@ define([
             replace: true,
             activatedBy: 'hover'
         });
+        var $aboutDialog;
 
         ddMenu.setHeader(data.userHtml);
         ddMenu.clearItems();
@@ -94,12 +96,8 @@ define([
         ddMenu.addItem(data.logoutHtml);
         ddMenu.addItem(data.exitHtml);
 
-        prepDialog();
-    }
-
-    // 5. wire up About link to About dialog
-    function prepDialog() {
-        var $aboutDialog = dialog({
+        // wire up About link to About dialog
+        $aboutDialog = dialog({
             content: dialogTpl({
                 year: new Date().getFullYear()
             }),
@@ -108,7 +106,7 @@ define([
             autoDestroy: false
         });
 
-        $('.about-trigger').on('click', function() {
+        ddMenu.on('item-click-about', function() {
             $aboutDialog.render();
         });
     }
