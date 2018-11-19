@@ -18,13 +18,14 @@ use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
+use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '7.2.1',
+    'version' => '7.3.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -67,7 +68,8 @@ return array(
             SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
             SetResourceSelector::class,
-            addAssignmentSettings::class
+            addAssignmentSettings::class,
+            EnableGdprMessage::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
