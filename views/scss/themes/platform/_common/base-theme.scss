@@ -82,9 +82,11 @@ html {
                     content: none;
                 }
                 // Amendment of header:
-                header.dark-bar {
-                    height: 50px;
-                    border-bottom: 2px solid $brand; 
+                header {
+                    &.dark-bar {
+                        height: 50px;
+                        border-bottom: 2px solid $brand;
+                    }
                 }
             }
             // Smaller logo always:
@@ -94,8 +96,10 @@ html {
                 height: 36px;
             }
             // Removal of footer:
-            footer.dark-bar {
-                display: none;
+            footer {
+                &.dark-bar {
+                    display: none;
+                }
             }
         }
 
@@ -106,13 +110,15 @@ html {
             }
             .content-wrap {
                 overflow-y: hidden;
-                header.dark-bar {
-                    nav {
-                        li {
-                            & > a, & >.a {
-                                border-top: 5px transparent solid;
-                                &:hover {
-                                    border-color: none;
+                header {
+                    &.dark-bar {
+                        nav {
+                            li {
+                                & > a, & >.a {
+                                    border-top: 5px transparent solid;
+                                    &:hover {
+                                        border-color: none;
+                                    }
                                 }
                             }
                         }
@@ -138,10 +144,12 @@ html {
                         .title-box {
                             font-weight: bold;
                         }
-                        .progressbar.info {
-                            height: 0.8em;
-                            & > span {
-                                background-color: $brand;
+                        .progressbar {
+                            &.info {
+                                height: 0.8em;
+                                & > span {
+                                    background-color: $brand;
+                                }
                             }
                         }
                     }
@@ -160,9 +168,14 @@ html {
                     h3 {
                         font-size: 1.8rem;
                     }
-                    img {
-                        height: 36px;
-                        margin: 1rem 2rem 2rem 0;
+                    .logo-list {
+                        li {
+                            display: inline-block;
+                            img {
+                                height: 36px;
+                                margin: 1rem 2rem 2rem 0;
+                            }
+                        }
                     }
                     p {
                         font-size: 1rem;
