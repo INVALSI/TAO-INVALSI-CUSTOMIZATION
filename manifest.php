@@ -41,7 +41,8 @@ return array(
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=11.0.0',
-        'taoTestRunnerPlugins' => '>=2.0.0'
+        'taoClientDiagnostic'  => '>=3.0.2',
+        'taoTestRunnerPlugins' => '>=2.0.2'
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -75,13 +76,13 @@ return array(
     'routes' => array(
         '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
-	'constants' => array(
-	    # views directory
-	    "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
+    'constants' => array(
+        # views directory
+        "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
 
         #BASE URL (usually the domain root)
         'BASE_URL' => ROOT_URL.'taoInvalsi/',
-	),
+    ),
     'extra' => array(
         'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
     )
