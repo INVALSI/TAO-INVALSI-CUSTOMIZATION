@@ -25,9 +25,9 @@ return array(
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
     'version' => '7.3.0',
-	'author' => 'Open Assessment Technologies SA',
-	'requires' => array(
-	    'generis'         => '>=7.6.0',
+    'author' => 'Open Assessment Technologies SA',
+    'requires' => array(
+	'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
         'tao'             => '>=21.0.0',
         'taoMediaManager' => '*',
