@@ -683,5 +683,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->getServiceManager()->register(AssignmentService::SERVICE_ID, $assignment);
             $this->setVersion('7.1.0');
         }
+
+        $this->skip('7.1.0', '7.3.0');
     }
 }
