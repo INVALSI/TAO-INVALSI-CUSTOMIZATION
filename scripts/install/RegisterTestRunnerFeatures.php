@@ -11,9 +11,12 @@ class RegisterTestRunnerFeatures extends \common_ext_action_InstallAction
         $serviceManager = $this->getServiceManager();
 
         $testRunnerFeatureService = $serviceManager->get(TestRunnerFeatureService::SERVICE_ID);
-        $testRunnerFeatureService->register(new ProgressBar());
+        $features = $testRunnerFeatureService->getAll();
 
-        $serviceManager->register(TestRunnerFeatureService::SERVICE_ID, $testRunnerFeatureService);
+        if (!isset($features['progressBar'])) {
+            $testRunnerFeatureService->register(new ProgressBar());
+            $serviceManager->register(TestRunnerFeatureService::SERVICE_ID, $testRunnerFeatureService);
+        }
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Test runner features registered');
     }
