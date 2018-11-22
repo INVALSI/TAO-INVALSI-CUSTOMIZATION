@@ -52,6 +52,12 @@ class TaoInvalsiDefaultTheme extends DefaultTheme
 
 
     /**
+     * Theme setting for whether to include the extra message template below the login form
+     */
+    const THEME_DATA_SHOW_LOGIN_FOOTER = false;
+
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -102,6 +108,13 @@ class TaoInvalsiDefaultTheme extends DefaultTheme
             case 'gdpr' :
                 $template = Template::getTemplate(
                     'themes/platform/' . self::THEME_ID . '/gdpr.tpl',
+                    self::EXTENSION_ID
+                );
+                break;
+
+            case 'login-message' :
+                $template = Template::getTemplate(
+                    'themes/platform/' . self::THEME_ID . '/login-message.tpl',
                     self::EXTENSION_ID
                 );
                 break;
