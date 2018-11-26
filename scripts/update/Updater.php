@@ -699,5 +699,21 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('7.2.2');
         }
+        
+        if ($this->isVersion('7.2.2')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'tableChoiceHelper',
+                'name' => 'Tabe Choice Helper',
+                'module' => 'taoInvalsi/runner/plugins/content/tableChoiceHelper',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Adds a CSS selector to each first choice interaction of each block',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ]]);
+            $this->setVersion('7.2.3');
+        }
     }
 }

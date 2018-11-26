@@ -104,6 +104,10 @@
         }
     }
 
+    .colrow:not(:first-of-type){
+        background: fuchsia
+    }
+
     // show only the labels for the first interaction
     > div:first-of-type .qti-choiceInteraction {
 

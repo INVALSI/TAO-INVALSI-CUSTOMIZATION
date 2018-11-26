@@ -45,8 +45,19 @@ class RegisterTestRunnerPlugins extends InstallAction
                 'category' => 'content',
                 'active' => true,
                 'tags' => [ ]
-            ]
-        ],
+            ],
+            [
+                'id' => 'tableChoiceHelper',
+                'name' => 'Tabe Choice Helper',
+                'module' => 'taoInvalsi/runner/plugins/content/tableChoiceHelper',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Adds a CSS selector to each first choice interaction of each block',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ],
+        ],       
+        
         'security' => [
             [
                 'id' => 'disableRightClick',
