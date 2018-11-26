@@ -37,6 +37,7 @@ use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
+use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -690,6 +691,14 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('7.2.0');
         }
 
-        $this->skip('7.2.0', '7.3.0');
+        if ($this->isVersion('7.2.0')) {
+            $script = new SetClientRouterConfig();
+            $this->getServiceManager()->propagate($script);
+            $script([]);
+
+            $this->setVersion('7.3.0');
+        }
+
+        $this->skip('7.3.0', '7.3.1');
     }
 }

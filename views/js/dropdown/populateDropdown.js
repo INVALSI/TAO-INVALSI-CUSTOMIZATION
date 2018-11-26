@@ -47,7 +47,7 @@ define([
             addDialogBehaviour(dropdownMenu);
 
             // switch to display new menu if all ok:
-            if (dropdownMenu && dropdownMenu.config.data.innerItems.length) {
+            if (dropdownMenu && dropdownMenu.data.innerItems.length) {
                 $oldMenu.remove();
                 $(newMenuTarget).removeClass('hidden');
             }
