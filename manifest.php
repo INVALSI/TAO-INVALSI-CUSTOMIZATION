@@ -30,7 +30,7 @@ return array(
     'requires' => array(
         'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
-        'tao'             => '>=21.11.0',
+        'tao'             => '>=21.13.0',
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.2.1',
         'taoQtiItem'      => '>=18.0.0',
