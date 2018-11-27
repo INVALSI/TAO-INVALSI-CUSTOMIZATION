@@ -86,6 +86,15 @@ html {
                     &.dark-bar {
                         height: 50px;
                         border-bottom: 2px solid $brand;
+                        // Invalsi's dropdown styles
+                        .settings-menu {
+                            display: none;
+                        }
+                        .dropdown {
+                            left: unset;
+                            right: 0;
+                            min-width: 170px;
+                        }
                     }
                 }
             }
@@ -113,11 +122,14 @@ html {
                 header {
                     &.dark-bar {
                         nav {
-                            li {
-                                & > a, & >.a {
-                                    border-top: 5px transparent solid;
-                                    &:hover {
-                                        border-color: none;
+                            &.rgt {
+                                height: 46px;
+                                li {
+                                    & > a, & >.a {
+                                        border-top: 5px transparent solid;
+                                        &:hover {
+                                            border-color: none;
+                                        }
                                     }
                                 }
                             }
@@ -127,7 +139,7 @@ html {
                 .runner {
                     // scroll inside, not body
                     .test-runner-scope {
-                        height: calc(100vh - 50px);                     
+                        height: calc(100vh - 50px);
                     }
                 }
                 .top-action-bar.action-bar.horizontal-action-bar {
@@ -179,7 +191,7 @@ html {
                     }
                     p {
                         font-size: 1rem;
-                    }    
+                    }
                 }
             }
         }

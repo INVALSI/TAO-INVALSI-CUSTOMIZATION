@@ -18,6 +18,7 @@ use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
+use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 
 return array(
     'name' => 'taoInvalsi',
@@ -29,9 +30,9 @@ return array(
     'requires' => array(
         'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
-        'tao'             => '>=21.0.0',
+        'tao'             => '>=21.11.0',
         'taoMediaManager' => '*',
-        'taoQtiTest'      => '>=29.0.0',
+        'taoQtiTest'      => '>=29.2.1',
         'taoQtiItem'      => '>=18.0.0',
         'taoTextHelp'     => '>=1.0.0',
         'taoTests'        => '>=8.0.0',

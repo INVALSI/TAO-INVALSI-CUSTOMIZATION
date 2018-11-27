@@ -20,13 +20,14 @@
  */
 define([
     'jquery',
+    'lodash',
     'i18n',
     'ui/dropdown',
     'ui/dialog',
     'tpl!taoInvalsi/dropdown/list-header',
     'tpl!taoInvalsi/dropdown/list-item',
     'tpl!taoInvalsi/dropdown/dialog-content'
-], function ($, __, dropdown, dialog, listHeaderTpl, listItemTpl, dialogTpl){
+], function ($, _, __, dropdown, dialog, listHeaderTpl, listItemTpl, dialogTpl){
     'use strict';
 
     var userMenuController = {
@@ -42,15 +43,16 @@ define([
             var menuData;
 
             $oldMenu.addClass('hidden');
+            // add placeholder:
             $('<div>').attr('id', 'user-menu').insertAfter($oldMenu);
 
             menuData = this.extractData($oldMenu);
-            if (menuData && Object.keys(menuData).length) {
+            if (_.size(menuData)) {
                 dropdownMenu = this.createDropdown(newMenuTarget, menuData);
                 this.addDialogBehaviour(dropdownMenu);
 
                 // switch to display new menu if all ok:
-                if (dropdownMenu && dropdownMenu.data.innerItems.length) {
+                if (dropdownMenu.is('rendered')) {
                     $oldMenu.remove();
                     $(newMenuTarget).removeClass('hidden');
                 }
@@ -129,7 +131,6 @@ define([
             });
 
             ddMenu.setHeader(data.userHtml);
-            ddMenu.clearItems();
             ddMenu.addItem(data.about);
             ddMenu.addItem(data.home);
             ddMenu.addItem(data.logout);

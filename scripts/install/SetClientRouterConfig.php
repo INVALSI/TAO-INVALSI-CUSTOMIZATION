@@ -24,7 +24,7 @@ use oat\tao\model\ClientLibConfigRegistry;
 
 /**
  * Register extra routes
- * 
+ *
  * @author Martin Nicholson <martin@taotesting.com>
  */
 class SetClientRouterConfig extends InstallAction
@@ -36,11 +36,9 @@ class SetClientRouterConfig extends InstallAction
             array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
         );
         ClientLibConfigRegistry::getRegistry()->register(
-            'taoQtiTest/controller/runner', 
+            'taoQtiTest/controller/runner/runner',
             array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
         );
-        \common_Logger::i('client router config ran');
-
-        return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Routes added.');
+        return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Extra routes added.');
     }
 }
