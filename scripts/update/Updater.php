@@ -699,5 +699,17 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('7.2.2');
         }
+
+        if ($this->isVersion('7.2.2')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA214.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('7.3.0');
+        }
     }
 }
