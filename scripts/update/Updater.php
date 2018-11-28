@@ -711,5 +711,18 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('7.3.0');
         }
+
+        if ($this->isVersion('7.3.0')) {
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoDelivery/controller/DeliveryServer/index',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            );
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoQtiTest/controller/runner/runner',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            );
+    
+            $this->setVersion('7.4.0');
+        }
     }
 }

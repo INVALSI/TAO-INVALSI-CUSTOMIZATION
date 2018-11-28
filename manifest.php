@@ -18,20 +18,21 @@ use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
+use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '7.3.0',
+    'version' => '7.4.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
-        'tao'             => '>=21.0.0',
+        'tao'             => '>=21.14.0',
         'taoMediaManager' => '*',
-        'taoQtiTest'      => '>=29.0.0',
+        'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
         'taoTextHelp'     => '>=1.0.0',
         'taoTests'        => '>=8.0.0',
@@ -40,7 +41,7 @@ return array(
         'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.2.1',
-        'taoDelivery'     => '>=11.0.0',
+        'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=3.0.2',
         'taoTestRunnerPlugins' => '>=2.0.2'
     ),
@@ -67,7 +68,8 @@ return array(
             SetupEventsCapture::class,
             [ToggleGuestAccess::class, ['off']],
             SetResourceSelector::class,
-            addAssignmentSettings::class
+            addAssignmentSettings::class,
+            SetClientRouterConfig::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
