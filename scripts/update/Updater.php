@@ -702,11 +702,23 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('7.2.2')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA214.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('7.3.0');
+        }
+
+        if ($this->isVersion('7.3.0')) {
             $script = new SetClientRouterConfig();
             $this->getServiceManager()->propagate($script);
             $script([]);
 
-            $this->setVersion('7.3.0');
+            $this->setVersion('7.4.0');
         }
     }
 }
