@@ -146,7 +146,7 @@ define([
          * @param {dropdown component} ddMenu
          */
         addDialogBehaviour: function addDialogBehaviour(ddMenu) {
-            var $aboutDialog = dialog({
+            var aboutDialog = dialog({
                 content: dialogTpl({
                     year: new Date().getFullYear()
                 }),
@@ -156,7 +156,7 @@ define([
             });
 
             ddMenu.on('item-click-about', function() {
-                $aboutDialog.render();
+                aboutDialog.show();
             });
         }
 
