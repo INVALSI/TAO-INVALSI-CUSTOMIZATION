@@ -30,9 +30,9 @@ return array(
     'requires' => array(
         'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
-        'tao'             => '>=21.13.0',
+        'tao'             => '>=21.14.0',
         'taoMediaManager' => '*',
-        'taoQtiTest'      => '>=29.2.1',
+        'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
         'taoTextHelp'     => '>=1.0.0',
         'taoTests'        => '>=8.0.0',
@@ -41,7 +41,7 @@ return array(
         'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.2.1',
-        'taoDelivery'     => '>=12.2.1',
+        'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=3.0.2',
         'taoTestRunnerPlugins' => '>=2.0.2'
     ),
