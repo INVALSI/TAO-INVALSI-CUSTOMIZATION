@@ -37,6 +37,7 @@ use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
+use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -723,6 +724,16 @@ class Updater extends common_ext_ExtensionUpdater {
             );
     
             $this->setVersion('7.4.1');
+        }
+
+        if ($this->isVersion('7.4.0')) {
+            $loginService = $this->getServiceManager()->get('tao/login');
+            $config = $loginService->getConfig();
+            $config['show_gdpr'] = true;
+            $loginService->setOption('config', $config);
+            $this->getServiceManager()->register('tao/login', $loginService);
+
+            $this->setVersion('7.5.0');
         }
     }
 }

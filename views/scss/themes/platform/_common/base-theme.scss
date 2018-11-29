@@ -207,6 +207,23 @@ html {
 }
 
 
+.gdpr-notice {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    position: absolute;
+    bottom: 34px;
+    left: 10%;
+    z-index: -1;
+    p {
+        text-align: center;
+        font-size: 1.2rem;
+        line-height: 1.5em;
+        color: $minContrastText;
+    }
+}
+
+
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
 @import './inc/mediaqueries/max-width-1024';

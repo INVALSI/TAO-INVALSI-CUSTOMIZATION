@@ -19,18 +19,19 @@ use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
+use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '7.4.1',
+    'version' => '7.5.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
         'taoCe'           => '>=5.0.0',
-        'tao'             => '>=21.14.0',
+        'tao'             => '>=21.16.0',
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
@@ -69,7 +70,8 @@ return array(
             [ToggleGuestAccess::class, ['off']],
             SetResourceSelector::class,
             addAssignmentSettings::class,
-            SetClientRouterConfig::class
+            SetClientRouterConfig::class,
+            EnableGdprMessage::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
