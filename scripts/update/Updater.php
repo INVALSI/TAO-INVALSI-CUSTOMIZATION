@@ -702,13 +702,13 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('7.2.2')) {
-            $script = new EnableGdprMessage();
-            $this->getServiceManager()->propagate($script);
-            $script([]);
-
-            $this->setVersion('7.3.0');
+            $loginService = $this->getServiceManager()->get('tao/login');
+            $config = $loginService->getConfig();
+            $config['show_gdpr'] = true;
+            $loginService->setOption('config', $config);
+            $this->getServiceManager()->register('tao/login', $loginService);
+    
+            $this->setVersion('7.5.0');
         }
-
-        $this->skip('7.3.0', '7.3.1');
     }
 }
