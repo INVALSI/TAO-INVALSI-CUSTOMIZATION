@@ -18,6 +18,7 @@ use oat\taoQtiTest\scripts\install\SetPreCachingConfig;
 use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
+use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 
 return array(
@@ -32,7 +33,7 @@ return array(
         'taoCe'           => '>=5.0.0',
         'tao'             => '>=21.15.0',
         'taoMediaManager' => '*',
-        'taoQtiTest'      => '>=29.0.0',
+        'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
         'taoTextHelp'     => '>=1.0.0',
         'taoTests'        => '>=8.0.0',
@@ -41,7 +42,7 @@ return array(
         'taoMonitoring'   => '>=2.0.0',
         'taoDacSimple'    => '>=3.0.0',
         'taoDeliveryRdf'  => '>=7.2.1',
-        'taoDelivery'     => '>=11.0.0',
+        'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=3.0.2',
         'taoTestRunnerPlugins' => '>=2.0.2'
     ),
@@ -69,7 +70,8 @@ return array(
             [ToggleGuestAccess::class, ['off']],
             SetResourceSelector::class,
             addAssignmentSettings::class,
-            EnableGdprMessage::class
+            SetClientRouterConfig::class,
+            EnableGdprMessage::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
