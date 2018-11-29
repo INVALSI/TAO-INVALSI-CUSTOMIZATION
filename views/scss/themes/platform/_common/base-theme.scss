@@ -110,6 +110,14 @@ html {
                     display: none;
                 }
             }
+            .loading-bar {
+                &.loading {
+                    top: 42px !important;
+                    &:before {
+                        top: 0px !important;
+                    }
+                }
+            }
         }
 
         // logged-in as test-taker
@@ -198,14 +206,6 @@ html {
     }
 }
 
-.loading-bar {
-    &.loading {
-        top: 50px !important;
-        &:before {
-            top: 0px !important;
-        }
-    }
-}
 
 .gdpr-notice {
     width: 80%;
