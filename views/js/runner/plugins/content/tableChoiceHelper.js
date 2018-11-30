@@ -36,23 +36,17 @@ define([
         /**
          * Initialize the plugin (called during runner's init)
          */
-        init: function init() {
+        init: function init() {            
+
             var self = this;
-
-            var testRunner      = this.getTestRunner();
-            var testData        = testRunner.getTestData() || {};
-            var testConfig      = testData.config || {};
-            var pluginsConfig   = testConfig.plugins || {};
-            var config          = pluginsConfig.formula || {};
-            var areaBroker      = testRunner.getAreaBroker();
-
-            var formulaFile;
+            var testRunner = this.getTestRunner();
 
             //update plugin state based on changes
             testRunner
-                .on('loaditem', togglePlugin)
-                .on('enabletools renderitem', function () {
-                    self.enable();
+                .after('renderitem', function () {
+                    // Note: The first interaction has different styles. Originally this had been addressed with :first-of-type, 
+                    // this became impossible after the HTML structure had been changed
+                    self.getAreaBroker().getContentArea().find('.__custom__choice-interaction-table .qti-choiceInteraction').first().addClass('first-choice-interaction');
                 });
         }
     });
