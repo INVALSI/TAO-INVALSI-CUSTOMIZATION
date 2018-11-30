@@ -1,0 +1,28 @@
+////
+/// TAO CSS SDK
+/// Media query which targets smaller screens (back end only)
+/// @group Item media queries
+////
+
+@media (max-width: 800px) {
+    html {
+        body {
+            // Reduce menu header to icon only:
+            .dropdown {
+                min-width: 50px;
+                .dropdown-header {
+                    .text {
+                        display: none;
+                    }
+                }
+            }
+            &.delivery-scope {
+                .content-wrap {
+                    .top-action-bar.action-bar.horizontal-action-bar {
+                        width: calc(100% - 200px); // logo is <150, menu <70
+                    }            
+                }
+            }
+        }
+    }
+}
