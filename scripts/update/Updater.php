@@ -741,7 +741,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
             $pluginService->registerPlugins([[
                 'id' => 'tableChoiceHelper',
-                'name' => 'Tabe Choice Helper',
+                'name' => 'Table Choice Helper',
                 'module' => 'taoInvalsi/runner/plugins/content/tableChoiceHelper',
                 'bundle' => 'taoInvalsi/loader/testPlugins.min',
                 'description' => 'Adds a CSS selector to each first choice interaction of each block',
