@@ -31,8 +31,8 @@ html {
             @import './inc/list-style'; // @see TAO-2977
 
             /// These files are already pre-filled with values. Comment them in only if you really need them.
-            @import './inc/feedback';
-            @import './inc/forms';
+            //@import './inc/feedback';
+            //@import './inc/forms';
 
             /// This applies to all interactions
             @import './inc/interactions/all-interactions';
