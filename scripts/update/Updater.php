@@ -37,6 +37,7 @@ use oat\taoQtiTest\scripts\install\SetGuidedNavigation;
 use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
+use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -698,6 +699,57 @@ class Updater extends common_ext_ExtensionUpdater {
             $registerTestRunnerFeatures([]);
 
             $this->setVersion('7.2.2');
+        }
+
+        if ($this->isVersion('7.2.2')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA214.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('7.3.0');
+        }
+
+        if ($this->isVersion('7.3.0')) {
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoDelivery/controller/DeliveryServer/index',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            );
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoQtiTest/controller/runner/runner',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            );
+    
+            $this->setVersion('7.4.1');
+        }
+
+        if ($this->isVersion('7.4.0')) {
+            $loginService = $this->getServiceManager()->get('tao/login');
+            $config = $loginService->getConfig();
+            $config['show_gdpr'] = true;
+            $loginService->setOption('config', $config);
+            $this->getServiceManager()->register('tao/login', $loginService);
+
+            $this->setVersion('7.5.0');
+        }
+        
+        if ($this->isVersion('7.5.0')) {
+
+            $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
+            $pluginService->registerPlugins([[
+                'id' => 'tableChoiceHelper',
+                'name' => 'Table Choice Helper',
+                'module' => 'taoInvalsi/runner/plugins/content/tableChoiceHelper',
+                'bundle' => 'taoInvalsi/loader/testPlugins.min',
+                'description' => 'Adds a CSS selector to each first choice interaction of each block',
+                'category' => 'content',
+                'active' => true,
+                'tags' => [ ]
+            ]]);
+            $this->setVersion('7.5.1');
         }
     }
 }

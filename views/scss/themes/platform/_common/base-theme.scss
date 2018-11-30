@@ -73,12 +73,156 @@ html {
             }
         }
 
+        // Amendment of header (login page & logged in as test-taker):
+        &.small-navi, &.delivery-scope {
+            .content-wrap {
+                // Remove footer:
+                margin-bottom: 0;
+                &:after {
+                    content: none;
+                }
+                // Amendment of header:
+                header {
+                    &.dark-bar {
+                        height: 50px;
+                        border-bottom: 2px solid $brand;
+                        // Invalsi's dropdown styles
+                        .settings-menu {
+                            display: none;
+                        }
+                        .dropdown {
+                            left: unset;
+                            right: 0;
+                            min-width: 170px;
+                        }
+                    }
+                }
+            }
+            // Smaller logo always:
+            #tao-main-logo {
+                margin: 6px 15px 0;
+                max-width: 100px;
+                height: 36px;
+            }
+            // Removal of footer:
+            footer {
+                &.dark-bar {
+                    display: none;
+                }
+            }
+            .loading-bar {
+                &.loading {
+                    top: 42px !important;
+                    &:before {
+                        top: 0px !important;
+                    }
+                }
+            }
+        }
+
+        // logged-in as test-taker
+        &.delivery-scope {
+            [data-control="skip"], [data-control="skip-end"] {
+                display: none;
+            }
+            .content-wrap {
+                overflow-y: hidden;
+                header {
+                    &.dark-bar {
+                        nav {
+                            &.rgt {
+                                height: 46px;
+                                li {
+                                    & > a, & >.a {
+                                        border-top: 5px transparent solid;
+                                        &:hover {
+                                            border-color: none;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .runner {
+                    // scroll inside, not body
+                    .test-runner-scope {
+                        height: calc(100vh - 50px);
+                    }
+                }
+                .top-action-bar.action-bar.horizontal-action-bar {
+                    // Action bar repositioning "in" header:
+                    position: absolute;
+                    top: -40px;
+                    left: 80px;
+                    height: 36px;
+                    width: calc(100vw - 300px); // logo is <130, menu <170
+                    color: $brand;
+                    background: white;
+                    .control-box {
+                        color: $brand !important;
+                        .title-box {
+                            font-weight: bold;
+                        }
+                        .progressbar {
+                            &.info {
+                                height: 0.8em;
+                                & > span {
+                                    background-color: $brand;
+                                }
+                            }
+                        }
+                    }
+                    &:before, &:after {
+                        content: none;
+                    }
+                }
+                .bottom-action-bar {
+                    overflow: hidden;
+                }
+            }
+        }
+        .modal-body {
+            .content {
+                .platform-info {
+                    h3 {
+                        font-size: 1.8rem;
+                    }
+                    .logo-list {
+                        li {
+                            display: inline-block;
+                            img {
+                                height: 36px;
+                                margin: 1rem 2rem 2rem 0;
+                            }
+                        }
+                    }
+                    p {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
     }
 }
 
-.delivery-scope [data-control="skip"], [data-control="skip-end"] {
-    display: none;
+
+.gdpr-notice {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    position: absolute;
+    bottom: 34px;
+    left: 10%;
+    z-index: -1;
+    p {
+        text-align: center;
+        font-size: 1.2rem;
+        line-height: 1.5em;
+        color: $minContrastText;
+    }
 }
+
 
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
