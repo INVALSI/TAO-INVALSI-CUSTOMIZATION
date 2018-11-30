@@ -18,73 +18,74 @@ html {
         }
         div.qti-item {
 
-            // // Generic HTML elements, CSS classes and such
-            // @import './inc/generic';
+            // Generic HTML elements, CSS classes and such
+            @import './inc/generic';
 
-            // /// Generic imports
-            // /// These files will cover the most common scenarios. If you need to take your modifications even
-            // /// further browse through https://github.com/oat-sa/tao-core/tree/develop/views/scss/inc.
-            // /// Essentially you can copy each file from there to here and modify it as needed.
-            // @import './inc/buttons';
-            // @import './inc/select2/inside-item-scope';
-            // @import './inc/table';
-            // @import './inc/list-style'; // @see TAO-2977
+            /// Generic imports
+            /// These files will cover the most common scenarios. If you need to take your modifications even
+            /// further browse through https://github.com/oat-sa/tao-core/tree/develop/views/scss/inc.
+            /// Essentially you can copy each file from there to here and modify it as needed.
+            @import './inc/buttons';
+            @import './inc/select2/inside-item-scope';
+            @import './inc/table';
+            @import './inc/list-style'; // @see TAO-2977
 
-            // /// These files are already pre-filled with values. Comment them in only if you really need them.
-            // //@import './inc/feedback';
-            // //@import './inc/forms';
+            /// These files are already pre-filled with values. Comment them in only if you really need them.
+            @import './inc/feedback';
+            @import './inc/forms';
 
-            // /// This applies to all interactions
-            // @import './inc/interactions/all-interactions';
+            /// This applies to all interactions
+            @import './inc/interactions/all-interactions';
 
-            // /// These apply to specific interactions
-            // @import './inc/interactions/associate';
+            /// These apply to specific interactions
+            @import './inc/interactions/associate';
             @import './inc/interactions/choice';
-            // @import './inc/interactions/extended-text';
-            // @import './inc/interactions/gap-match';
-            // @import './inc/interactions/graphic';
-            // @import './inc/interactions/graphic-gap';
-            // @import './inc/interactions/graphic-order';
-            // @import './inc/interactions/hottext';
-            // @import './inc/interactions/inline-choice';
-            // @import './inc/interactions/match';
-            // @import './inc/interactions/media';
-            // @import './inc/interactions/order';
-            // @import './inc/interactions/rubric-block';
-            // @import './inc/interactions/slider';
-            // @import './inc/interactions/text-entry';
-            // @import './inc/interactions/upload';
+            @import './inc/interactions/extended-text';
+            @import './inc/interactions/gap-match';
+            @import './inc/interactions/graphic';
+            @import './inc/interactions/graphic-gap';
+            @import './inc/interactions/graphic-order';
+            @import './inc/interactions/hottext';
+            @import './inc/interactions/inline-choice';
+            @import './inc/interactions/match';
+            @import './inc/interactions/media';
+            @import './inc/interactions/order';
+            @import './inc/interactions/rubric-block';
+            @import './inc/interactions/slider';
+            @import './inc/interactions/text-entry';
+            @import './inc/interactions/upload';
 
-            // &.runtime {
-            //     /// styles/imports not used in authoring
-            //     .qti-textEntryInteraction {
-            //         border: 2px solid $textColor;
-            //     }
-            //     .qti-customInteraction {
-            //         .mathEntryInteraction {
-            //             .mq-editable-field {
-            //                 border: 2px solid black;
-            //             }
-            //         }
-            //     }
+            &.runtime {
+                /// styles/imports not used in authoring
+                .qti-textEntryInteraction {
+                    border: 2px solid $textColor;
+                }
+                .qti-customInteraction {
+                    .mathEntryInteraction {
+                        .mq-editable-field {
+                            border: 2px solid black;
+                        }
+                    }
+                }
 
-            //     table {
-            //         margin-bottom: 25px;
-            //     }
-            // }
+                table {
+                    margin-bottom: 25px;
+                }
+            }
         }
     }
 }
 
 
-// /// Everything below here is outside the item scope - read the warning above!
+/// Everything below here is outside the item scope - read the warning above!
 
-// /// Select2 and maybe other frameworks have some parts that are outside the item,
-// /// usually directly attached to the document body
-// @import './inc/select2/outside-item-scope';
+/// Select2 and maybe other frameworks have some parts that are outside the item,
+/// usually directly attached to the document body
+@import './inc/select2/outside-item-scope';
 
-// /// Media queries also need to be done outside the item scope.
-// /// @see ./inc/mediaqueries/template.scss
-// /// This example targets IE 10+
-// @import './inc/mediaqueries/ie10+';
-// @import './inc/mediaqueries/print';
+/// Media queries also need to be done outside the item scope.
+/// @see ./inc/mediaqueries/template.scss
+/// This example targets IE 10+
+@import './inc/mediaqueries/ie10+';
+@import './inc/mediaqueries/print';
+
