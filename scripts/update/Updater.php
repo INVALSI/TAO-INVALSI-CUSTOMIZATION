@@ -723,7 +723,7 @@ class Updater extends common_ext_ExtensionUpdater {
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
             );
     
-            $this->setVersion('7.4.1');
+            $this->setVersion('7.4.0');
         }
 
         if ($this->isVersion('7.4.0')) {
@@ -751,5 +751,7 @@ class Updater extends common_ext_ExtensionUpdater {
             ]]);
             $this->setVersion('7.5.1');
         }
+
+        $this->skip('7.5.1', '7.5.2');
     }
 }
