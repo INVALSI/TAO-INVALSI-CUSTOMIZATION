@@ -180,6 +180,9 @@ html {
                 .bottom-action-bar {
                     overflow: hidden;
                 }
+                .test-sidebar {
+                    height: calc(100vh - 90px);
+                }
             }
         }
         .modal-body {
