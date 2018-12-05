@@ -723,10 +723,12 @@ class Updater extends common_ext_ExtensionUpdater {
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
             );
     
-            $this->setVersion('7.4.1');
+            $this->setVersion('7.4.0');
         }
 
-        if ($this->isVersion('7.4.0')) {
+        $this->skip('7.4.0', '7.4.1');
+
+        if ($this->isVersion('7.4.1')) {
             $loginService = $this->getServiceManager()->get('tao/login');
             $config = $loginService->getConfig();
             $config['show_gdpr'] = true;
@@ -751,5 +753,7 @@ class Updater extends common_ext_ExtensionUpdater {
             ]]);
             $this->setVersion('7.5.1');
         }
+
+        $this->skip('7.5.1', '7.5.2');
     }
 }
