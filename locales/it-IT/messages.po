@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.2.0-sprint40\n"
-"PO-Revision-Date: 2016-12-15T07:57:11\n"
+"Project-Id-Version: TAO 3.3.0-sprint92\n"
+"PO-Revision-Date: 2018-12-14T16:39:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -13,16 +13,34 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "About"
+msgstr ""
+
 msgid "Custom Styles"
 msgstr ""
 
 msgid "Display the current progression within the test"
 msgstr ""
 
+#, tao-public
+msgid "Export Invalsi CSV"
+msgstr ""
+
 msgid "Formula"
 msgstr "Formulario"
 
+#, tao-public
+msgid "Manage Results"
+msgstr ""
+
 msgid "Progress bar"
+msgstr ""
+
+msgid "RDS scheduler storage successfully installed"
+msgstr ""
+
+#, tao-public
+msgid "Results"
 msgstr ""
 
 msgid "The Label"
