@@ -22,12 +22,13 @@ define([
     'jquery',
     'lodash',
     'i18n',
+    'module',
     'ui/dropdown',
     'ui/dialog',
     'tpl!taoInvalsi/dropdown/list-header',
     'tpl!taoInvalsi/dropdown/list-item',
     'tpl!taoInvalsi/dropdown/dialog-content'
-], function ($, _, __, dropdown, dialog, listHeaderTpl, listItemTpl, dialogTpl){
+], function ($, _, __, module, dropdown, dialog, listHeaderTpl, listItemTpl, dialogTpl){
     'use strict';
 
     var userMenuController = {
@@ -132,9 +133,14 @@ define([
 
             ddMenu.setHeader(data.userHtml);
             ddMenu.addItem(data.about);
-            ddMenu.addItem(data.home);
-            ddMenu.addItem(data.logout);
-            ddMenu.addItem(data.exit);
+            // Handle external config options passed as route params:
+            if (module.config().page === 'testRunner' || _.isEmpty(module.config())) {
+                ddMenu.addItem(data.home);
+            }
+            if (module.config().page === 'delivery' || _.isEmpty(module.config())) {
+                ddMenu.addItem(data.logout);
+                ddMenu.addItem(data.exit);
+            }
 
             return ddMenu;
         },

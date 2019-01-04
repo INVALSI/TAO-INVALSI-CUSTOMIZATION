@@ -33,11 +33,11 @@ class SetClientRouterConfig extends InstallAction
     {
         ClientLibConfigRegistry::getRegistry()->register(
             'taoDelivery/controller/DeliveryServer/index',
-            array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=delivery'])
         );
         ClientLibConfigRegistry::getRegistry()->register(
             'taoQtiTest/controller/runner/runner',
-            array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
+            array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=testRunner'])
         );
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, 'Extra routes added.');
     }
