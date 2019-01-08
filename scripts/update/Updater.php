@@ -754,6 +754,22 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('7.5.1');
         }
 
-        $this->skip('7.5.1', '8.0.0');
+        $this->skip('7.5.1', '7.5.3');
+
+        if ($this->isVersion('7.5.3')) {
+            // We distinguish which route called the file by adding a param:
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoDelivery/controller/DeliveryServer/index',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=delivery'])
+            );
+            ClientLibConfigRegistry::getRegistry()->register(
+                'taoQtiTest/controller/runner/runner',
+                array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=testRunner'])
+            );
+
+            $this->setVersion('7.5.4');
+        }
+
+        $this->skip('7.5.4', '8.0.0');
     }
 }
