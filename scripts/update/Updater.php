@@ -722,7 +722,7 @@ class Updater extends common_ext_ExtensionUpdater {
                 'taoQtiTest/controller/runner/runner',
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu'])
             );
-    
+
             $this->setVersion('7.4.0');
         }
 
@@ -737,7 +737,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('7.5.0');
         }
-        
+
         if ($this->isVersion('7.5.0')) {
 
             $pluginService = $this->getServiceManager()->get(TestPluginService::SERVICE_ID);
@@ -766,9 +766,10 @@ class Updater extends common_ext_ExtensionUpdater {
                 'taoQtiTest/controller/runner/runner',
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=testRunner'])
             );
-    
+
             $this->setVersion('7.5.4');
         }
 
+        $this->skip('7.5.4', '8.0.0');
     }
 }

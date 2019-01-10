@@ -14,18 +14,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2018 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2018-2019 (original work) Open Assessment Technologies SA;
  *
  */
 
 namespace oat\taoInvalsi\model\launchLog;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Schema\SchemaException;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
-use oat\taoClientDiagnostic\model\browserDetector\WebBrowserService;
-use oat\taoClientDiagnostic\model\browserDetector\OSService;
 use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionCreated;
+use Sinergi\BrowserDetector\Browser;
+use Sinergi\BrowserDetector\Os;
 
 /**
  * Interface RdsLaunchLogService
@@ -44,18 +45,16 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
      */
     public function log(DeliveryExecutionInterface $deliveryExecution)
     {
-        $osService = OSService::singleton();
-        $browserService = WebBrowserService::singleton();
         $result = $this->getPersistence()->insert(
             self::TABLE_NAME,
             [
                 self::DELIVERY_EXECUTION_ID => $deliveryExecution->getIdentifier(),
                 self::DELIVERY_ID => $deliveryExecution->getDelivery()->getUri(),
                 self::TEST_TAKER_ID => $this->getTestTakerId($deliveryExecution),
-                self::BROWSER => $browserService->getClientName(),
-                self::BROWSER_VERSION => $browserService->getClientVersion(),
-                self::OS => $osService->getClientName(),
-                self::OS_VERSION => $osService->getClientVersion(),
+                self::BROWSER => $this->getBrowserDetector()->getName(),
+                self::BROWSER_VERSION => $this->getBrowserDetector()->getVersion(),
+                self::OS => $this->getOsDetector()->getName(),
+                self::OS_VERSION => $this->getOsDetector()->getVersion(),
                 self::CREATED_AT => \tao_helpers_Date::getTimeStamp($deliveryExecution->getStartTime(), true),
             ]
         );
@@ -195,5 +194,25 @@ class RdsLaunchLogService extends ConfigurableService implements LaunchLog
         }
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('RDS scheduler storage successfully installed'));
+    }
+
+    /**
+     * Get the browser detector
+     *
+     * @return Browser
+     */
+    protected function getBrowserDetector()
+    {
+        return new Browser();
+    }
+
+    /**
+     * Get the operating system detector
+     *
+     * @return Os
+     */
+    protected function getOsDetector()
+    {
+        return new Os();
     }
 }
