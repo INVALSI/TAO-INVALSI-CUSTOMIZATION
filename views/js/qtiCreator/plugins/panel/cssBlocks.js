@@ -31,6 +31,15 @@ define([
 
     var _config = cssConfig.getConfig();
 
+    var updateChoicesAsTable = function () {
+        var isChoiceAsTableChecked = $('input[name=__custom__choice-interaction-table]').prop('checked');
+        var choiceAsTableInteraction = $('div.qti-interaction.qti-blockInteraction.qti-choiceInteraction');
+        if (choiceAsTableInteraction.length){
+            isChoiceAsTableChecked
+                ? choiceAsTableInteraction.first().addClass('first-choice-interaction')
+                : choiceAsTableInteraction.first().removeClass('first-choice-interaction');
+        }
+    };
 
     return pluginFactory({
         name : 'cssBlocks',
@@ -54,6 +63,8 @@ define([
             this.$element.find('input').on('change' + _ns, function() {
                 self.$itemBody.toggleClass(this.name, this.checked);
                 item.toggleClass(this.name, this.checked);
+
+                updateChoicesAsTable();
             }).each(function(){
                 this.checked = item.hasClass(this.name);
             });
@@ -65,6 +76,8 @@ define([
             panel.initSidebarAccordion(this.$element);
             this.$element.find('._accordion').trigger('click');
             this.$element.show();
+
+            updateChoicesAsTable();
         }
     });
 });
