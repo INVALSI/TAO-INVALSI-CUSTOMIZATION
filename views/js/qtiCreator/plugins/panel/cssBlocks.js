@@ -31,13 +31,14 @@ define([
 
     var _config = cssConfig.getConfig();
 
-    var updateChoicesAsTable = function () {
+    /**
+     * Toggle labels for choices as table interaction
+     */
+    var updateChoicesAsTable = function updateChoicesAsTable() {
         var isChoiceAsTableChecked = $('input[name=__custom__choice-interaction-table]').prop('checked');
-        var choiceAsTableInteraction = $('div.qti-interaction.qti-blockInteraction.qti-choiceInteraction');
-        if (choiceAsTableInteraction.length){
-            isChoiceAsTableChecked
-                ? choiceAsTableInteraction.first().addClass('first-choice-interaction')
-                : choiceAsTableInteraction.first().removeClass('first-choice-interaction');
+        var $choiceInteractions = $('div.qti-interaction.qti-blockInteraction.qti-choiceInteraction');
+        if ($choiceInteractions.length){
+            $choiceInteractions.first().toggleClass('first-choice-interaction', isChoiceAsTableChecked);
         }
     };
 
