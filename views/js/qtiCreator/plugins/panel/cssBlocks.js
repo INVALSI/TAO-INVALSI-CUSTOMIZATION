@@ -31,6 +31,16 @@ define([
 
     var _config = cssConfig.getConfig();
 
+    /**
+     * Toggle labels for choices as table interaction
+     */
+    var updateChoicesAsTable = function updateChoicesAsTable() {
+        var isChoiceAsTableChecked = $('input[name=__custom__choice-interaction-table]').prop('checked');
+        var $choiceInteractions = $('div.qti-interaction.qti-blockInteraction.qti-choiceInteraction');
+        if ($choiceInteractions.length){
+            $choiceInteractions.first().toggleClass('first-choice-interaction', isChoiceAsTableChecked);
+        }
+    };
 
     return pluginFactory({
         name : 'cssBlocks',
@@ -54,6 +64,8 @@ define([
             this.$element.find('input').on('change' + _ns, function() {
                 self.$itemBody.toggleClass(this.name, this.checked);
                 item.toggleClass(this.name, this.checked);
+
+                updateChoicesAsTable();
             }).each(function(){
                 this.checked = item.hasClass(this.name);
             });
@@ -65,6 +77,8 @@ define([
             panel.initSidebarAccordion(this.$element);
             this.$element.find('._accordion').trigger('click');
             this.$element.show();
+
+            updateChoicesAsTable();
         }
     });
 });
