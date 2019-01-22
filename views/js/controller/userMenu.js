@@ -109,7 +109,7 @@ define([
                 // build brand new list header:
                 data.userHtml = listHeaderTpl({
                     cls: 'a',
-                    icon: 'text-taker',
+                    icon: 'test-taker',
                     text: $ul.find('.icon-test-taker').next('.text').text()
                 });
             }
