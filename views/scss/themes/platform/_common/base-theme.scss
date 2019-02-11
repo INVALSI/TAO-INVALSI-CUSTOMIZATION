@@ -223,6 +223,18 @@ html {
     }
 }
 
+.dropdown-container {
+    .dropdown {
+        &.open {
+            .dropdown-header {
+                .a {
+                    word-break: break-all;
+                    word-wrap: normal;
+                }
+            }
+        }
+    }
+}
 
 /// Media queries also need to be done outside the html scope.
 /// @see ./inc/mediaqueries/template.scss
