@@ -30,11 +30,17 @@ module.exports = function(grunt) {
                     extension : 'taoInvalsi',
                     outputDir : 'loader',
                     dependencies : ['taoQtiTest', 'taoTests'],
-                    bundles : [{
-                        name : 'testPlugins',
-                        include: ['taoInvalsi/runner/plugins/**/*'],
-                        dependencies : []
-                    }]
+                    bundles : [
+                        {
+                            name : 'testPlugins',
+                            include: ['taoInvalsi/runner/plugins/**/*'],
+                            dependencies : []
+                        },
+                        {
+                            name : 'taoInvalsi',
+                            default : true
+                        }
+                    ]
                 }
             }
         }
