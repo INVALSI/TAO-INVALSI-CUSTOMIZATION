@@ -777,10 +777,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
             $config = $extension->getConfig('testRunner');
             $config['plugins']['formula'] = [
-                'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
                 'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
                 'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
-                'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/FormulaL13_SLO.pdf'
+                'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf'
             ];
 
             $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';

@@ -32,10 +32,9 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = array_merge($config, $invalsiConfig);
 
         $config['plugins']['formula'] = [
-            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
             'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
             'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
-            'documentUrlSLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/FormulaL13_SLO.pdf'
+            'documentUrlSLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf'
         ];
 
         $config['plugins']['calculator'] = array(
