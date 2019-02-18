@@ -32,9 +32,11 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = array_merge($config, $invalsiConfig);
 
         $config['plugins']['formula'] = [
-            'documentUrl' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
             'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
-            'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf'
+            'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
+            'documentUrlSLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf',
+            'documentUrlL10_SLO' => 'Formulario_G10_SLO',//this one and the next one - are just the placeholders for two new
+            'documentUrlL10_GER' => 'Formulario_G10_GER' //files, to be filled later, when they'd provided by customer
         ];
 
         $config['plugins']['calculator'] = array(
@@ -47,7 +49,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
 
         //*** TextHelp Setup
         // - URI of the config file that should contain the right setup for the customer
-        $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configInvQA214.js';
+        $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';
         // - override math expressions with an alternative text
         $config['plugins']['textToSpeech']['overrideMathExpr'] = "Guarda la formula";
         // - override the default language crosswalk

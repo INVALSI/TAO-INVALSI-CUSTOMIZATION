@@ -771,5 +771,24 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('7.5.4', '8.1.3');
+
+        //These update is a part of seed file preparation
+        if ($this->isVersion('8.1.3')) {
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['formula'] = [
+                'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
+                'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
+                'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf',
+                'documentUrlL10_SLO' => 'Formulario_G10_SLO',//this one and the next one - are just the placeholders for two new
+                'documentUrlL10_GER' => 'Formulario_G10_GER' //files, to be filled later, when they'd provided by customer
+            ];
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';
+
+            $extension->setConfig('testRunner', $config);
+
+            $this->skip('8.2.0');
+        }
     }
 }
