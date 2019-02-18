@@ -779,7 +779,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $config['plugins']['formula'] = [
                 'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
                 'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
-                'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf'
+                'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf',
+                'documentUrlL10_SLO' => 'Formulario_G10_SLO',//this one and the next one - are just the placeholders for two new
+                'documentUrlL10_GER' => 'Formulario_G10_GER' //files, to be filled later, when they'd provided by customer
             ];
 
             $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';
