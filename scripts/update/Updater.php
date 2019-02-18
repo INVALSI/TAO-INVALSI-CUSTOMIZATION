@@ -788,7 +788,9 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $extension->setConfig('testRunner', $config);
 
-            $this->skip('8.2.0');
+            $this->setVersion('8.2.0');
         }
+
+        $this->skip('8.2.0', '8.2.1');
     }
 }
