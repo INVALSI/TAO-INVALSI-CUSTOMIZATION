@@ -13,6 +13,7 @@ use oat\tao\model\ClientLibConfigRegistry;
 use oat\tao\model\event\LoginSucceedEvent;
 use oat\tao\model\event\LogoutSucceedEvent;
 use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
+use oat\taoInvalsi\model\qtiTestCategory\InvalsiCategoryPresetProvider;
 use oat\taoInvalsi\model\session\Capture;
 use oat\taoInvalsi\model\theme\TaoInvalsiDefaultTheme;
 use oat\taoInvalsi\scripts\install\RegisterTestRunnerFeatures;
@@ -23,6 +24,7 @@ use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
 use oat\taoQtiItem\model\HookRegistry;
 use oat\taoQtiItem\model\ItemModel;
 use oat\taoQtiItem\model\QtiCreatorClientConfigRegistry;
+use oat\taoQtiTest\models\TestCategoryPresetRegistry;
 use oat\taoQtiTest\models\TestRunnerClientConfigRegistry;
 use oat\taoQtiTest\scripts\install\SetNewTestRunner;
 use oat\taoQtiTest\scripts\install\DisableAllowShortcut;
@@ -792,5 +794,15 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('8.2.0', '8.2.1');
+
+        if ($this->isVersion('8.2.1')) {
+            $registry = TestCategoryPresetRegistry::getRegistry();
+            $registry->set('taoInvalsi', '\oat\taoInvalsi\model\qtiTestCategory\InvalsiCategoryPresetProvider');
+
+            $this->getServiceManager()->unregister('taoQtiTest/CategoryPresetProvider');
+            $this->getServiceManager()->register('taoQtiTest/CategoryPresetProvider', new InvalsiCategoryPresetProvider());
+
+            $this->setVersion('8.3.0');
+        }
     }
 }

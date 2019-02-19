@@ -20,13 +20,14 @@ use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
+use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '8.2.1',
+    'version' => '8.3.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -72,6 +73,7 @@ return array(
             addAssignmentSettings::class,
             SetClientRouterConfig::class,
             EnableGdprMessage::class,
+            RegisterInvalsiTestCategoryPresetProvider::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
