@@ -47,6 +47,9 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'indicator' => false
         );
 
+        // default button for confirm dialogs
+        $config['plugins']['dialog']['confirm']['focus'] = 'cancel';
+
         //*** TextHelp Setup
         // - URI of the config file that should contain the right setup for the customer
         $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';
