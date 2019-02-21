@@ -792,5 +792,16 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('8.2.0', '8.2.1');
+
+        if ($this->isVersion('8.2.1')) {
+            $extension = $this->getServiceManager()->get(\common_ext_ExtensionsManager::SERVICE_ID)->getExtensionById('taoQtiTest');
+            $config = $extension->getConfig('testRunner');
+            $config['plugins']['dialog']['confirm']['focus'] = 'cancel';
+            $extension->setConfig('testRunner', $config);
+
+            $this->setVersion('8.3.0');
+        }
+
+        $this->skip('8.3.0', '8.3.1');
     }
 }
