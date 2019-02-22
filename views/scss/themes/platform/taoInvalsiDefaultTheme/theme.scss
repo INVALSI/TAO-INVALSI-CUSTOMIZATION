@@ -8,3 +8,13 @@
 @import "inc/_bootstrap";
 
 /// additional theme code that is not covered in include files yet
+
+.calculator {
+    .calculator-keyboard {
+        button {
+            &[data-param="MUL NUM1 NUM0 POW"], &[data-command="sign"] {
+                visibility: hidden;
+            }
+        }
+    }
+}
