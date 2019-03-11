@@ -40,7 +40,7 @@ class RegisterInvalsiTestCategoryPresetProvider extends InstallAction
     public function __invoke($params)
     {
         $registry = TestCategoryPresetRegistry::getRegistry();
-        $registry->set('taoInvalsi', '\oat\taoInvalsi\model\qtiTestCategory\InvalsiCategoryPresetProvider');
+        $registry->set('taoInvalsi', InvalsiCategoryPresetProvider::class);
 
         $this->getServiceManager()->unregister('taoQtiTest/CategoryPresetProvider');
         $this->getServiceManager()->register('taoQtiTest/CategoryPresetProvider', new InvalsiCategoryPresetProvider());
