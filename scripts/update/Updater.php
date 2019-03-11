@@ -804,9 +804,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('8.3.0');
         }
 
-        $this->skip('8.3.0', '8.3.2');
+        $this->skip('8.3.0', '8.3.3');
 
-        if ($this->isVersion('8.3.2')) {
+        if ($this->isVersion('8.3.3')) {
             $registry = TestCategoryPresetRegistry::getRegistry();
             $registry->set('taoInvalsi', InvalsiCategoryPresetProvider::class);
 

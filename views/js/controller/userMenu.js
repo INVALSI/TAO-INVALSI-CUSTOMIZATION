@@ -152,8 +152,16 @@ define([
          * @param {dropdown component} ddMenu
          */
         addDialogBehaviour: function addDialogBehaviour(ddMenu) {
+            var baseUrlEnd = module.uri.indexOf('taoInvalsi');
+            var baseUrl = (baseUrlEnd >= 0) ? module.uri.slice(0, baseUrlEnd) : '/';
+            var imgPath = 'taoInvalsi/views/img/themes/platform/taoInvalsiDefaultTheme/';
+
             var aboutDialog = dialog({
                 content: dialogTpl({
+                    images: {
+                        invalsi: baseUrl + imgPath + 'logo-invalsi.jpg',
+                        oat: baseUrl + imgPath + 'OAT-logo.png'
+                    },
                     year: new Date().getFullYear()
                 }),
                 buttons: 'ok',
