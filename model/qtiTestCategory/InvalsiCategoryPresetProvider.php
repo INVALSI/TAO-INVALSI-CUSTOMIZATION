@@ -50,16 +50,11 @@ class InvalsiCategoryPresetProvider extends TestCategoryPresetProvider implement
                 $language = false;
             }
 
-            $labelTemplate = 'Grade %s' . ($hasLanguage ? ' (%s)' : '');
-            $label = sprintf($labelTemplate, $grade, ($hasLanguage ? $language : null));
-
-            $description = sprintf('Apply "%s" category to the test items', $id);
-
             $formulaArray = [
                 'id' => $id,
-                'label' => __($label),
+                'label' => __('Grade %s' . ($hasLanguage ? ' (%s)' : ''), $grade, ($hasLanguage ? $language : null)),
                 'qtiCategory' => 'x-tao-option-' . $id,
-                'description' => __($description),
+                'description' => __('Apply "%s" category to the test items', $id),
                 'order' => 0,
                 'pluginId' => 'formula'
             ];
