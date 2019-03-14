@@ -50,9 +50,11 @@ class InvalsiCategoryPresetProvider extends TestCategoryPresetProvider implement
                 $language = false;
             }
 
+            $labelTranslated = $hasLanguage ? __('Grade %s (%s)', $grade, $language) : __('Grade %s', $grade);
+
             $formulaArray = [
                 'id' => $id,
-                'label' => __('Grade %s' . ($hasLanguage ? ' (%s)' : ''), $grade, ($hasLanguage ? $language : null)),
+                'label' => $labelTranslated,
                 'qtiCategory' => 'x-tao-option-' . $id,
                 'description' => __('Apply "%s" category to the test items', $id),
                 'order' => 0,
