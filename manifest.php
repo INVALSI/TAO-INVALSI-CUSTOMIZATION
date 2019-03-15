@@ -27,7 +27,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '8.4.1',
+    'version' => '9.0.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -45,7 +45,8 @@ return array(
         'taoDeliveryRdf'  => '>=7.2.1',
         'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=4.0.0',
-        'taoTestRunnerPlugins' => '>=2.0.2'
+        'taoTestRunnerPlugins' => '>=2.0.2',
+        'taoLti'          => '>=4.1.0'
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
