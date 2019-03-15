@@ -172,7 +172,8 @@
         align-items: stretch;
         & > li {
             &.qti-choice {
-                flex: 0 1 calc(50% - 2px);
+                flex: 0 1 auto;
+                width: calc(50% - 2px);
                 position: relative;
                 margin: 1px;
                 padding-bottom: 23px;

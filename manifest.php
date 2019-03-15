@@ -20,6 +20,7 @@ use oat\taoDeliveryRdf\scripts\ToggleGuestAccess;
 use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
+use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
 
 return array(
     'name' => 'taoInvalsi',
@@ -73,6 +74,7 @@ return array(
             addAssignmentSettings::class,
             SetClientRouterConfig::class,
             EnableGdprMessage::class,
+            RegisterInvalsiTestCategoryPresetProvider::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
