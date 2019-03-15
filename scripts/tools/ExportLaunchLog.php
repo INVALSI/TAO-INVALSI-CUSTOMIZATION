@@ -23,8 +23,11 @@ namespace oat\taoInvalsi\scripts\tools;
 use common_report_Report as Report;
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\extension\script\ScriptAction;
+use oat\tao\helpers\UserHelper;
 use oat\tao\model\export\implementation\CsvExporter;
 use oat\taoInvalsi\model\launchLog\LaunchLog;
+use oat\taoLti\models\classes\LtiRoles;
+use oat\taoLti\models\classes\user\LtiUserService;
 
 /**
  * Class ExportLaunchLog
@@ -146,8 +149,8 @@ class ExportLaunchLog extends ScriptAction
         $cache = [];
         foreach ($launches as $launch) {
             if (!isset($cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]])) {
-                $tt = $this->getResource($launch[LaunchLog::TEST_TAKER_ID]);
-                $cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]] = $tt->getLabel();
+                $ttName = $this->getUser($launch[LaunchLog::TEST_TAKER_ID]);
+                $cache['tt'][$launch[LaunchLog::TEST_TAKER_ID]] = $ttName;
             }
             if (!isset($cache['delivery'][$launch[LaunchLog::TEST_TAKER_ID]])) {
                 $delivery = $this->getResource($launch[LaunchLog::DELIVERY_ID]);
@@ -163,5 +166,30 @@ class ExportLaunchLog extends ScriptAction
             ];
         }
         return $data;
+    }
+
+    /**
+     * Gets username through UserHelper
+     *
+     * @param $userId
+     * @return string
+     */
+    private function getUser($userId)
+    {
+        $tt = UserHelper::getUser($userId);
+
+        $userName = UserHelper::getUserLabel($tt);
+
+        if (empty($userName)) {
+            $userRoles = $tt->getRoles();
+
+            if (in_array(LtiRoles::CONTEXT_LEARNER, $userRoles)) {
+                $userName = UserHelper::getUserStringProp($tt, $this->getProperty(LtiUserService::PROPERTY_USER_LTIKEY));
+            } else {
+                $userName = $tt->getIdentifier();
+            }
+        }
+
+        return $userName;
     }
 }
