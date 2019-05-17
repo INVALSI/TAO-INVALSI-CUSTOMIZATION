@@ -1,7 +1,21 @@
 <?php
 
 /**
- * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
+ * ***********************************************************************
+ * INVALSI CONFIDENTIAL
+ * __________________
+ *
+ *  All Rights Reserved.
+ *
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of INVALSI and its suppliers, if any.  The
+ *  intellectual and technical concepts contained herein are
+ *  proprietary to INVALSI and its suppliers, and are protected
+ *  by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from INVALSI.
+ *  ************************************************************************
  */
 
 namespace oat\taoInvalsi\scripts\update;
@@ -816,6 +830,6 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('8.4.0');
         }
 
-        $this->skip('8.4.0', '9.0.1');
+        $this->skip('8.4.0', '9.0.2');
     }
 }

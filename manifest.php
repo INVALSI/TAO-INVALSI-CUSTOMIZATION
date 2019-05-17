@@ -1,6 +1,20 @@
 <?php
 /**
- * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA.
+ * ***********************************************************************
+ * INVALSI CONFIDENTIAL
+ * __________________
+ *
+ *  All Rights Reserved.
+ *
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of INVALSI and its suppliers, if any.  The
+ *  intellectual and technical concepts contained herein are
+ *  proprietary to INVALSI and its suppliers, and are protected
+ *  by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from INVALSI.
+ *  ************************************************************************
  */
 
 use oat\tao\scripts\install\SetResourceSelector;
@@ -27,7 +41,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '9.0.1',
+    'version' => '9.0.2',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
