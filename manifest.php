@@ -1,20 +1,20 @@
 <?php
 /**
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; under version 2
- *  of the License (non-upgradable).
+ * ***********************************************************************
+ * INVALSI CONFIDENTIAL
+ * __________________
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU General Public License for more details.
+ *  All Rights Reserved.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- *  Copyright (c) 2016 (original work) Open Assessment Technologies S.A.
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of INVALSI and its suppliers, if any.  The
+ *  intellectual and technical concepts contained herein are
+ *  proprietary to INVALSI and its suppliers, and are protected
+ *  by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from INVALSI.
+ *  ************************************************************************
  */
 
 use oat\tao\scripts\install\SetResourceSelector;
@@ -41,7 +41,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '9.0.1',
+    'version' => '9.0.2',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',

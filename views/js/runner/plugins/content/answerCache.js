@@ -15,6 +15,7 @@
  *
  *  Copyright (c) 2018 (original work) Open Assessment Technologies S.A.
  */
+
 /**
  * Plugin that puts in cache the current item's state upon move.
  * After a page refresh, the cached state is loaded to restore the previously set state.
