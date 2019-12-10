@@ -783,10 +783,10 @@ class Updater extends common_ext_ExtensionUpdater {
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=testRunner'])
             );
 
-            $this->setVersion('7.5.4');
+            $this->setVersion('7.5.3.1');
         }
 
-        $this->skip('7.5.4', '8.1.3');
+        $this->skip('7.5.3.1', '8.1.3');
 
         //These update is a part of seed file preparation
         if ($this->isVersion('8.1.3')) {
@@ -830,6 +830,6 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('8.4.0');
         }
 
-        $this->skip('8.4.0', '9.0.2');
+        $this->skip('8.4.0', '9.0.3');
     }
 }
