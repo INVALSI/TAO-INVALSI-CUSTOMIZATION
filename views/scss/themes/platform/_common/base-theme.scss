@@ -163,6 +163,7 @@ html {
                     }
                 }
                 .runner {
+                    z-index: 10001;
                     // scroll inside, not body
                     .test-runner-scope {
                         height: calc(100vh - 50px);
