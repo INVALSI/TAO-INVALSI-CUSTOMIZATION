@@ -843,5 +843,17 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('9.1.0');
         }
+
+        if ($this->isVersion('9.1.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['formula']['documentUrlA71'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.1');
+        }
     }
 }
