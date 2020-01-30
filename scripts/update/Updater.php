@@ -831,5 +831,17 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('8.4.0', '9.0.5');
+
+        if ($this->isVersion('9.0.5')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//configuration.speechstream.net/oat/inv/v216/config.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.0.6');
+        }
     }
 }
