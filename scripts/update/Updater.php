@@ -841,7 +841,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $qtiTestService->setOption('config', $config);
             $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
 
-            $this->setVersion('9.0.6');
+            $this->setVersion('9.1.0');
         }
     }
 }
