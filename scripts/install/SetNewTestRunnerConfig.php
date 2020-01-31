@@ -55,7 +55,10 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf',
             'documentUrlL10_SLO' => 'Formulario_G10_SLO',//this one and the next one - are just the placeholders for two new
             'documentUrlL10_GER' => 'Formulario_G10_GER', //files, to be filled later, when they'd provided by customer
-            'documentUrlA71' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf' //package for activity 71 Jan2020
+            'documentUrlA71' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf', //package for activity 71 Jan2020
+            'documentUrlA02A03A04SRD' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf', //package for activity 020304SRD Jan2020
+            'documentUrlA141516' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf', //package for activity 141516 Jan2020
+            'documentUrlA02_A03_A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf', //package for activity 020304 Jan2020
         ];
 
         $config['plugins']['calculator'] = array(

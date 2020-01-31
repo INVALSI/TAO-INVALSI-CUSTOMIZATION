@@ -849,6 +849,9 @@ class Updater extends common_ext_ExtensionUpdater {
             $config = $qtiTestService ->getConfig();
 
             $config['plugins']['formula']['documentUrlA71'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf';
+            $config['plugins']['formula']['documentUrlA02A03A04SRD'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf';
+            $config['plugins']['formula']['documentUrlA141516'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf';
+            $config['plugins']['formula']['documentUrlA02_A03_A04'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf';
 
             $qtiTestService->setOption('config', $config);
             $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
