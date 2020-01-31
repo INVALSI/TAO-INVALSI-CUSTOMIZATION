@@ -831,5 +831,32 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('8.4.0', '9.0.5');
+
+        if ($this->isVersion('9.0.5')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//configuration.speechstream.net/oat/inv/v216/config.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.0');
+        }
+
+        if ($this->isVersion('9.1.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['formula']['documentUrlA71'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf';
+            $config['plugins']['formula']['documentUrlA02A03A04SRD'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf';
+            $config['plugins']['formula']['documentUrlA141516'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf';
+            $config['plugins']['formula']['documentUrlA02_A03_A04'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.1');
+        }
     }
 }
