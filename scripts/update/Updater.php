@@ -858,5 +858,21 @@ class Updater extends common_ext_ExtensionUpdater {
 
             $this->setVersion('9.1.1');
         }
+
+        if ($this->isVersion('9.1.1')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            //removing as we don't need underscores in the testRunner.conf, even if the category in test XML uses them
+            unset($config['plugins']['formula']['documentUrlA02_A03_A04']);
+            $config['plugins']['formula']['documentUrlA02A03A04'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf';
+
+            $config['plugins']['formula']['documentUrlA080910'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA080910.pdf';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.2');
+        }
     }
 }
