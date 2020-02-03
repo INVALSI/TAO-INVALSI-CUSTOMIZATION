@@ -49,6 +49,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = $qtiTest->getConfig('testRunner');
         $config = array_merge($config, $invalsiConfig);
 
+        unset($config['plugins']['formula']['documentUrlA02_A03_A04']);
+
         $config['plugins']['formula'] = [
             'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
             'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
@@ -59,6 +61,8 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'documentUrlA02A03A04SRD' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf', //package for activity 020304SRD Jan2020
             'documentUrlA141516' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf', //package for activity 141516 Jan2020
             'documentUrlA02_A03_A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf', //package for activity 020304 Jan2020
+            'documentUrlA02A03A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf',
+            'documentUrlA080910' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA080910.pdf',
         ];
 
         $config['plugins']['calculator'] = array(
