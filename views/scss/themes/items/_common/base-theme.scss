@@ -25,6 +25,7 @@
 /// include @font-face declarations here
 @import './inc/font-face';
 
+$excludeFunctionsButtons: 'subscript';
 $excludeSymbolsButtons: 'lparen', 'rparen', 'lbrace', 'rbrace', 'angle', 'integral';
 $excludeComparisonButtons: 'lower', 'greater';
 $excludeOperandsButtons: 'equal', 'plus', 'minus', 'timesdot';
@@ -37,7 +38,7 @@ $excludeOperandsButtons: 'equal', 'plus', 'minus', 'timesdot';
 @mixin roundRightCorners {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    border-right: none;
+    border-right: 0;
 }
 
 /// The cascade html body div.qti-item is meant to make sure that all style modifications affect
@@ -96,21 +97,28 @@ html {
                 .qti-customInteraction {
                     .mathEntryInteraction {
                         .math-entry-toolgroup {
+                            display: inline-flex;
+
                             // Functions group
                             &[data-identifier="functions"] {
                                 .math-entry-tool {
-                                    &[data-identifier="subscript"] {
-                                        display: none;
+                                    @each $button in $excludeFunctionsButtons {
+                                        &[data-identifier="#{$button}"] {
+                                            display: none;
+                                        }
                                     }
+
                                     &[data-identifier="frac"] {
                                         sup, sub {
                                             font-size: 1.5rem;
                                             top: 0;
                                             bottom: 0;
                                         }
+
                                         sup {
                                             right: 0.2rem;
                                         }
+
                                         sub {
                                             left: 0.1rem;
                                         }
@@ -120,6 +128,8 @@ html {
 
                             // Symbols group
                             &[data-identifier="symbols"] {
+                                display: inline-flex;
+
                                 .math-entry-tool {
                                     @each $button in $excludeSymbolsButtons {
                                         &[data-identifier="#{$button}"] {
@@ -127,8 +137,9 @@ html {
                                         }
                                     }
                                 }
+
                                 .math-entry-tool {
-                                    &:nth-child(8) {
+                                    &[data-identifier="rbrack"] {
                                         @include roundRightCorners;
                                     }
                                 }
@@ -143,8 +154,9 @@ html {
                                         }
                                     }
                                 }
+
                                 .math-entry-tool {
-                                    &:nth-child(3) {
+                                    &[data-identifier="lte"] {
                                         @include roundLeftCorners;
                                     }
                                 }
@@ -159,8 +171,9 @@ html {
                                         }
                                     }
                                 }
+
                                 .math-entry-tool {
-                                    &:nth-child(4) {
+                                    &[data-identifier="times"] {
                                         @include roundLeftCorners;
                                     }
                                 }
