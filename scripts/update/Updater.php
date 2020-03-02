@@ -878,7 +878,7 @@ class Updater extends common_ext_ExtensionUpdater {
 
         $this->skip('9.1.2', '9.1.2.1');
 
-        if ($this->isVersion('9.1.2') || $this->setVersion('9.1.2.1')) {
+        if ($this->isVersion('9.1.2') || $this->isVersion('9.1.2.1')) {
             $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
             $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($service->getOptions()));
             $this->setVersion('9.2.0');
