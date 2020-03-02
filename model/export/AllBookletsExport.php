@@ -30,6 +30,8 @@ use Box\Spout\Common\Type;
 class AllBookletsExport extends BaseBookletsExport
 {
 
+    const DAILY_EXPORTS = 'DAILY_EXPORTS';
+
     /**
      * Generate array with statistics for all deliveries
      *
@@ -88,7 +90,12 @@ class AllBookletsExport extends BaseBookletsExport
     protected function createExportFile($ext = 'csv')
     {
         $grade = $this->getGrade($this->prefix);
-        $directory = $grade . DIRECTORY_SEPARATOR . date('Y_m_d') . DIRECTORY_SEPARATOR . gethostname() . DIRECTORY_SEPARATOR;
+        $subject = $this->getSubject($this->prefix);
+        $directory = $grade . DIRECTORY_SEPARATOR .
+                     $grade . '_' . $subject . DIRECTORY_SEPARATOR .
+                     self::DAILY_EXPORTS . DIRECTORY_SEPARATOR .
+                     date('Y_m_d') . DIRECTORY_SEPARATOR .
+                     gethostname() . DIRECTORY_SEPARATOR;
 
         $filename = $this->prefix . '.' . $ext;
 
@@ -111,9 +118,18 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function getGrade($prefix)
     {
-        preg_match('/.*_(G)RA(\d\d)(_\w\w\w).*/', $prefix, $matches);
-        $parts = array_slice($matches, 1);
-        return implode('', $parts);
+        preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
+        return $matches[1].$matches[2];
+    }
+
+    /**
+     * @param $prefix
+     * @return mixed
+     */
+    protected function getSubject($prefix)
+    {
+        preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
+        return $matches[3];
     }
 
     /**
