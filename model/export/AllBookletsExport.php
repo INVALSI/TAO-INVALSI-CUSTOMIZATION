@@ -26,8 +26,6 @@ use oat\taoResultExports\model\export\AllBookletsExport as BaseBookletsExport;
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Common\Type;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
 
 class AllBookletsExport extends BaseBookletsExport
 {
@@ -87,7 +85,7 @@ class AllBookletsExport extends BaseBookletsExport
      * @param string $ext
      * @return File
      */
-    protected function createExportFile($ext)
+    protected function createExportFile($ext = 'csv')
     {
         $grade = $this->getGrade($this->prefix);
         $directory = $grade . DIRECTORY_SEPARATOR . date('Y_m_d') . DIRECTORY_SEPARATOR . gethostname() . DIRECTORY_SEPARATOR;

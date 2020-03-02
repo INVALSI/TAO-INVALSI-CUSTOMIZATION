@@ -89,7 +89,8 @@ return array(
             addAssignmentSettings::class,
             SetClientRouterConfig::class,
             EnableGdprMessage::class,
-            RegisterInvalsiTestCategoryPresetProvider::class
+            RegisterInvalsiTestCategoryPresetProvider::class,
+            oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
