@@ -54,6 +54,7 @@ use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
+use \oat\taoInvalsi\model\export\AllBookletsExport;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -876,5 +877,12 @@ class Updater extends common_ext_ExtensionUpdater {
         }
 
         $this->skip('9.1.2', '9.1.2.1');
+
+        if ($this->isVersion('9.1.2') || $this->isVersion('9.1.2.1')) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($service->getOptions()));
+            $this->setVersion('10.0.0');
+        }
+
     }
 }
