@@ -88,12 +88,15 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function createExportFile($ext = 'csv')
     {
+        $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+        //by customers requirement folder should contain yesterday's results.
+        $date->add(new \DateInterval('P1D'));
         $grade = $this->getGrade($this->prefix);
         $subject = $this->getSubject($this->prefix);
         $directory = $grade . DIRECTORY_SEPARATOR .
                      $grade . '_' . $subject . DIRECTORY_SEPARATOR .
                      self::DAILY_EXPORTS . DIRECTORY_SEPARATOR .
-                     date('Y_m_d') . DIRECTORY_SEPARATOR .
+                     $date->format('Y_m_d') . DIRECTORY_SEPARATOR .
                      gethostname() . DIRECTORY_SEPARATOR;
 
         $filename = $this->prefix . '.' . $ext;
