@@ -895,5 +895,13 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('10.0.1');
         }
 
+        if ($this->isVersion('10.0.1') ) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            $options = $service->getOptions();
+            $options[AllBookletsExport::OPTION_ONE_DAY_EXPORT] = true;
+            $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, $service);
+            $this->setVersion('10.0.2');
+        }
+
     }
 }

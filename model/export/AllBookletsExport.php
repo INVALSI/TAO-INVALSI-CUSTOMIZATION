@@ -29,6 +29,8 @@ use Box\Spout\Common\Type;
 class AllBookletsExport extends BaseBookletsExport
 {
 
+    /** @var string export only one day or all results until $this->dayToExport */
+    const OPTION_ONE_DAY_EXPORT = 'one_day_export';
     const DAILY_EXPORTS = 'DAILY_EXPORTS';
 
     /**
@@ -112,6 +114,21 @@ class AllBookletsExport extends BaseBookletsExport
         }
 
         return $file;
+    }
+
+    /**
+     * @param $startime
+     * @return bool
+     */
+    protected function withinDateRange($startime)
+    {
+        if ($this->getOption(self::OPTION_ONE_DAY_EXPORT) === true) {
+             return $this->getEpochDay($startime) === $this->dayToExport;
+        } else {
+            $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+            $date->setTime(23,59,59);
+            return $startime < $date->getTimestamp();
+        }
     }
 
     /**
