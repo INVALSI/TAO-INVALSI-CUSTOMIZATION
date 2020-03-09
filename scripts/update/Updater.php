@@ -884,5 +884,25 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('10.0.0');
         }
 
+        if ($this->isVersion('10.0.0')) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            $options = $service->getOptions();
+            $options[AllBookletsExport::OPTION_NUMBER_OF_DAILY_EXPORT] = 1;
+            $options[AllBookletsExport::NOT_REQUIRED_OPTION] = '38798977';
+            $options[AllBookletsExport::NOT_ATTEMPTED_OPTION] = '29787988';
+            $options[AllBookletsExport::NOT_RESPONDED_OPTION] = '17989789';
+            $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($options));
+            $this->setVersion('10.1.0');
+        }
+
+        if ($this->isVersion('10.1.0') ) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            if (!$service->hasOption(AllBookletsExport::OPTION_ONE_DAY_EXPORT)) {
+                $service->setOption(AllBookletsExport::OPTION_ONE_DAY_EXPORT, true);
+                $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, $service);
+            }
+            $this->setVersion('10.2.0');
+        }
+
     }
 }
