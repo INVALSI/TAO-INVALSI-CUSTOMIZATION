@@ -37,6 +37,8 @@ class RegisterBookletsExport extends InstallAction
         $options[AllBookletsExport::NOT_REQUIRED_OPTION] = '38798977';
         $options[AllBookletsExport::NOT_ATTEMPTED_OPTION] = '29787988';
         $options[AllBookletsExport::NOT_RESPONDED_OPTION] = '17989789';
+        $options[AllBookletsExport::OPTION_ONE_DAY_EXPORT] = true;
+
         $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($options));
 
         return new \common_report_Report(\common_report_Report::TYPE_SUCCESS, __('Registered Invalsi Booklet exporter'));
