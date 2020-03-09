@@ -884,7 +884,7 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('10.0.0');
         }
 
-        if ($this->isVersion('10.0.0') || $this->isVersion('10.0.1')) {
+        if ($this->isVersion('10.0.0')) {
             $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
             $options = $service->getOptions();
             $options[AllBookletsExport::OPTION_NUMBER_OF_DAILY_EXPORT] = 1;
