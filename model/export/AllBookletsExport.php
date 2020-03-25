@@ -126,6 +126,7 @@ class AllBookletsExport extends BaseBookletsExport
     /**
      * @param $startime
      * @return bool
+     * @throws \Exception
      */
     protected function withinDateRange($startime)
     {
@@ -136,6 +137,7 @@ class AllBookletsExport extends BaseBookletsExport
             $date->setTime(23,59,59);
             return $startime < $date->getTimestamp();
         }
+        return false;
     }
 
     /**
