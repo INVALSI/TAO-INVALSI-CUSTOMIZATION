@@ -99,10 +99,7 @@ class AllBookletsExport extends BaseBookletsExport
         $date->add(new \DateInterval('P1D'));
         $grade = $this->getGrade($this->prefix);
         $subject = $this->getSubject($this->prefix);
-        $exportFolder = self::DEFAULT_EXPORT_FOLDER;
-        if ($this->hasOption(self::OPTION_EXPORT_FOLDER)) {
-            $exportFolder = $this->getOption(self::OPTION_EXPORT_FOLDER);
-        }
+        $exportFolder = $this->getExportFolder();
         $directory = $this->getActivity() . '_' . date("Y") . DIRECTORY_SEPARATOR .
                      $exportFolder . DIRECTORY_SEPARATOR .
                      $grade . DIRECTORY_SEPARATOR .
@@ -159,6 +156,18 @@ class AllBookletsExport extends BaseBookletsExport
     {
         preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
         return $matches[3];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getExportFolder()
+    {
+        $exportFolder = self::DEFAULT_EXPORT_FOLDER;
+        if ($this->hasOption(self::OPTION_EXPORT_FOLDER) && !empty($this->getOption(self::OPTION_EXPORT_FOLDER))) {
+            $exportFolder = $this->getOption(self::OPTION_EXPORT_FOLDER);
+        }
+        return $exportFolder;
     }
 
     /**
