@@ -32,6 +32,7 @@ class AllBookletsExport extends BaseBookletsExport
     /** @var string export only one day or all results until $this->dayToExport */
     const OPTION_ONE_DAY_EXPORT = 'one_day_export';
     const OPTION_EXPORT_FOLDER = 'export_folder';
+    const DEFAULT_EXPORT_FOLDER = 'PRODUCTION';
     const DAILY_EXPORTS = 'DAILY_EXPORTS';
     const FT_ACTIVITY = 'FT';
     const MS_ACTIVITY = 'MS';
@@ -98,8 +99,12 @@ class AllBookletsExport extends BaseBookletsExport
         $date->add(new \DateInterval('P1D'));
         $grade = $this->getGrade($this->prefix);
         $subject = $this->getSubject($this->prefix);
+        $exportFolder = self::DEFAULT_EXPORT_FOLDER;
+        if ($this->hasOption(self::OPTION_EXPORT_FOLDER)) {
+            $exportFolder = $this->getOption(self::OPTION_EXPORT_FOLDER);
+        }
         $directory = $this->getActivity() . '_' . date("Y") . DIRECTORY_SEPARATOR .
-                     $this->getOption(self::OPTION_EXPORT_FOLDER) . DIRECTORY_SEPARATOR .
+                     $exportFolder . DIRECTORY_SEPARATOR .
                      $grade . DIRECTORY_SEPARATOR .
                      $grade . '_' . $subject . DIRECTORY_SEPARATOR .
                      self::DAILY_EXPORTS . DIRECTORY_SEPARATOR .
