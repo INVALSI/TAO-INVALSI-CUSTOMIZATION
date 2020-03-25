@@ -31,7 +31,10 @@ class AllBookletsExport extends BaseBookletsExport
 
     /** @var string export only one day or all results until $this->dayToExport */
     const OPTION_ONE_DAY_EXPORT = 'one_day_export';
+    const OPTION_EXPORT_FOLDER = 'export_folder';
     const DAILY_EXPORTS = 'DAILY_EXPORTS';
+    const FT_ACTIVITY = 'FT';
+    const MS_ACTIVITY = 'MS';
 
     /**
      * Generate array with statistics for all deliveries
@@ -95,7 +98,9 @@ class AllBookletsExport extends BaseBookletsExport
         $date->add(new \DateInterval('P1D'));
         $grade = $this->getGrade($this->prefix);
         $subject = $this->getSubject($this->prefix);
-        $directory = $grade . DIRECTORY_SEPARATOR .
+        $directory = $this->getActivity() . '_' . date("Y") . DIRECTORY_SEPARATOR .
+                     $this->getOption(self::OPTION_EXPORT_FOLDER) . DIRECTORY_SEPARATOR .
+                     $grade . DIRECTORY_SEPARATOR .
                      $grade . '_' . $subject . DIRECTORY_SEPARATOR .
                      self::DAILY_EXPORTS . DIRECTORY_SEPARATOR .
                      $date->format('Y_m_d') . DIRECTORY_SEPARATOR .
@@ -122,9 +127,9 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function withinDateRange($startime)
     {
-        if ($this->getOption(self::OPTION_ONE_DAY_EXPORT) === true) {
+        if ($this->getActivity($this->prefix) === self::MS_ACTIVITY) {
              return $this->getEpochDay($startime) === $this->dayToExport;
-        } else {
+        } else if ($this->getActivity($this->prefix) === self::FT_ACTIVITY) {
             $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport);
             $date->setTime(23,59,59);
             return $startime < $date->getTimestamp();
@@ -149,6 +154,22 @@ class AllBookletsExport extends BaseBookletsExport
     {
         preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
         return $matches[3];
+    }
+
+    /**
+     * @param $prefix
+     * @return string
+     * @throws \Exception
+     */
+    protected function getActivity($prefix)
+    {
+        if (strpos($prefix, '_FT') !== false) {
+            return self::FT_ACTIVITY;
+        }
+        if (strpos($prefix, '_MS') !== false) {
+            return self::MS_ACTIVITY;
+        }
+        throw new \Exception('Cannot get activity');
     }
 
     /**
