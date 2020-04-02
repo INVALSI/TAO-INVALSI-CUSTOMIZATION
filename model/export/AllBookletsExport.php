@@ -100,7 +100,7 @@ class AllBookletsExport extends BaseBookletsExport
         $grade = $this->getGrade($this->prefix);
         $subject = $this->getSubject($this->prefix);
         $exportFolder = $this->getExportFolder();
-        $directory = $this->getActivity() . '_' . date("Y") . DIRECTORY_SEPARATOR .
+        $directory = $this->getActivity($this->prefix) . '_' . date("Y") . DIRECTORY_SEPARATOR .
                      $exportFolder . DIRECTORY_SEPARATOR .
                      $grade . DIRECTORY_SEPARATOR .
                      $grade . '_' . $subject . DIRECTORY_SEPARATOR .
