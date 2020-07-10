@@ -28,7 +28,7 @@ class InvalsiCategoryPresetProvider extends TestCategoryPresetProvider implement
 {
     const GROUP_FORMULA = 'formula';
 
-    protected function getPresetGroups()
+    protected function getPresetGroups(): array
     {
         $existentGroups = parent::getPresetGroups();
 
