@@ -94,7 +94,7 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function createExportFile($ext = 'csv')
     {
-        $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+        $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport ?? (new \DateTime())->format('Y-m-d'));
         //by customers requirement folder should contain yesterday's results.
         $date->add(new \DateInterval('P1D'));
         $grade = $this->getGrade($this->prefix);
