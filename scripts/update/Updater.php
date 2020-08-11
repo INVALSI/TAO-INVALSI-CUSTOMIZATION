@@ -906,5 +906,9 @@ class Updater extends common_ext_ExtensionUpdater {
         
         $this->skip('10.2.0', '10.3.1');
 
+        //Updater files are deprecated. Please use migrations.
+        //See: https://github.com/oat-sa/generis/wiki/Tao-Update-Process
+
+        $this->setVersion($this->getExtension()->getManifest()->getVersion());
     }
 }
