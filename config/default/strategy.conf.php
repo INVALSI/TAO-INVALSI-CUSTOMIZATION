@@ -17,13 +17,13 @@
  *  ************************************************************************
  */
 
-use oat\taoInvalsi\model\export\DateRangeLookup;
+use oat\taoInvalsi\model\export\DateRangeLookupStrategy;
 
-return new DateRangeLookup(
+return new DateRangeLookupStrategy(
     [
-        DateRangeLookup::OPTION_CAMPAIGNS => [
-            'FT' => DateRangeLookup::STRATEGY_BEFORE_END_OF_DAY,
-            'MS' => DateRangeLookup::STRATEGY_SAME_DAY
+        DateRangeLookupStrategy::OPTION_CAMPAIGNS => [
+            'TF' => DateRangeLookupStrategy::STRATEGY_BEFORE_END_OF_DAY,
+            'MS' => DateRangeLookupStrategy::STRATEGY_SAME_DAY
         ],
     ]
 );
