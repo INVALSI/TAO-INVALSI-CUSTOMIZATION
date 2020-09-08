@@ -1,0 +1,29 @@
+<?php
+/**
+ * ***********************************************************************
+ * INVALSI CONFIDENTIAL
+ * __________________
+ *
+ *  All Rights Reserved.
+ *
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of INVALSI and its suppliers, if any.  The
+ *  intellectual and technical concepts contained herein are
+ *  proprietary to INVALSI and its suppliers, and are protected
+ *  by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from INVALSI.
+ *  ************************************************************************
+ */
+
+use oat\taoInvalsi\model\export\DateRangeLookup;
+
+return new DateRangeLookup(
+    [
+        DateRangeLookup::OPTION_CAMPAIGNS => [
+            'FT' => DateRangeLookup::STRATEGY_BEFORE_END_OF_DAY,
+            'MS' => DateRangeLookup::STRATEGY_SAME_DAY
+        ],
+    ]
+);
