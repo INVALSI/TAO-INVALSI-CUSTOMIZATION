@@ -25,7 +25,7 @@ class DateRangeLookupStrategy extends ConfigurableService
     {
         $campaigns = $this->getOption(self::OPTION_CAMPAIGNS);
 
-        if (!in_array($campaign, $campaigns, true)) {
+        if (!array_key_exists($campaign, $campaigns)) {
             throw new OutOfRangeException(sprintf('Cannot find campaign config for code %s', $campaign));
         }
 
