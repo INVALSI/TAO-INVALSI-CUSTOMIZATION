@@ -25,7 +25,7 @@ use oat\oatbox\service\ConfigurableService;
 
 class PrefixParser extends ConfigurableService
 {
-    public const SERVICE_ID = 'taoInvalsi/parser';
+    public const SERVICE_ID = 'taoInvalsi/prefix_parser';
 
     public const OPTION_DETECTION_REGEXP = 'detection_regexp';
     public const OPTION_GRADE_RULE = 'grade_rule';

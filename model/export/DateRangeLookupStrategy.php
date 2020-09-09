@@ -9,7 +9,7 @@ use OutOfRangeException;
 
 class DateRangeLookupStrategy extends ConfigurableService
 {
-    public const SERVICE_ID = 'taoInvalsi/strategy';
+    public const SERVICE_ID = 'taoInvalsi/campaign_lookup_strategy';
 
     public const OPTION_CAMPAIGNS = 'campaigns';
 
