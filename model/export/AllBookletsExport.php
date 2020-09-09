@@ -159,8 +159,8 @@ class AllBookletsExport extends BaseBookletsExport
     {
         $campaign = $this->getPrefixParserService()->getCampaign($this->prefix);
 
-        /** @var DateRangeLookupStrategy $lookupStrategyService */
-        $lookupStrategyService = $this->getServiceLocator()->get(DateRangeLookupStrategy::SERVICE_ID);
+        /** @var CampaignDateRangeLookupStrategy $lookupStrategyService */
+        $lookupStrategyService = $this->getServiceLocator()->get(CampaignDateRangeLookupStrategy::SERVICE_ID);
 
         try {
             $strategy = $lookupStrategyService->findStrategy($campaign);

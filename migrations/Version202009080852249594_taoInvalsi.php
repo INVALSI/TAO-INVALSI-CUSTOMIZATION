@@ -17,7 +17,7 @@ final class Version202009080852249594_taoInvalsi extends AbstractMigration
 
     public function getDescription(): string
     {
-        return 'Registers DateRangeLookupStrategy service';
+        return 'Registers CampaignDateRangeLookupStrategy service';
     }
 
     /**
@@ -28,12 +28,12 @@ final class Version202009080852249594_taoInvalsi extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->getServiceLocator()->register(
-            DateRangeLookupStrategy::SERVICE_ID,
-            new DateRangeLookupStrategy(
+            CampaignDateRangeLookupStrategy::SERVICE_ID,
+            new CampaignDateRangeLookupStrategy(
                 [
-                    DateRangeLookupStrategy::OPTION_CAMPAIGNS => [
-                        'TF' => DateRangeLookupStrategy::STRATEGY_BEFORE_END_OF_DAY,
-                        'MS' => DateRangeLookupStrategy::STRATEGY_SAME_DAY,
+                    CampaignDateRangeLookupStrategy::OPTION_CAMPAIGNS => [
+                        'TF' => CampaignDateRangeLookupStrategy::STRATEGY_BEFORE_END_OF_DAY,
+                        'MS' => CampaignDateRangeLookupStrategy::STRATEGY_SAME_DAY,
                     ],
                 ]
             )

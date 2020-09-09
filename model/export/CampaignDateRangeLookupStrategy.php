@@ -7,7 +7,7 @@ namespace oat\taoInvalsi\model\export;
 use oat\oatbox\service\ConfigurableService;
 use OutOfRangeException;
 
-class DateRangeLookupStrategy extends ConfigurableService
+class CampaignDateRangeLookupStrategy extends ConfigurableService
 {
     public const SERVICE_ID = 'taoInvalsi/campaign_lookup_strategy';
 
