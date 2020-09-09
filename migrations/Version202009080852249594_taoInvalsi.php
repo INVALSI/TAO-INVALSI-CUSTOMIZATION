@@ -7,7 +7,7 @@ namespace oat\taoInvalsi\migrations;
 use common_Exception;
 use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use oat\taoInvalsi\model\export\DateRangeLookupStrategy;
+use oat\taoInvalsi\model\export\CampaignDateRangeLookupStrategy;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -42,6 +42,6 @@ final class Version202009080852249594_taoInvalsi extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->getServiceLocator()->unregister(DateRangeLookupStrategy::SERVICE_ID);
+        $this->getServiceLocator()->unregister(CampaignDateRangeLookupStrategy::SERVICE_ID);
     }
 }
