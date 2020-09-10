@@ -19,95 +19,122 @@
 
 namespace oat\taoInvalsi\model\export;
 
+use Box\Spout\Common\Exception\IOException;
+use Box\Spout\Common\Exception\UnsupportedTypeException;
+use Box\Spout\Reader\Exception\ReaderNotOpenedException;
+use Box\Spout\Writer\Exception\WriterNotOpenedException;
+use common_Exception;
+use common_exception_Error;
+use common_exception_NotFound;
+use common_report_Report;
+use DateInterval;
+use DateTime;
+use Exception;
+use League\Flysystem\FileExistsException;
 use oat\oatbox\filesystem\File;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\taoInvalsi\model\export\xls\Converter;
 use oat\taoResultExports\model\export\AllBookletsExport as BaseBookletsExport;
-use Box\Spout\Reader\ReaderFactory;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Common\Type;
+use OutOfRangeException;
+use qtism\data\storage\php\PhpStorageException;
 
 class AllBookletsExport extends BaseBookletsExport
 {
-
     /** @var string export only one day or all results until $this->dayToExport */
-    const OPTION_ONE_DAY_EXPORT = 'one_day_export';
-    const OPTION_EXPORT_FOLDER = 'export_folder';
-    const DEFAULT_EXPORT_FOLDER = 'PRODUCTION';
-    const DAILY_EXPORTS = 'DAILY_EXPORTS';
-    const FT_ACTIVITY = 'FT';
-    const MS_ACTIVITY = 'MS';
+    public const OPTION_ONE_DAY_EXPORT = 'one_day_export';
+    public const OPTION_EXPORT_FOLDER = 'export_folder';
+
+    public const DEFAULT_EXPORT_FOLDER = 'PRODUCTION';
+    public const DAILY_EXPORTS = 'DAILY_EXPORTS';
 
     /**
      * Generate array with statistics for all deliveries
      *
-     * @return \common_report_Report
+     * @return common_report_Report
      *
-     * @throws \common_Exception
-     * @throws \common_exception_Error
-     * @throws \common_exception_NotFound
-     * @throws \qtism\data\storage\php\PhpStorageException
+     * @throws IOException
+     * @throws UnsupportedTypeException
+     * @throws ReaderNotOpenedException
+     * @throws WriterNotOpenedException
+     * @throws FileExistsException
+     * @throws PhpStorageException
+     * @throws common_Exception
+     * @throws common_exception_Error
+     * @throws common_exception_NotFound
+     * @throws Exception
      */
-    public function export()
+    public function export(): common_report_Report
     {
-        $report = \common_report_Report::createSuccess();
+        $report = common_report_Report::createSuccess();
 
-        // Initialize temporary file.
-        $tmpLocation = tempnam(sys_get_temp_dir(), 'invalsiexport');
-        $this->exportFile = fopen($tmpLocation, 'w+');
+        // initialize temporary file.
+        $location = tempnam(sys_get_temp_dir(), 'invalsiexport');
+        $this->exportFile = fopen($location, 'wb+');
+        rewind($this->exportFile);
 
-        $headers = $this->getHeaders();
-        $this->writeToCsv($headers, true);
+        $this->writeToCsv($this->getHeaders(), true);
 
         $rowsReport = $this->getRows();
         $report->add($rowsReport);
 
         if ($report->containsError()) {
-            $report->setType(\common_report_Report::TYPE_ERROR);
+            $report->setType(common_report_Report::TYPE_ERROR);
             $report->setMessage('Some errors occurred during export :');
         }
 
-        $rows = $rowsReport->getData();
+        $csv = $this->createExportFile('csv');
+        $csv->write($this->exportFile);
 
-        // Write as stream and close temporary file.
-        $exportCsvFile = $this->createExportFile('csv');
-        $report->setMessage($rows . ' row(s) exported to ' . $exportCsvFile->getPrefix() . '.');
-        rewind($this->exportFile);
-        $exportCsvFile->write($this->exportFile);
+        $xls = $this->createExportFile('xlsx');
+        $xls->write((new Converter())->toXLS($csv));
 
-        $xlsFileName = $this->convertToXls($exportCsvFile);
-        $exportXlsFile = $this->createExportFile('xlsx');
-        $exportXlsFile->write(file_get_contents($xlsFileName));
+        $report->setMessage($rowsReport->getData() . ' row(s) exported to ' . $csv->getPrefix() . '.');
 
         fclose($this->exportFile);
-        unlink($tmpLocation);
+        unlink($location);
 
         return $report;
     }
 
-
     /**
      * Create the filename for the export
      *
-     * If there is a daily mode then add the date as subfolder
+     * If there is a daily mode then add the date as sub-folder
+     *
      * @param string $ext
+     *
      * @return File
+     * @throws Exception
      */
-    protected function createExportFile($ext = 'csv')
+    protected function createExportFile($ext = 'csv'): File
     {
-        $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport ?? (new \DateTime())->format('Y-m-d'));
-        //by customers requirement folder should contain yesterday's results.
-        $date->add(new \DateInterval('P1D'));
-        $grade = $this->getGrade($this->prefix);
-        $subject = $this->getSubject($this->prefix);
-        $exportFolder = $this->getExportFolder();
-        $directory = $this->getActivity($this->prefix) . '_' . date("Y") . DIRECTORY_SEPARATOR .
-                     $exportFolder . DIRECTORY_SEPARATOR .
-                     $grade . DIRECTORY_SEPARATOR .
-                     $grade . '_' . $subject . DIRECTORY_SEPARATOR .
-                     self::DAILY_EXPORTS . DIRECTORY_SEPARATOR .
-                     $date->format('Y_m_d') . DIRECTORY_SEPARATOR .
-                     gethostname() . DIRECTORY_SEPARATOR;
+        $date = DateTime::createFromFormat(
+            'Y-m-d',
+            $this->dayToExport ?? (new \DateTime())->format('Y-m-d')
+        );
 
+        // by customers requirement folder should contain yesterday's results.
+        $date->add(new DateInterval('P1D'));
+
+        $prefixParserService = $this->getPrefixParserService();
+
+        $campaign = $prefixParserService->getCampaign($this->prefix);
+        $grade = $prefixParserService->getGrade($this->prefix);
+        $subject = $prefixParserService->getSubject($this->prefix);
+
+        $folder = $this->getOption(self::OPTION_EXPORT_FOLDER, self::DEFAULT_EXPORT_FOLDER);
+
+        $pathComponents = [
+            $campaign . '_' . date("Y"),
+            $folder,
+            $grade,
+            $subject,
+            self::DAILY_EXPORTS,
+            $date->format('Y_m_d'),
+            gethostname(),
+        ];
+
+        $directory = implode(DIRECTORY_SEPARATOR, $pathComponents) . DIRECTORY_SEPARATOR;
         $filename = $this->prefix . '.' . $ext;
 
         /** @var File $file */
@@ -124,103 +151,53 @@ class AllBookletsExport extends BaseBookletsExport
     }
 
     /**
-     * @param $startime
+     * @param $startTime
+     *
      * @return bool
-     * @throws \Exception
      */
-    protected function withinDateRange($startime)
+    protected function withinDateRange($startTime)
     {
-        if ($this->getActivity($this->prefix) === self::MS_ACTIVITY) {
-             return $this->getEpochDay($startime) === $this->dayToExport;
-        } else if ($this->getActivity($this->prefix) === self::FT_ACTIVITY) {
-            $date = \DateTime::createFromFormat('Y-m-d', $this->dayToExport);
-            $date->setTime(23,59,59);
-            return $startime < $date->getTimestamp();
+        $campaign = $this->getPrefixParserService()->getCampaign($this->prefix);
+
+        /** @var CampaignDateRangeLookupStrategy $lookupStrategyService */
+        $lookupStrategyService = $this->getServiceLocator()->get(CampaignDateRangeLookupStrategy::SERVICE_ID);
+
+        try {
+            $strategy = $lookupStrategyService->findStrategy($campaign);
+            return $this->{$strategy}($startTime);
+        } catch (OutOfRangeException $e) {
+            return false;
         }
-        return false;
     }
 
     /**
-     * @param $prefix
-     * @return string
+     * @param int $startTime
+     *
+     * @return bool
      */
-    protected function getGrade($prefix)
+    private function sameDayDateRange(int $startTime): bool
     {
-        preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
-        return $matches[1].$matches[2];
+        return $this->getEpochDay($startTime) === $this->dayToExport;
     }
 
     /**
-     * @param $prefix
-     * @return mixed
+     * @param int $startTime
+     *
+     * @return bool
      */
-    protected function getSubject($prefix)
+    private function beforeEndOfDayDateRange(int $startTime): bool
     {
-        preg_match('/.*_(G)RA(\d\d)_(\w\w\w).*/', $prefix, $matches);
-        return $matches[3];
+        $date = DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+        $date->setTime(23,59,59);
+
+        return $startTime < $date->getTimestamp();
     }
 
     /**
-     * @return string
+     * @return PrefixParser
      */
-    protected function getExportFolder()
+    protected function getPrefixParserService(): PrefixParser
     {
-        $exportFolder = self::DEFAULT_EXPORT_FOLDER;
-        if ($this->hasOption(self::OPTION_EXPORT_FOLDER) && !empty($this->getOption(self::OPTION_EXPORT_FOLDER))) {
-            $exportFolder = $this->getOption(self::OPTION_EXPORT_FOLDER);
-        }
-        return $exportFolder;
+        return $this->getServiceLocator()->get(PrefixParser::SERVICE_ID);
     }
-
-    /**
-     * @param $prefix
-     * @return string
-     * @throws \Exception
-     */
-    protected function getActivity($prefix)
-    {
-        if (strpos($prefix, '_FT') !== false) {
-            return self::FT_ACTIVITY;
-        }
-        if (strpos($prefix, '_MS') !== false) {
-            return self::MS_ACTIVITY;
-        }
-        throw new \Exception('Cannot get activity');
-    }
-
-    /**
-     * @param File $csvFile
-     * @return string
-     * @throws \Box\Spout\Common\Exception\IOException
-     * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
-     * @throws \Box\Spout\Reader\Exception\ReaderNotOpenedException
-     * @throws \Box\Spout\Writer\Exception\WriterNotOpenedException
-     */
-    protected function convertToXls(File $csvFile)
-    {
-        $dir = \tao_helpers_File::createTempDir();
-        $csvFileName = $dir.$csvFile->getBasename();
-        file_put_contents($csvFileName, $csvFile->read());
-        $reader = ReaderFactory::create(Type::CSV);
-        $reader->open($csvFileName);
-
-        $xlsFileName = $dir . str_replace('.csv', '', $csvFile->getBaseName()) . '.xlsx';
-        $readCount = 0;
-        $reader = ReaderFactory::create(Type::CSV);
-        $reader->open($csvFileName);
-        $writeCount = 0;
-        $writer = WriterFactory::create(Type::XLSX);
-        $writer->openToFile($xlsFileName);
-        foreach ($reader->getSheetIterator() as $sheet) {
-            foreach ($sheet->getRowIterator() as $row) {
-                $readCount++;
-                $writer->addRow($row);
-                $writeCount++;
-            }
-        }
-        $reader->close();
-        $writer->close();
-        return $xlsFileName;
-    }
-
 }
