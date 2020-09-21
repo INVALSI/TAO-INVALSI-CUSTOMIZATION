@@ -104,7 +104,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'action'      => 'messages',
             'syncActions' => [],
             'params'      => [
-                'interval' => 30,
+                'interval' => 300, //5 minutes
                 'timeout' => 30,
             ]
         ];

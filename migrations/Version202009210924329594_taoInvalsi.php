@@ -40,7 +40,7 @@ final class Version202009210924329594_taoInvalsi extends AbstractMigration
             'action'      => 'messages',
             'syncActions' => [],
             'params'      => [
-                'interval' => 30,
+                'interval' => 300, //5 minutes
                 'timeout' => 30,
             ]
         ];
