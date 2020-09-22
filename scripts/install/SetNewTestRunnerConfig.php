@@ -98,12 +98,15 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
 
         $config['bootstrap']['communication'] = [
             'enabled'     => true,
-            'type'        => 'request',
+            'type'        => 'poll',
             'extension'   => 'taoQtiTest',
             'controller'  => 'Runner',
             'action'      => 'messages',
             'syncActions' => [],
-            'params'      => []
+            'params'      => [
+                'interval' => 300, //5 minutes
+                'timeout' => 30,
+            ]
         ];
 
         $qtiTest->setConfig('testRunner', $config);
