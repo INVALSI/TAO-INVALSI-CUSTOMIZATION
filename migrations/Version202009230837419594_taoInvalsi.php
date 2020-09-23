@@ -21,10 +21,10 @@ final class Version202009230837419594_taoInvalsi extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->write(
-            'a) Please make sure to setup CRON job: */10 * * * * root cd /var/www/html/tao'
-            . '&& /usr/bin/flock -n /var/lock/tao-InstanceCheck.lock -c "sudo -u www-data nohup /usr/bin/php index.php'
-            . ' \'oat\taoSystemStatus\scripts\tools\RunInstanceCheck\' 2>&1 >>/var/log/tao/InstanceCheck.log &"'
-            . PHP_EOL . ' b) Create an appropriate user with "System Status Manager" role.'
+            <<<CRONJOBNOTICE
+a) Please make sure to setup CRON job: */10 * * * * root cd /var/www/html/tao && /usr/bin/flock -n /var/lock/tao-InstanceCheck.lock -c "sudo -u www-data nohup /usr/bin/php index.php \'oat\taoSystemStatus\scripts\tools\RunInstanceCheck\' 2>&1 >>/var/log/tao/InstanceCheck.log &"
+b) Create an appropriate user with "System Status Manager" role.
+CRONJOBNOTICE
         );
     }
 
