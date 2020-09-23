@@ -30,6 +30,6 @@ final class Version202009230837419594_taoInvalsi extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // nothing to do
+        $this->throwIrreversibleMigrationException();
     }
 }
