@@ -40,12 +40,17 @@ use qtism\data\storage\php\PhpStorageException;
 
 class AllBookletsExport extends BaseBookletsExport
 {
-    /** @var string export only one day or all results until $this->dayToExport */
+    /**
+     * @var string export only one day or all results until $this->dayToExport
+     * @deprecated It is not used anymore and will be delete in the next release.
+     */
     public const OPTION_ONE_DAY_EXPORT = 'one_day_export';
-    public const OPTION_EXPORT_FOLDER = 'export_folder';
 
+    public const OPTION_EXPORT_FOLDER = 'export_folder';
     public const DEFAULT_EXPORT_FOLDER = 'PRODUCTION';
-    public const DAILY_EXPORTS = 'DAILY_EXPORTS';
+
+    public const PERIODICITY_DAILY = 'DAILY';
+    public const PERIODICITY_WEEKLY = 'WEEKLY';
 
     /**
      * Generate array with statistics for all deliveries
@@ -148,6 +153,13 @@ class AllBookletsExport extends BaseBookletsExport
         }
 
         return $file;
+    }
+
+    public function weeklyExport()
+    {
+        // date range правильный поставить - 7 дней
+
+
     }
 
     /**
