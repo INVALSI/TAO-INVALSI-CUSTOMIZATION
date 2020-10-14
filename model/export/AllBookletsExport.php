@@ -144,7 +144,7 @@ class AllBookletsExport extends BaseBookletsExport
             $subject,
             $this->periodicity,
             $date->format('Y_m_d'),
-            gethostname(),
+            defined('GENERIS_INSTANCE_NAME') ? GENERIS_INSTANCE_NAME : gethostname()
         ];
 
         $directory = implode(DIRECTORY_SEPARATOR, $pathComponents) . DIRECTORY_SEPARATOR;
