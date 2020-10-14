@@ -22,12 +22,15 @@ namespace oat\taoInvalsi\scripts\tools;
 use \oat\taoResultExports\scripts\tools\{
     GenerateCsvFile as OriginalGenerateCsvFile
 };
-use oat\taoDeliveryRdf\model\DeliveryAssemblyService;
-use oat\taoResultExports\model\export\AllBookletsExport;
 
 class GenerateCsvFile extends OriginalGenerateCsvFile
 {
     protected const OPTION_WEEKLY = 'weekly';
+
+    protected const OPTION_COVERAGE_VALUES = [
+        self::OPTION_DAILY,
+        self::OPTION_WEEKLY,
+    ];
 
     protected function provideOptions(): array
     {
@@ -35,7 +38,7 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
             self::OPTION_WEEKLY => [
                 'longPrefix' => self::OPTION_WEEKLY,
                 'flag' => true,
-                'description' => 'Split result exports by week'
+                'description' => 'DEPRECATED. Please, use coverage option. Split result exports by week'
             ]
         ]);
     }

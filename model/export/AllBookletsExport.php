@@ -26,7 +26,7 @@ use Box\Spout\Writer\Exception\WriterNotOpenedException;
 use common_Exception;
 use common_exception_Error;
 use common_exception_NotFound;
-use common_report_Report;
+use common_report_Report as Report;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -52,10 +52,14 @@ class AllBookletsExport extends BaseBookletsExport
     public const PERIODICITY_DAILY = 'DAILY';
     public const PERIODICITY_WEEKLY = 'WEEKLY';
 
+    private $periodicity = self::PERIODICITY_DAILY;
+
+    private $weekToExport;
+
     /**
      * Generate array with statistics for all deliveries
      *
-     * @return common_report_Report
+     * @return Report
      *
      * @throws IOException
      * @throws UnsupportedTypeException
@@ -68,9 +72,9 @@ class AllBookletsExport extends BaseBookletsExport
      * @throws common_exception_NotFound
      * @throws Exception
      */
-    public function export(): common_report_Report
+    public function export(): Report
     {
-        $report = common_report_Report::createSuccess();
+        $report = Report::createSuccess();
 
         // initialize temporary file.
         $location = tempnam(sys_get_temp_dir(), 'invalsiexport');
@@ -83,7 +87,7 @@ class AllBookletsExport extends BaseBookletsExport
         $report->add($rowsReport);
 
         if ($report->containsError()) {
-            $report->setType(common_report_Report::TYPE_ERROR);
+            $report->setType(Report::TYPE_ERROR);
             $report->setMessage('Some errors occurred during export :');
         }
 
@@ -113,13 +117,17 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function createExportFile($ext = 'csv'): File
     {
-        $date = DateTime::createFromFormat(
-            'Y-m-d',
-            $this->dayToExport ?? (new \DateTime())->format('Y-m-d')
-        );
+        $date = (new DateTime())->format('Y-m-d');
 
         // by customers requirement folder should contain yesterday's results.
-        $date->add(new DateInterval('P1D'));
+        if ($this->dayToExport) {
+            $date = DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+            $date->add(new DateInterval('P1D'));
+        }
+
+        if ($this->weekToExport) {
+            $date = (new DateTime())->setISODate(date('Y'), $this->weekToExport);
+        }
 
         $prefixParserService = $this->getPrefixParserService();
 
@@ -134,7 +142,7 @@ class AllBookletsExport extends BaseBookletsExport
             $folder,
             $grade,
             $subject,
-            self::DAILY_EXPORTS,
+            $this->periodicity,
             $date->format('Y_m_d'),
             gethostname(),
         ];
@@ -155,11 +163,39 @@ class AllBookletsExport extends BaseBookletsExport
         return $file;
     }
 
-    public function weeklyExport()
+    public function weeklyExport(): Report
     {
-        // date range правильный поставить - 7 дней
+        // set proper export folder
+        $this->periodicity = self::PERIODICITY_WEEKLY;
 
+        $amount = 1;
 
+        if ($this->hasOption(self::OPTION_NUMBER_OF_DAILY_EXPORT)) {
+            $amount = (int)$this->getOption(self::OPTION_NUMBER_OF_DAILY_EXPORT);
+        }
+
+        $date = new DateTime();
+        $lookBack = new DateInterval('P7D'); // one week
+
+        $report = Report::createInfo('Exporting results for the last ' . $amount . ' weeks(s):');
+
+        for ($i=0; $i<$amount; $i++) {
+            try {
+                $past = $date->sub($lookBack);
+
+                $this->weekToExport = $past->format('W');
+
+                $subReport = Report::createInfo('About export of week ' . $this->weekToExport . '...');
+                $subReport->add($this->export());
+
+                $report->add($subReport);
+            } catch (Exception $e) {
+                $report->setType(Report::TYPE_ERROR);
+                $report->setMessage('Some errors occurred during export : ' . $e->getMessage());
+            }
+        }
+
+        return $report;
     }
 
     /**
@@ -167,8 +203,12 @@ class AllBookletsExport extends BaseBookletsExport
      *
      * @return bool
      */
-    protected function withinDateRange($startTime)
+    protected function withinDateRange($startTime): bool
     {
+        if ($this->weekToExport) {
+            return $this->weekToExport === (new DateTime("@$startTime"))->format('W');
+        }
+
         $campaign = $this->getPrefixParserService()->getCampaign($this->prefix);
 
         /** @var CampaignDateRangeLookupStrategy $lookupStrategyService */
