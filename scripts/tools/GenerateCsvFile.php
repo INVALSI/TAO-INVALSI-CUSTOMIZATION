@@ -17,6 +17,8 @@
  *  ************************************************************************
  */
 
+declare(strict_types=1);
+
 namespace oat\taoInvalsi\scripts\tools;
 
 use \oat\taoResultExports\scripts\tools\{

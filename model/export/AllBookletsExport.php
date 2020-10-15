@@ -17,6 +17,8 @@
  *  ************************************************************************
  */
 
+declare(strict_types=1);
+
 namespace oat\taoInvalsi\model\export;
 
 use Box\Spout\Common\Exception\IOException;
