@@ -53,6 +53,8 @@ class AllBookletsExport extends BaseBookletsExport
 
     public const PERIODICITY_DAILY = 'DAILY';
     public const PERIODICITY_WEEKLY = 'WEEKLY';
+    
+    public const OPTION_CAMPAIGN_CODE = 'campaign_code';
 
     private $periodicity = self::PERIODICITY_DAILY;
 
@@ -133,7 +135,7 @@ class AllBookletsExport extends BaseBookletsExport
 
         $prefixParserService = $this->getPrefixParserService();
 
-        $campaign = $prefixParserService->getCampaign($this->prefix);
+        $campaign = $this->getOption(self::OPTION_CAMPAIGN_CODE) ?? $prefixParserService->getCampaign($this->prefix);
         $grade = $prefixParserService->getGrade($this->prefix);
         $subject = $prefixParserService->getSubject($this->prefix);
 

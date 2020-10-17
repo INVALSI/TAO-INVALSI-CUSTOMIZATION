@@ -12,7 +12,7 @@ use oat\taoInvalsi\model\export\PrefixParser;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version202009080848039594_taoInvalsi extends AbstractMigration
+final class Version202010180118409594_taoInvalsi extends AbstractMigration
 {
 
     public function getDescription(): string
@@ -31,7 +31,7 @@ final class Version202009080848039594_taoInvalsi extends AbstractMigration
             PrefixParser::SERVICE_ID,
             new PrefixParser(
                 [
-                    PrefixParser::OPTION_DETECTION_REGEXP => '/.*(\d\d)_([\w\s]+)_(\w\w\w{3,4})(\d\d).*/',
+                    PrefixParser::OPTION_DETECTION_REGEXP => '/.*(\d\d)_(\w\w)_(\w{3,4})(\d\d).*/',
                 ]
             )
         );
