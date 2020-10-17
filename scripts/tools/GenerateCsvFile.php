@@ -37,6 +37,7 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
     ];
     
     public const OPTION_EXPORT_FOLDER = 'export_folder';
+    public const OPTION_CAMPAIGN_CODE = 'campaign_code';
 
     protected function provideOptions(): array
     {
@@ -53,6 +54,14 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
                 'defaultValue' => 'PRODUCTION',
                 'cast' => 'string',
                 'description' => 'Default export folder aka environment (PROD/PREPROD/etc)'
+            ],
+    
+            static::OPTION_CAMPAIGN_CODE => [
+                'longPrefix' => static::OPTION_CAMPAIGN_CODE,
+                'prefix' => 'cc',
+                'defaultValue' => null,
+                'cast' => 'string',
+                'description' => 'Campaign code to be used as the "root" folder of the exports'
             ]
         ]);
     }
@@ -63,6 +72,7 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
         
         if ($configuredExporter instanceof InvalsiBookletExporter) {
             $configuredExporter->setOption(static::OPTION_EXPORT_FOLDER, $this->getOption(static::OPTION_EXPORT_FOLDER));
+            $configuredExporter->setOption(static::OPTION_CAMPAIGN_CODE, $this->getOption(static::OPTION_CAMPAIGN_CODE));
         }
         
         return $configuredExporter;
