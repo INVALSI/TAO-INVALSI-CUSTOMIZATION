@@ -59,7 +59,7 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
             static::OPTION_CAMPAIGN_CODE => [
                 'longPrefix' => static::OPTION_CAMPAIGN_CODE,
                 'prefix' => 'cc',
-                'defaultValue' => '',
+                'defaultValue' => null,
                 'cast' => 'string',
                 'description' => 'Campaign code to be used as the "root" folder of the exports'
             ]
