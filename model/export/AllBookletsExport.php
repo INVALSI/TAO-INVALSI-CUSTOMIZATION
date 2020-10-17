@@ -128,7 +128,7 @@ class AllBookletsExport extends BaseBookletsExport
         }
 
         if ($this->weekToExport) {
-            $date = (new DateTime())->setISODate(date('Y'), $this->weekToExport);
+            $date = (new DateTime())->setISODate((int)date('Y'), (int)$this->weekToExport);
         }
 
         $prefixParserService = $this->getPrefixParserService();
@@ -140,7 +140,7 @@ class AllBookletsExport extends BaseBookletsExport
         $folder = $this->getOption(self::OPTION_EXPORT_FOLDER, self::DEFAULT_EXPORT_FOLDER);
 
         $pathComponents = [
-            $campaign . '_' . date("Y"),
+            date("Y") . ' - ' . $campaign,
             $folder,
             $grade,
             $subject,
