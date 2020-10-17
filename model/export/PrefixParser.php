@@ -58,7 +58,7 @@ class PrefixParser extends ConfigurableService
     }
 
     /**
-     * @param $prefix
+     * @param string $prefix
      * @return string
      */
     public function getGrade(string $prefix): string
@@ -69,7 +69,7 @@ class PrefixParser extends ConfigurableService
     }
 
     /**
-     * @param $prefix
+     * @param string $prefix
      * @return mixed
      */
     public function getSubject(string $prefix): string

@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace oat\taoInvalsi\scripts\tools;
 
+use oat\taoResultExports\model\export\AllBookletsExport;
+use \oat\taoInvalsi\model\export\AllBookletsExport as InvalsiBookletExporter;
 use \oat\taoResultExports\scripts\tools\{
     GenerateCsvFile as OriginalGenerateCsvFile
 };
@@ -33,6 +35,8 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
         self::OPTION_DAILY,
         self::OPTION_WEEKLY,
     ];
+    
+    public const OPTION_EXPORT_FOLDER = 'export_folder';
 
     protected function provideOptions(): array
     {
@@ -41,7 +45,26 @@ class GenerateCsvFile extends OriginalGenerateCsvFile
                 'longPrefix' => self::OPTION_WEEKLY,
                 'flag' => true,
                 'description' => 'DEPRECATED. Please, use coverage option. Split result exports by week'
+            ],
+    
+            static::OPTION_EXPORT_FOLDER => [
+                'longPrefix' => static::OPTION_EXPORT_FOLDER,
+                'prefix' => 'ef',
+                'defaultValue' => 'PRODUCTION',
+                'cast' => 'string',
+                'description' => 'Default export folder aka environment (PROD/PREPROD/etc)'
             ]
         ]);
+    }
+    
+    protected function getConfiguredBookletExporter(): AllBookletsExport
+    {
+        $configuredExporter = parent::getConfiguredBookletExporter();
+        
+        if ($configuredExporter instanceof InvalsiBookletExporter) {
+            $configuredExporter->setOption(static::OPTION_EXPORT_FOLDER, $this->getOption(static::OPTION_EXPORT_FOLDER));
+        }
+        
+        return $configuredExporter;
     }
 }
