@@ -17,6 +17,8 @@
  *  ************************************************************************
  */
 
+declare(strict_types=1);
+
 namespace oat\taoInvalsi\model\export;
 
 use Box\Spout\Common\Exception\IOException;
@@ -26,7 +28,7 @@ use Box\Spout\Writer\Exception\WriterNotOpenedException;
 use common_Exception;
 use common_exception_Error;
 use common_exception_NotFound;
-use common_report_Report;
+use common_report_Report as Report;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -40,17 +42,28 @@ use qtism\data\storage\php\PhpStorageException;
 
 class AllBookletsExport extends BaseBookletsExport
 {
-    /** @var string export only one day or all results until $this->dayToExport */
+    /**
+     * @var string export only one day or all results until $this->dayToExport
+     * @deprecated It is not used anymore and will be delete in the next release.
+     */
     public const OPTION_ONE_DAY_EXPORT = 'one_day_export';
-    public const OPTION_EXPORT_FOLDER = 'export_folder';
 
+    public const OPTION_EXPORT_FOLDER = 'export_folder';
     public const DEFAULT_EXPORT_FOLDER = 'PRODUCTION';
-    public const DAILY_EXPORTS = 'DAILY_EXPORTS';
+
+    public const PERIODICITY_DAILY = 'DAILY';
+    public const PERIODICITY_WEEKLY = 'WEEKLY';
+    
+    public const OPTION_CAMPAIGN_CODE = 'campaign_code';
+
+    private $periodicity = self::PERIODICITY_DAILY;
+
+    private $weekToExport;
 
     /**
      * Generate array with statistics for all deliveries
      *
-     * @return common_report_Report
+     * @return Report
      *
      * @throws IOException
      * @throws UnsupportedTypeException
@@ -63,9 +76,9 @@ class AllBookletsExport extends BaseBookletsExport
      * @throws common_exception_NotFound
      * @throws Exception
      */
-    public function export(): common_report_Report
+    public function export(): Report
     {
-        $report = common_report_Report::createSuccess();
+        $report = Report::createSuccess();
 
         // initialize temporary file.
         $location = tempnam(sys_get_temp_dir(), 'invalsiexport');
@@ -78,7 +91,7 @@ class AllBookletsExport extends BaseBookletsExport
         $report->add($rowsReport);
 
         if ($report->containsError()) {
-            $report->setType(common_report_Report::TYPE_ERROR);
+            $report->setType(Report::TYPE_ERROR);
             $report->setMessage('Some errors occurred during export :');
         }
 
@@ -108,30 +121,34 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function createExportFile($ext = 'csv'): File
     {
-        $date = DateTime::createFromFormat(
-            'Y-m-d',
-            $this->dayToExport ?? (new \DateTime())->format('Y-m-d')
-        );
+        $date = (new DateTime())->format('Y-m-d');
 
         // by customers requirement folder should contain yesterday's results.
-        $date->add(new DateInterval('P1D'));
+        if ($this->dayToExport) {
+            $date = DateTime::createFromFormat('Y-m-d', $this->dayToExport);
+            $date->add(new DateInterval('P1D'));
+        }
+
+        if ($this->weekToExport) {
+            $date = (new DateTime())->setISODate((int)date('Y'), (int)$this->weekToExport);
+        }
 
         $prefixParserService = $this->getPrefixParserService();
 
-        $campaign = $prefixParserService->getCampaign($this->prefix);
+        $campaign = $this->getOption(self::OPTION_CAMPAIGN_CODE) ?? $prefixParserService->getCampaign($this->prefix);
         $grade = $prefixParserService->getGrade($this->prefix);
         $subject = $prefixParserService->getSubject($this->prefix);
 
         $folder = $this->getOption(self::OPTION_EXPORT_FOLDER, self::DEFAULT_EXPORT_FOLDER);
 
         $pathComponents = [
-            $campaign . '_' . date("Y"),
+            date("Y") . ' - ' . $campaign,
             $folder,
             $grade,
             $subject,
-            self::DAILY_EXPORTS,
+            $this->periodicity,
             $date->format('Y_m_d'),
-            gethostname(),
+            defined('GENERIS_INSTANCE_NAME') ? GENERIS_INSTANCE_NAME : gethostname()
         ];
 
         $directory = implode(DIRECTORY_SEPARATOR, $pathComponents) . DIRECTORY_SEPARATOR;
@@ -150,13 +167,52 @@ class AllBookletsExport extends BaseBookletsExport
         return $file;
     }
 
+    public function weeklyExport(): Report
+    {
+        // set proper export folder
+        $this->periodicity = self::PERIODICITY_WEEKLY;
+
+        $amount = 1;
+
+        if ($this->hasOption(self::OPTION_NUMBER_OF_DAILY_EXPORT)) {
+            $amount = (int)$this->getOption(self::OPTION_NUMBER_OF_DAILY_EXPORT);
+        }
+
+        $date = new DateTime();
+        $lookBack = new DateInterval('P7D'); // one week
+
+        $report = Report::createInfo('Exporting results for the last ' . $amount . ' weeks(s):');
+
+        for ($i=0; $i<$amount; $i++) {
+            try {
+                $past = $date->sub($lookBack);
+
+                $this->weekToExport = $past->format('W');
+
+                $subReport = Report::createInfo('About export of week ' . $this->weekToExport . '...');
+                $subReport->add($this->export());
+
+                $report->add($subReport);
+            } catch (Exception $e) {
+                $report->setType(Report::TYPE_ERROR);
+                $report->setMessage('Some errors occurred during export : ' . $e->getMessage());
+            }
+        }
+
+        return $report;
+    }
+
     /**
      * @param $startTime
      *
      * @return bool
      */
-    protected function withinDateRange($startTime)
+    protected function withinDateRange($startTime): bool
     {
+        if ($this->weekToExport) {
+            return $this->weekToExport === (new DateTime("@$startTime"))->format('W');
+        }
+
         $campaign = $this->getPrefixParserService()->getCampaign($this->prefix);
 
         /** @var CampaignDateRangeLookupStrategy $lookupStrategyService */
