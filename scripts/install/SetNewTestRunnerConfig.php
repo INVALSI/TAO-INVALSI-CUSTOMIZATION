@@ -63,6 +63,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
             'documentUrlA02_A03_A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf', //package for activity 020304 Jan2020
             'documentUrlA02A03A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf',
             'documentUrlA080910' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA080910.pdf',
+            'documentUrlA09' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA09.pdf',
         ];
 
         $config['plugins']['calculator'] = array(
