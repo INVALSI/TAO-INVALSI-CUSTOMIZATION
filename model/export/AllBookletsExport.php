@@ -53,7 +53,7 @@ class AllBookletsExport extends BaseBookletsExport
 
     public const PERIODICITY_DAILY = 'DAILY';
     public const PERIODICITY_WEEKLY = 'WEEKLY';
-    
+
     public const OPTION_CAMPAIGN_CODE = 'campaign_code';
 
     private $periodicity = self::PERIODICITY_DAILY;
@@ -220,7 +220,7 @@ class AllBookletsExport extends BaseBookletsExport
 
         try {
             $strategy = $lookupStrategyService->findStrategy($campaign);
-            return $this->{$strategy}($startTime);
+            return $this->{$strategy}((int)$startTime);
         } catch (OutOfRangeException $e) {
             return false;
         }
