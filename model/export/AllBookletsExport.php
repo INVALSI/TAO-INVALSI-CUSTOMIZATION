@@ -256,4 +256,17 @@ class AllBookletsExport extends BaseBookletsExport
     {
         return $this->getServiceLocator()->get(PrefixParser::SERVICE_ID);
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function headerPostProcessing(array &$header)
+    {
+        $header = array_map([$this, 'removeHiddenCharacters'], $header);
+    }
+
+    private function removeHiddenCharacters(string $field): string
+    {
+        return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $field);
+    }
 }
