@@ -60,7 +60,7 @@ return array(
         'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=4.0.0',
         'taoTestRunnerPlugins' => '>=2.0.2',
-        'taoResultExports' => '>=0.8.0',
+        'taoResultExports' => '>=0.9.0',
         'taoLti'          => '>=4.1.0',
         'taoSystemStatus' => '>=0.13.0',
     ),
