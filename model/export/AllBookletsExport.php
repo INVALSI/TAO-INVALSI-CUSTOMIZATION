@@ -53,12 +53,21 @@ class AllBookletsExport extends BaseBookletsExport
 
     public const PERIODICITY_DAILY = 'DAILY';
     public const PERIODICITY_WEEKLY = 'WEEKLY';
+    public const PERIODICITY_FROM_CAMPAIGN_START = 'FROM_CAMPAIGN_START';
+    public const PERIODICITY_BEGINNING_OF_TIME = 'FROM_THE_BEGINNING_OF_TIME';
 
     public const OPTION_CAMPAIGN_CODE = 'campaign_code';
+    public const OPTION_START_DATE = 'start_date';
+    public const OPTION_EXCLUDE_COLUMNS = 'exclude_columns';
+
+    private const START_DATE_FORMAT = 'Y-m-d H:i:s';
 
     private $periodicity = self::PERIODICITY_DAILY;
 
+    /** @var string */
     private $weekToExport;
+    /** @var string */
+    private $startDateForExport;
 
     /**
      * Generate array with statistics for all deliveries
@@ -109,6 +118,18 @@ class AllBookletsExport extends BaseBookletsExport
         return $report;
     }
 
+    protected function getHeaders()
+    {
+        $headers = parent::getHeaders();
+        $headersToExclude = explode(',', $this->getOption(self::OPTION_EXCLUDE_COLUMNS, ''));
+
+        if ($headersToExclude === false) {
+            return $headers;
+        }
+
+        return array_diff($headers, $headersToExclude);
+    }
+
     /**
      * Create the filename for the export
      *
@@ -121,7 +142,7 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function createExportFile($ext = 'csv'): File
     {
-        $date = (new DateTime())->format('Y-m-d');
+        $date = new DateTime();
 
         // by customers requirement folder should contain yesterday's results.
         if ($this->dayToExport) {
@@ -183,7 +204,7 @@ class AllBookletsExport extends BaseBookletsExport
 
         $report = Report::createInfo('Exporting results for the last ' . $amount . ' weeks(s):');
 
-        for ($i=0; $i<$amount; $i++) {
+        for ($i = 0; $i < $amount; $i++) {
             try {
                 $past = $date->sub($lookBack);
 
@@ -195,8 +216,53 @@ class AllBookletsExport extends BaseBookletsExport
                 $report->add($subReport);
             } catch (Exception $e) {
                 $report->setType(Report::TYPE_ERROR);
-                $report->setMessage('Some errors occurred during export : ' . $e->getMessage());
+                $report->setMessage('Some errors occurred during export: ' . $e->getMessage());
             }
+        }
+
+        return $report;
+    }
+
+    public function fromStartDateExport(): Report
+    {
+        $startDate = $this->getOption(self::OPTION_START_DATE);
+        $report = Report::createInfo(sprintf('Exporting results starting from %s', $startDate));
+
+        try {
+            $isStartDateInAProperFormat = date(self::START_DATE_FORMAT, strtotime($startDate) ?: 0) === $startDate;
+            if (!$isStartDateInAProperFormat) {
+                throw new Exception(sprintf("Start date should be a valid date string in a format: '%s'. Given: '%s'", self::START_DATE_FORMAT, $startDate));
+            }
+
+            $this->startDateForExport = DateTime::createFromFormat(self::START_DATE_FORMAT, $startDate);
+            $this->periodicity = self::PERIODICITY_FROM_CAMPAIGN_START;
+
+            $subReport = Report::createInfo();
+            $subReport->add($this->export());
+
+            $report->add($subReport);
+        } catch (Exception $e) {
+            $report->setType(Report::TYPE_ERROR);
+            $report->setMessage('Some errors occurred during export: ' . $e->getMessage());
+        }
+
+        return $report;
+    }
+
+    public function fromTheBeginningOfTimeExport(): Report
+    {
+        $report = Report::createInfo('Exporting results from the begging of time');
+
+        try {
+            $this->periodicity = self::PERIODICITY_BEGINNING_OF_TIME;
+
+            $subReport = Report::createInfo();
+            $subReport->add($this->export());
+
+            $report->add($subReport);
+        } catch (Exception $e) {
+            $report->setType(Report::TYPE_ERROR);
+            $report->setMessage('Some errors occurred during export: ' . $e->getMessage());
         }
 
         return $report;
@@ -209,8 +275,13 @@ class AllBookletsExport extends BaseBookletsExport
      */
     protected function withinDateRange($startTime): bool
     {
-        if ($this->weekToExport) {
-            return $this->weekToExport === (new DateTime("@$startTime"))->format('W');
+        switch ($this->periodicity) {
+            case self::PERIODICITY_BEGINNING_OF_TIME:
+                return true;
+            case self::PERIODICITY_FROM_CAMPAIGN_START:
+                return (new DateTime("@$startTime")) > $this->startDateForExport;
+            case self::PERIODICITY_WEEKLY:
+                return $this->weekToExport === (new DateTime("@$startTime"))->format('W');
         }
 
         $campaign = $this->getPrefixParserService()->getCampaign($this->prefix);
@@ -244,7 +315,7 @@ class AllBookletsExport extends BaseBookletsExport
     private function beforeEndOfDayDateRange(int $startTime): bool
     {
         $date = DateTime::createFromFormat('Y-m-d', $this->dayToExport);
-        $date->setTime(23,59,59);
+        $date->setTime(23, 59, 59);
 
         return $startTime < $date->getTimestamp();
     }
