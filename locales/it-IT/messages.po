@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint158\n"
-"PO-Revision-Date: 2021-08-27T13:19:49\n"
+"PO-Revision-Date: 2021-08-27T15:10:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -121,7 +121,7 @@ msgstr " "
 msgid "You flagged %s item(s) that you can review now"
 msgstr " "
 
-msgid "You will not be able to access this test once submitted. Click OK to continue and submit the test."
+msgid "You will not be able to access this test once submitted. Click \"%s\" to continue and submit the test."
 msgstr "Sei sicuro di voler chiudere il test?"
 
 msgid "You will not be able to return to this test after you submit your answers."
