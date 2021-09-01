@@ -44,7 +44,7 @@ class ManualTranslations
             __('There is %s unanswered question in this part of the test'),
             __('and you flagged %s item(s) that you can review now'),
             __('You flagged %s item(s) that you can review now'),
-            __('You will not be able to access this test once submitted. Click OK to continue and submit the test.'),
+            __('You will not be able to access this test once submitted. Click \"%s\" to continue and submit the test.'),
             __('You will not be able to return to this test after you submit your answers.'),
             __('The time limit has been reached for this part of the test.'),
             __('SUBMIT THIS PART'),
