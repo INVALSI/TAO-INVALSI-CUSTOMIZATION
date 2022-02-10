@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-02-21T17:38:56\n"
+"Project-Id-Version: TAO 3.4.0-sprint158\n"
+"PO-Revision-Date: 2022-02-10T21:40:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -13,8 +13,23 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "%d entries have been exported. File path: %s"
+msgstr ""
+
 msgid "About"
 msgstr ""
+
+msgid "and flagged %s of them"
+msgstr " "
+
+msgid "and you flagged %s item(s) that you can review now"
+msgstr " "
+
+msgid "Apply \"%s\" category to the test items"
+msgstr ""
+
+msgid "CANCEL"
+msgstr "ANNULLA"
 
 msgid "Custom Styles"
 msgstr ""
@@ -22,15 +37,33 @@ msgstr ""
 msgid "Display the current progression within the test"
 msgstr ""
 
+msgid "Event listener registered in event manager"
+msgstr ""
+
 #, tao-public
 msgid "Export Invalsi CSV"
+msgstr ""
+
+msgid "Export launch log to csv"
 msgstr ""
 
 msgid "Formula"
 msgstr "Formulario"
 
+msgid "Grade %s"
+msgstr ""
+
+msgid "Grade %s (%s)"
+msgstr ""
+
+msgid "Launch log storage successfully installed"
+msgstr ""
+
 #, tao-public
 msgid "Manage Results"
+msgstr ""
+
+msgid "No entries found"
 msgstr ""
 
 msgid "Progress bar"
@@ -39,12 +72,42 @@ msgstr ""
 msgid "RDS scheduler storage successfully installed"
 msgstr ""
 
+msgid "Registered Invalsi Booklet exporter"
+msgstr ""
+
+msgid "Registered Invalsi delivery launch log"
+msgstr ""
+
 #, tao-public
 msgid "Results"
 msgstr ""
 
+msgid "SUBMIT THE TEST"
+msgstr "OK"
+
+msgid "SUBMIT THIS PART"
+msgstr "OK"
+
 msgid "The Label"
 msgstr ""
+
+msgid "The time limit has been reached for this part of the test."
+msgstr "Il tempo a tua disposizione per svolgere la prova è terminato. Puoi comunque rispondere a questa domanda, ma non puoi tornare a nessuna delle domande precedenti."
+
+msgid "There are %s unanswered questions"
+msgstr " "
+
+msgid "There are %s unanswered questions in this part of the test"
+msgstr " "
+
+msgid "There is %s unanswered question"
+msgstr " "
+
+msgid "There is %s unanswered question in this part of the test"
+msgstr " "
+
+msgid "You answered %s of %s question(s) for this section of the test"
+msgstr " "
 
 msgid "You are about to leave this section."
 msgstr " "
@@ -55,45 +118,12 @@ msgstr " "
 msgid "You are about to submit this test part."
 msgstr " "
 
-msgid "You answered %s of %s question(s) for this section of the test"
-msgstr " "
-
-msgid "and flagged %s of them"
-msgstr " "
-
-msgid "There are %s unanswered questions"
-msgstr " "
-
-msgid "There is %s unanswered question"
-msgstr " "
-
-msgid "There are %s unanswered questions in this part of the test"
-msgstr " "
-
-msgid "There is %s unanswered question in this part of the test"
-msgstr " "
-
-msgid "and you flagged %s item(s) that you can review now"
-msgstr " "
-
 msgid "You flagged %s item(s) that you can review now"
 msgstr " "
 
-msgid "You will not be able to access this test once submitted. Click OK to continue and submit the test."
-msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai più ritornare alle domande. Sei sicuro di voler chiudere la prova?"
+msgid "You will not be able to access this test once submitted. Click \"%s\" to continue and submit the test."
+msgstr "Sei sicuro di voler chiudere il test?"
 
 msgid "You will not be able to return to this test after you submit your answers."
-msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai più ritornare alle domande. Sei sicuro di voler chiudere la prova?"
-
-msgid "The time limit has been reached for this part of the test."
-msgstr "Il tempo a tua disposizione per svolgere la prova è terminato. Puoi comunque ripondere a questa domanda, ma non puoi tornare a nessuna delle domande precedenti."
-
-msgid "SUBMIT THIS PART"
-msgstr "OK"
-
-msgid "SUBMIT THE TEST"
-msgstr "OK"
-
-msgid "CANCEL"
-msgstr "CANCELLA"
+msgstr "Sei sicuro di voler chiudere il test?"
 
