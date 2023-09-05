@@ -98,7 +98,7 @@ return array(
                 ConfigureTextToSpeechPlugin::class,
                 [
                     ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_URL => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
-//                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => '***', // TODO set the correct key
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => 'TAOInvalsi390R1',
                     ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_LANG => 'it-IT',
                     ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_GENDER => 'female',
                     ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_AUTO => false,

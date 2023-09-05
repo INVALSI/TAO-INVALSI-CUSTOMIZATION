@@ -28,7 +28,7 @@ final class Version202309011032589594_taoInvalsi extends AbstractMigration
             'providerId' => 'texthelp',
             'providerConfig' => [
                 'url' => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
-                'speechstreamConfig' => 'TAOPremiumv390R1', // TODO set the correct key
+                'speechstreamConfig' => 'TAOInvalsi390R1',
                 'disableLangCheck' => false,
 
                 'voiceLanguage' => 'it-IT',
