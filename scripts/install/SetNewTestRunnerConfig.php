@@ -77,26 +77,6 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         // default button for confirm dialogs
         $config['plugins']['dialog']['confirm']['focus'] = 'cancel';
 
-        //*** TextHelp Setup
-        // - URI of the config file that should contain the right setup for the customer
-        $config['plugins']['textToSpeech']['setupUrl'] = '//configuration.speechstream.net/oat/inv/v216/config.js';
-        // - override math expressions with an alternative text
-        $config['plugins']['textToSpeech']['overrideMathExpr'] = "Guarda la formula";
-        // - override the default language crosswalk
-        $config['plugins']['textToSpeech']['languagesCrosswalk'] = [
-            // "yy" => "xx-XX"
-        ];
-        // - rely on TextHelp to detect the language based on the content
-        $config['plugins']['textToSpeech']['allowTextHelpLangCheck'] = false;
-        // - take care of QTI lang attribute
-        $config['plugins']['textToSpeech']['allowQtiLangCheck'] = true;
-        // - setup the default language for the platform
-        $config['plugins']['textToSpeech']['forceLanguage'] = true;
-        $config['plugins']['textToSpeech']['voiceLanguage'] = 'it-IT'; // language code
-        $config['plugins']['textToSpeech']['voiceGender'] = 'female';  // voice gender: 'female' or 'male'
-        $config['plugins']['textToSpeech']['voiceIndex'] = 0;          // when several voices are available for the same gender (cf. languages.json)
-        //*** end TextHelp Setup
-
         $config['bootstrap']['communication'] = [
             'enabled'     => true,
             'type'        => 'poll',

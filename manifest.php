@@ -35,6 +35,7 @@ use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
+use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
 
 return array(
     'name' => 'taoInvalsi',
@@ -92,6 +93,20 @@ return array(
             EnableGdprMessage::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
+            RegisterInvalsiTestCategoryPresetProvider::class,
+            [
+                ConfigureTextToSpeechPlugin::class,
+                [
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_URL => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => 'TAOInvalsi390R1',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_GENDER => 'female',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_AUTO => false,
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_TEXT => 'Guarda la formula',
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_CLICK_TO_SPEAK => false,
+                ]
+            ],
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
