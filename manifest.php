@@ -35,13 +35,14 @@ use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
+use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '10.9.1',
+    'version' => '11.0.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -50,7 +51,7 @@ return array(
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
-        'taoTextHelp'     => '>=1.3.3',
+        'taoTextHelp'     => '>=3.0.0',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
@@ -92,6 +93,20 @@ return array(
             EnableGdprMessage::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
+            RegisterInvalsiTestCategoryPresetProvider::class,
+            [
+                ConfigureTextToSpeechPlugin::class,
+                [
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_URL => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => 'TAOInvalsi390R1',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_GENDER => 'female',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_AUTO => false,
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_TEXT => 'Guarda la formula',
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_CLICK_TO_SPEAK => false,
+                ]
+            ],
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
