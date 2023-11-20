@@ -7,8 +7,6 @@ namespace oat\taoInvalsi\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\oatbox\reporting\Report;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use common_ext_Extension as Extension;
-use common_ext_ExtensionsManager as ExtensionsManager;
 use oat\taoInvalsi\model\export\AllBookletsExport;
 
 /**
