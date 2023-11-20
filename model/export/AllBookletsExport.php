@@ -163,10 +163,13 @@ class AllBookletsExport extends BaseBookletsExport
 
         $folder = $this->getOption(self::OPTION_EXPORT_FOLDER, self::DEFAULT_EXPORT_FOLDER);
 
-        $pathYear = $this->getOption(self::OPTION_OVERRIDE_YEAR_IN_PATH, date("Y"));
+        $pathYearFromConfig = $this->getOption(self::OPTION_OVERRIDE_YEAR_IN_PATH);
+        if (empty($pathYearFromConfig) || !intval($pathYearFromConfig)) {
+            $pathYearFromConfig = date("Y");
+        }
 
         $pathComponents = [
-            $pathYear . ' - ' . $campaign,
+            $pathYearFromConfig . ' - ' . $campaign,
             $folder,
             $grade,
             $subject,
