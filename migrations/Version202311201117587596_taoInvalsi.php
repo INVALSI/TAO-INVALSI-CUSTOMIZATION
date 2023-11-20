@@ -9,6 +9,7 @@ use oat\oatbox\reporting\Report;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use common_ext_Extension as Extension;
 use common_ext_ExtensionsManager as ExtensionsManager;
+use oat\taoInvalsi\model\export\AllBookletsExport;
 
 /**
  * phpcs:disable Squiz.Classes.ValidClassName
@@ -26,37 +27,19 @@ final class Version202311201117587596_taoInvalsi extends AbstractMigration
     {
         $bookletsExportService = $this->getServiceLocator()->get(self::EXPORT_SERVICE_NAME);
         $serviceOptions = $bookletsExportService->getOptions();
-        $config = $qtiTestService ->getConfig();
 
+        if (!array_key_exists(AllBookletsExport::OPTION_OVERRIDE_YEAR_IN_PATH, $serviceOptions)) {
+            $serviceOptions[AllBookLetsExport::OPTION_OVERRIDE_YEAR_IN_PATH] = '';
+        }
 
-
-
-        $config = $this->getConfig();
-
-        $config['plugins'][self::PLUGIN_ID] = [
-            'providerId' => 'texthelp',
-            'providerConfig' => [
-                'url' => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
-                'speechstreamConfig' => 'TAOInvalsi390R1',
-                'disableLangCheck' => false,
-
-                'voiceLanguage' => 'it-IT',
-                'voiceGender' => 'female'
-            ],
-            'startClickToSpeak' => false,
-            'overrideMathExpr' => [
-                'text' => 'Guarda la formula',
-                'language' => 'it-IT'
-            ]
-        ];
-
-        $this->setConfig($config);
+        $bookletsExportService->setOptions($serviceOptions);
+        $this->getServiceLocator()->register(self::EXPORT_SERVICE_NAME, $bookletsExportService);
 
         $this->addReport(
             Report::createSuccess(
                 sprintf(
-                    'Configuration for %s successfully migrated.',
-                    self::PLUGIN_ID
+                    'Configuration for %s successfully migrated upwards.',
+                    self::EXPORT_SERVICE_NAME
                 )
             )
         );
@@ -64,66 +47,23 @@ final class Version202311201117587596_taoInvalsi extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $config = $this->getConfig();
+        $bookletsExportService = $this->getServiceLocator()->get(self::EXPORT_SERVICE_NAME);
+        $serviceOptions = $bookletsExportService->getOptions();
 
-        $config['plugins'][self::PLUGIN_ID] = [
-            'setupUrl' => '//configuration.speechstream.net/oat/inv/v216/config.js',
-            'overrideMathExpr' => 'Guarda la formula',
-            'languagesCrosswalk' => [],
-            'allowVolumeSetting' => false,
-            'allowTextHelpLangCheck' => false,
-            'allowQtiLangCheck' => true,
-            'forceLanguage' => true,
-            'voiceLanguage' => 'it-IT',
-            'voiceGender' => 'female',
-            'voiceIndex' => 0
-        ];
+        if (array_key_exists(AllBookletsExport::OPTION_OVERRIDE_YEAR_IN_PATH, $serviceOptions)) {
+            unset($serviceOptions[AllBookletsExport::OPTION_OVERRIDE_YEAR_IN_PATH]);
+        }
 
-        $this->setConfig($config);
+        $bookletsExportService->setOptions($serviceOptions);
+        $this->getServiceLocator()->register(self::EXPORT_SERVICE_NAME, $bookletsExportService);
 
         $this->addReport(
             Report::createSuccess(
                 sprintf(
-                    'Configuration for %s successfully reverted.',
-                    self::PLUGIN_ID
+                    'Configuration for %s successfully migrated downwards.',
+                    self::EXPORT_SERVICE_NAME
                 )
             )
         );
-    }
-
-    private const CONFIG_FILE = 'testRunner';
-    private const EXTENSION_ID = 'taoQtiTest';
-    private const PLUGIN_ID = 'textToSpeech';
-    private $extensionManager;
-    private $extension;
-
-    private function getConfig(): array
-    {
-        return $this->getExtension()->getConfig(self::CONFIG_FILE);
-    }
-
-    private function setConfig(array $config)
-    {
-        $this->getExtension()->setConfig(self::CONFIG_FILE, $config);
-    }
-
-    private function getExtension(): Extension
-    {
-        if ($this->extension) {
-            return $this->extension;
-        }
-
-        $this->extension = $this->getExtensionManager()->getExtensionById(self::EXTENSION_ID);
-        return $this->extension;
-    }
-
-    private function getExtensionManager(): ExtensionsManager
-    {
-        if ($this->extensionManager) {
-            return $this->extensionManager;
-        }
-
-        $this->extensionManager = $this->getServiceLocator()->get(ExtensionsManager::SERVICE_ID);
-        return $this->extensionManager;
     }
 }
