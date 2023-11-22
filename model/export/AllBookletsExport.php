@@ -59,6 +59,7 @@ class AllBookletsExport extends BaseBookletsExport
     public const OPTION_CAMPAIGN_CODE = 'campaign_code';
     public const OPTION_START_DATE = 'start_date';
     public const OPTION_EXCLUDE_COLUMNS = 'exclude_columns';
+    public const OPTION_OVERRIDE_YEAR_IN_PATH = 'overrideYearInPath';
 
     private const START_DATE_FORMAT = 'Y-m-d H:i:s';
 
@@ -162,8 +163,13 @@ class AllBookletsExport extends BaseBookletsExport
 
         $folder = $this->getOption(self::OPTION_EXPORT_FOLDER, self::DEFAULT_EXPORT_FOLDER);
 
+        $pathYearFromConfig = $this->getOption(self::OPTION_OVERRIDE_YEAR_IN_PATH);
+        if (empty($pathYearFromConfig) || !intval($pathYearFromConfig)) {
+            $pathYearFromConfig = date("Y");
+        }
+
         $pathComponents = [
-            date("Y") . ' - ' . $campaign,
+            $pathYearFromConfig . ' - ' . $campaign,
             $folder,
             $grade,
             $subject,
