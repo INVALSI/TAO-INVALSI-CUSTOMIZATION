@@ -122,8 +122,7 @@ msgid "You flagged %s item(s) that you can review now"
 msgstr " "
 
 msgid "You will not be able to access this test once submitted. Click \"%s\" to continue and submit the test."
-msgstr "Sei sicuro di voler chiudere il test?"
+msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai più ritornare alle domande. Sei sicuro di voler chiudere la prova?"
 
 msgid "You will not be able to return to this test after you submit your answers."
-msgstr "Sei sicuro di voler chiudere il test?"
-
+msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai più ritornare alle domande. Sei sicuro di voler chiudere la prova?"
