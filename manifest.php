@@ -35,6 +35,7 @@ use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
+use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
 use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
 
 return array(
@@ -94,6 +95,7 @@ return array(
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
+            RegisterPreviewButtons::class,
             [
                 ConfigureTextToSpeechPlugin::class,
                 [
