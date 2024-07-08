@@ -65,6 +65,7 @@ return array(
         'taoResultExports' => '>=0.9.0',
         'taoLti'          => '>=4.1.0',
         'taoSystemStatus' => '>=0.13.0',
+        'taoTestPreviewUILoader' => '*',
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
