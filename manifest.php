@@ -35,6 +35,7 @@ use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
+use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
 use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
 
 return array(
@@ -42,7 +43,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '11.0.0',
+    'version' => '11.3.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -64,6 +65,7 @@ return array(
         'taoResultExports' => '>=0.9.0',
         'taoLti'          => '>=4.1.0',
         'taoSystemStatus' => '>=0.13.0',
+        'taoTestPreviewUILoader' => '*',
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -94,6 +96,7 @@ return array(
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
+            RegisterPreviewButtons::class,
             [
                 ConfigureTextToSpeechPlugin::class,
                 [
