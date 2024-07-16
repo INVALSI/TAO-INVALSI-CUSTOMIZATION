@@ -20,12 +20,7 @@
  *
  * @author dieter <dieter@taotesting.com>
  */
-define([
-    'lodash',
-    'i18n',
-    'ui/themes',
-    'ui/themeLoader'
-], function (_, __, themeHandler, themeLoader) {
+define(['lodash', 'i18n', 'ui/themes', 'ui/themeLoader'], function (_, __, themeHandler, themeLoader) {
     'use strict';
 
     /**
@@ -68,10 +63,6 @@ define([
             label: 'Match interaction no line break'
         },
         {
-            className: 'remove-instructions',
-            label: 'Remove Instructions'
-        },
-        {
             className: 'bordered-item',
             label: 'Bordered item'
         },
@@ -85,42 +76,38 @@ define([
         }
     ];
 
-
     /**
      * Initialize the configuration object
      *
      * @type {{blocks, defaultTheme}}
      */
     var cssConfig = {
-        blocks: (function() {
+        blocks: (function () {
             var i = blocks.length;
-            while(i--){
+            while (i--) {
                 blocks[i].className = '__custom__' + blocks[i].className;
             }
             return blocks;
-        }()),
-        defaultTheme: (function() {
+        })(),
+        defaultTheme: (function () {
             var themeObj = themeHandler.get('items') || {};
             var themeId = themeLoader(themeObj).getActiveTheme();
             var themePath = '';
             _(themeObj.available).forEach(function (data) {
-                if(data.id === themeId) {
+                if (data.id === themeId) {
                     themePath = data.path;
                     return false;
                 }
             });
             return themePath;
-        }())
+        })()
     };
-
-
-
 
     /**
      * @exports
      */
     return {
-        getConfig: function() {
+        getConfig: function () {
             return cssConfig;
         }
     };
