@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ***********************************************************************
  * INVALSI CONFIDENTIAL
@@ -43,7 +44,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '11.3.0',
+    'version' => '11.4.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -69,11 +70,11 @@ return array(
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi'))
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext' => 'taoInvalsi'))
     ),
     'install' => array(
         'php' => array(
-            __DIR__.'/scripts/install/setThemeConfig.php',
+            __DIR__ . '/scripts/install/setThemeConfig.php',
             __DIR__ . '/scripts/install/addHook.php',
             SetQtiCreatorConfig::class,
             \oat\taoQtiTest\scripts\install\SetNewTestRunner::class,
@@ -113,19 +114,18 @@ return array(
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
-    'uninstall' => array(
-    ),
+    'uninstall' => array(),
     'routes' => array(
         '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
     'constants' => array(
         # views directory
-        "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
+        "DIR_VIEWS" => dirname(__FILE__) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR,
 
         #BASE URL (usually the domain root)
-        'BASE_URL' => ROOT_URL.'taoInvalsi/',
+        'BASE_URL' => ROOT_URL . 'taoInvalsi/',
     ),
     'extra' => array(
-        'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
+        'structures' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
     )
 );
