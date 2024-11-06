@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-02-21T17:38:56\n"
+"Project-Id-Version: TAO 2024.07\n"
+"PO-Revision-Date: 2024-07-03T14:10:22\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -13,7 +13,26 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "%d entries have been exported. File path: %s"
+msgstr ""
+
 msgid "About"
+msgstr ""
+
+msgid "and flagged %s of them"
+msgstr ""
+
+msgid "and you flagged %s item(s) that you can review now"
+msgstr ""
+
+msgid "Apply \"%s\" category to the test items"
+msgstr ""
+
+#, tao-public
+msgid "Authoring"
+msgstr ""
+
+msgid "CANCEL"
 msgstr ""
 
 msgid "Custom Styles"
@@ -22,15 +41,53 @@ msgstr ""
 msgid "Display the current progression within the test"
 msgstr ""
 
+msgid "Event listener registered in event manager"
+msgstr ""
+
 #, tao-public
 msgid "Export Invalsi CSV"
+msgstr ""
+
+msgid "Export launch log to csv"
 msgstr ""
 
 msgid "Formula"
 msgstr ""
 
+msgid "Grade %s"
+msgstr ""
+
+msgid "Grade %s (%s)"
+msgstr ""
+
+#, tao-public
+msgid "Items"
+msgstr ""
+
+msgid "Launch log storage successfully installed"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr ""
+
 #, tao-public
 msgid "Manage Results"
+msgstr ""
+
+#, tao-public
+msgid "Manage tests"
+msgstr ""
+
+msgid "No entries found"
+msgstr ""
+
+#, tao-public
+msgid "Preview"
+msgstr ""
+
+#, tao-public
+msgid "Preview (legacy)"
 msgstr ""
 
 msgid "Progress bar"
@@ -39,10 +96,62 @@ msgstr ""
 msgid "RDS scheduler storage successfully installed"
 msgstr ""
 
+msgid "Registered Invalsi Booklet exporter"
+msgstr ""
+
+msgid "Registered Invalsi delivery launch log"
+msgstr ""
+
 #, tao-public
 msgid "Results"
 msgstr ""
 
+msgid "SUBMIT THE TEST"
+msgstr ""
+
+msgid "SUBMIT THIS PART"
+msgstr ""
+
+#, tao-public
+msgid "Tests"
+msgstr ""
+
 msgid "The Label"
+msgstr ""
+
+msgid "The time limit has been reached for this part of the test."
+msgstr ""
+
+msgid "There are %s unanswered questions"
+msgstr ""
+
+msgid "There are %s unanswered questions in this part of the test"
+msgstr ""
+
+msgid "There is %s unanswered question"
+msgstr ""
+
+msgid "There is %s unanswered question in this part of the test"
+msgstr ""
+
+msgid "You answered %s of %s question(s) for this section of the test"
+msgstr ""
+
+msgid "You are about to leave this section."
+msgstr ""
+
+msgid "You are about to submit the test."
+msgstr ""
+
+msgid "You are about to submit this test part."
+msgstr ""
+
+msgid "You flagged %s item(s) that you can review now"
+msgstr ""
+
+msgid "You will not be able to access this test once submitted. Click \"%s\" to continue and submit the test."
+msgstr ""
+
+msgid "You will not be able to return to this test after you submit your answers."
 msgstr ""
 

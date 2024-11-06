@@ -1,14 +1,13 @@
 {
-
     "name": "oat-sa/extension-tao-invalsi",
-    "description" : "Invalsi custom code",
-    "type" : "tao-extension",
-    "authors" : [
+    "description": "Invalsi custom code",
+    "type": "tao-extension",
+    "authors": [
         {
-        "name": "Open Assessment Technologies SA"
+            "name": "Open Assessment Technologies SA"
         }
     ],
-    "keywords" : [
+    "keywords": [
         "tao",
         "computer-based-assessment"
     ],
@@ -18,23 +17,25 @@
             "url": "https://github.com/oat-sa/spout.git"
         }
     ],
-    "homepage" : "http://www.taotesting.com",
-    "license" : [
+    "homepage": "http://www.taotesting.com",
+    "license": [
         "proprietary"
     ],
-    "extra" : {
-        "tao-extension-name" : "taoInvalsi"
+    "extra": {
+        "tao-extension-name": "taoInvalsi"
     },
-    "minimum-stability" : "dev",
+    "minimum-stability": "dev",
     "require": {
         "oat-sa/extension-tao-system-status": "^0.13",
         "oat-sa/extension-tao-texthelp": ">=3.0.0",
+        "oat-sa/extension-tao-itemqti": ">=30.16.0",
+        "oat-sa/extension-tao-test-preview-ui-loader": ">=1.27.12",
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
         "oat-sa/spout": "v2.7.3"
     },
-    "autoload" : {
-        "psr-4" : {
-            "oat\\taoInvalsi\\" : ""
+    "autoload": {
+        "psr-4": {
+            "oat\\taoInvalsi\\": ""
         }
     }
 }
