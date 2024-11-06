@@ -19,6 +19,7 @@
  */
 
 use oat\tao\scripts\install\SetResourceSelector;
+use oat\taoInvalsi\model\render\ServiceProvider\InvalsiCustomInteractionPostProcessingServiceProvider;
 use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
@@ -127,5 +128,8 @@ return array(
     ),
     'extra' => array(
         'structures' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
-    )
+    ),
+    'containerServiceProviders' => [
+        InvalsiCustomInteractionPostProcessingServiceProvider::class,
+    ],
 );
