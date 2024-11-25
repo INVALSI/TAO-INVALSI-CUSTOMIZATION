@@ -25,3 +25,46 @@
 @import "inc/_bootstrap";
 
 /// additional theme code that is not covered in include files yet
+html {
+  body {
+    .qti-item {
+      div.qtip.qtip-default {
+        font-family: "Source Sans Pro", sans-serif;
+        background-color: #ffffa3;
+        border: 1px solid #f1d031;
+        border-radius: 5px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 5px;
+        font-size: 1.3rem;
+        font-weight: normal !important;
+        color: #555;
+        cursor: text;
+      }
+
+      [data-role="tooltip-target"] {
+        color: #0e5d91;
+        text-decoration: dashed underline #0e5d91;
+        cursor: pointer;
+
+        &:after {
+          font-family: 'tao' !important;
+          speak: never;
+          font-style: normal;
+          font-weight: normal;
+          font-variant: normal;
+          text-transform: none;
+          line-height: 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          content: "\e63a";
+          font-size: 0.9rem;
+          vertical-align: super;
+          margin-left: 2px;
+          text-decoration: none;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
