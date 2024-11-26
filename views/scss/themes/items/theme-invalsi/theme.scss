@@ -24,25 +24,12 @@
 
 @import "inc/_bootstrap";
 
+
 /// additional theme code that is not covered in include files yet
 html {
   body {
     .qti-item {
-      div.qtip.qtip-default {
-        font-family: "Source Sans Pro", sans-serif;
-        background-color: #ffffa3;
-        border: 1px solid #f1d031;
-        border-radius: 5px;
-        width: 90%;
-        margin: 0 auto;
-        padding: 5px;
-        font-size: 1.3rem;
-        font-weight: normal !important;
-        color: #555;
-        cursor: text;
-      }
-
-      [data-role="tooltip-target"] {
+      span[data-role="tooltip-target"], span.tooltip.tooltip-active[data-hasqtip="*"] {
         color: #0e5d91;
         text-decoration: dashed underline #0e5d91;
         cursor: pointer;
@@ -64,6 +51,23 @@ html {
           text-decoration: none;
           display: inline-block;
         }
+      }
+    }
+    div.qtip {
+      font-size: 10.5px !important;
+      line-height: 12px;
+      .qtip-default {
+        font-family: "Source Sans Pro", sans-serif;
+        background-color: #ffffa3;
+        border: 1px solid #f1d031;
+        border-radius: 5px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 5px;
+        font-size: 10.5px;
+        font-weight: normal !important;
+        color: #555;
+        cursor: text;
       }
     }
   }
