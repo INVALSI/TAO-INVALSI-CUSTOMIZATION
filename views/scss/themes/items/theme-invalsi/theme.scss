@@ -29,7 +29,8 @@
 html {
   body {
     .qti-item {
-      span[data-role="tooltip-target"], span.tooltip.tooltip-active[data-hasqtip="*"] {
+      span[data-role="tooltip-target"],span.tooltip.tooltip-active[data-identifier^="tltp"]
+      {
         color: #0e5d91;
         text-decoration: dashed underline #0e5d91;
         cursor: pointer;
