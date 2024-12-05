@@ -16,6 +16,19 @@ use oat\taoQtiItem\model\portableElement\exception\PortableElementParserExceptio
 use oat\taoQtiItem\model\portableElement\model\PortableModelRegistry;
 use oat\taoQtiItem\model\qti\interaction\CustomInteraction;
 
+/**
+ * Class AbstractRemoveAllVersionsOfPciAndInstall
+ * @package oat\taoInvalsi\scripts\tools\pciFixes
+ * User: uncleempty
+ * Date: 05/12/2024
+ *
+ * Script removing existing (if any) versions of the given PCI and installs needed version from the provided package.
+ * Example:
+ *  - `sudo -u www-data php index.php 'oat\taoInvalsi\scripts\tools\pciFixes\RemoveOldVersionsOfTextReaderAndInstallFromPackage' -p <pathToPackage> -f`
+ *
+ * Running the script without providing `-f` flag - will only output existing versions of the given PCI,
+ *  without removing/installing anything
+ */
 abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
 {
     protected const PCI_NAME = '';
