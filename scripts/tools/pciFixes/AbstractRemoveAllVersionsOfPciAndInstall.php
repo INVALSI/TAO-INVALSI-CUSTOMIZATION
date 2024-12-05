@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace oat\taoInvalsi\scripts\tools\pciFixes;
 
 use oat\oatbox\extension\script\ScriptAction;
+use oat\taoQtiItem\model\portableElement\model\PortableElementModel;
 use oat\taoQtiItem\model\portableElement\PortableElementService;
 use oat\oatbox\reporting\Report;
 use oat\qtiItemPci\model\IMSPciModel;
@@ -153,7 +154,7 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
     /**
      * Get available PCI models
      *
-     * @return array
+     * @return PortableElementModel[]
      */
     protected function getPciModels(): array
     {
