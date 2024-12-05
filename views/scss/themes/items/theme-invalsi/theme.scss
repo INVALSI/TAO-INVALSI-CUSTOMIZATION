@@ -57,7 +57,7 @@ html {
     div.qtip {
       font-size: 10.5px !important;
       line-height: 12px;
-      .qtip-default {
+      &.qtip-default {
         font-family: "Source Sans Pro", sans-serif;
         background-color: #ffffa3;
         border: 1px solid #f1d031;
