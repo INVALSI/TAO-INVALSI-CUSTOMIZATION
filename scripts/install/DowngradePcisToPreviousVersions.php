@@ -209,7 +209,6 @@ class DowngradePcisToPreviousVersions extends InstallAction
 
         foreach ($this->getPciModels() as $pciModel) {
             try {
-                var_dump(pathinfo($archivePath), realpath($archivePath));
                 $portableElement = $this->getService()->import($pciModel->getId(), realpath($archivePath));
                 if (!is_null($portableElement)) {
                     break;//stop at the first one
