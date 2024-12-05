@@ -22,9 +22,12 @@ use oat\taoQtiItem\model\qti\interaction\CustomInteraction;
  * User: uncleempty
  * Date: 05/12/2024
  *
- * Script removing existing (if any) versions of the given PCI and installs needed version from the provided package.
- * Example:
+ * Abstract script removing existing (if any) versions of the given PCI and installs needed version from the provided package,
+ * Executed using one of the implementations.
+ *
+ * Examples:
  *  - `sudo -u www-data php index.php 'oat\taoInvalsi\scripts\tools\pciFixes\RemoveOldVersionsOfTextReaderAndInstallFromPackage' -p <pathToPackage> -f`
+ *  - `sudo -u www-data php index.php 'oat\taoInvalsi\scripts\tools\pciFixes\RemoveOldVersionsOfMathEntryAndInstallFromPackage' -p <pathToPackage> -f`
  *
  * Running the script without providing `-f` flag - will only output existing versions of the given PCI,
  *  without removing/installing anything
