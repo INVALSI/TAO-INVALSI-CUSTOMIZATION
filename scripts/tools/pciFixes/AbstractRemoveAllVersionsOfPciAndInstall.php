@@ -22,11 +22,20 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
     protected const OPTION_FORCE = 'force';
     protected const OPTION_PACKAGE = 'package';
 
+    /** @var PortableElementService $service */
     protected PortableElementService $service;
 
+    /** @var string $archivePath */
     protected string $archivePath;
+
+    /** @var bool $isForcedRemoval */
     protected bool $isForcedRemoval;
 
+    /**
+     * Action options definition
+     *
+     * @return array[]
+     */
     protected function provideOptions(): array
     {
         return [
@@ -45,6 +54,11 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         ];
     }
 
+    /**
+     * Action description
+     *
+     * @return string
+     */
     protected function provideDescription(): string
     {
         $msg = "This command will execute import of the `%s` PCI ZIP-package. However, without `-f` flag,
@@ -55,6 +69,15 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         return sprintf($msg, $this->getPciCommonName());
     }
 
+    /**
+     * Run action
+     *
+     * @return Report
+     *
+     * @throws PortableElementNotFoundException
+     * @throws \common_exception_Error
+     * @throws \oat\taoQtiItem\model\portableElement\exception\PortableElementInconsistencyModelException
+     */
     protected function run(): Report
     {
         $this->setUpOptions();
@@ -127,7 +150,12 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         return $report;
     }
 
-    protected function getPciModels()
+    /**
+     * Get available PCI models
+     *
+     * @return array
+     */
+    protected function getPciModels(): array
     {
         $pciModels = [];
         foreach (PortableModelRegistry::getRegistry()->getModels() as $model) {
@@ -138,7 +166,14 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         return $pciModels;
     }
 
-    protected function getService()
+    /**
+     * Get service implementation
+     *
+     * @return PortableElementService
+     *
+     * @throws \oat\oatbox\service\exception\InvalidServiceManagerException
+     */
+    protected function getService(): PortableElementService
     {
         if (!$this->service) {
             $this->service = new PortableElementService();
@@ -147,7 +182,12 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         return $this->service;
     }
 
-    protected function getPciCommonName()
+    /**
+     * Extract PCI common name out of PCI interaction name
+     *
+     * @return string
+     */
+    protected function getPciCommonName(): string
     {
         return ucfirst(
             implode(
@@ -164,7 +204,12 @@ abstract class AbstractRemoveAllVersionsOfPciAndInstall extends ScriptAction
         );
     }
 
-    private function setUpOptions()
+    /**
+     * Initialize script params
+     *
+     * @return void
+     */
+    private function setUpOptions(): void
     {
         $this->archivePath = $this->getOption('package');
         $this->isForcedRemoval = $this->getOption('force') ?? false;
