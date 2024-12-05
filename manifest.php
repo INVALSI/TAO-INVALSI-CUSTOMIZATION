@@ -39,13 +39,14 @@ use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
 use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
 use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
+use \oat\taoInvalsi\scripts\install\DowngradePcisToPreviousVersions;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '11.5.3',
+    'version' => '11.5.4',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -112,6 +113,7 @@ return array(
                     ConfigureTextToSpeechPlugin::PARAM_CLICK_TO_SPEAK => false,
                 ]
             ],
+            DowngradePcisToPreviousVersions::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',

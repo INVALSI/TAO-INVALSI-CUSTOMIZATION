@@ -155,3 +155,160 @@ msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai pi�
 msgid "You will not be able to return to this test after you submit your answers."
 msgstr "Grazie. Hai terminato la prova. Una volta chiusa la prova non potrai più ritornare alle domande. Sei sicuro di voler chiudere la prova?"
 
+#diagnostic tool
+msgid "An error occurred! Please verify your input!"
+msgstr "Si è verificato un errore! Si prega di verificare l'inserimento!"
+
+msgid "Cannot get your fingerprint"
+msgstr "Impossibile ottenere l'impronta digitale"
+
+msgid "Cannot retrieve the school name. Please verify your input"
+msgstr "Impossibile recuperare il nome della scuola. Si prega di verificare l'inserimento"
+
+msgid "Change since last fingerprint"
+msgstr "Variazione dall'ultima impronta digitale"
+
+msgid "Checking the screen..."
+msgstr "Controllo dello schermo..."
+
+msgid "Computing the fingerprint..."
+msgstr "Calcolo dell'impronta digitale..."
+
+msgid "Dynamic UID"
+msgstr "UID dinamico"
+
+msgid "Errors occurred! Please see details"
+msgstr "Si sono verificati degli errori! Si prega di vedere i dettagli"
+
+msgid "Failed to get school name"
+msgstr "Non è stato possibile ottenere il nome della scuola"
+
+msgid "Fingerprint"
+msgstr "Impronta digitale"
+
+msgid "Fingerprint error"
+msgstr "Errore di impronta digitale"
+
+msgid "Fingerprint errors"
+msgstr "Errori delle impronte digitali"
+
+msgid "Fingerprint sources"
+msgstr "Tracce di impronte digitali"
+
+msgid "Getting school name..."
+msgstr "Ottenere il nome della scuola..."
+
+msgid "Interface not available"
+msgstr "Interfaccia non disponibile"
+
+msgid "Launch another readiness check"
+msgstr "Avviare un altro controllo della preparazione"
+
+msgid "Launch readiness check"
+msgstr "Controllo della preparazione al lancio"
+
+msgid "List of readiness checks"
+msgstr "Elenco dei controlli di preparazione"
+
+msgid "Missing field %s"
+msgstr "Campo mancante %s"
+
+msgid "No diagnostic service defined"
+msgstr "Nessun servizio di diagnostica definito"
+
+msgid "No readiness checks have been done!"
+msgstr "Non è stato effettuato alcun controllo di preparazione!"
+
+msgid "Readiness Check"
+msgstr "Verifica della preparazione"
+
+msgid "Readiness checks already done"
+msgstr "Controlli di preparazione già effettuati"
+
+msgid "Readiness diagnostics"
+msgstr "Diagnostica della preparazione"
+
+msgid "Remove the readiness check result?"
+msgstr "Rimuovere il risultato del controllo di preparazione?"
+
+msgid "Remove the selected readiness check results"
+msgstr "Rimuovere i risultati del controllo di preparazione selezionati"
+
+msgid "Return to the list"
+msgstr "Ritorno all'elenco"
+
+msgid "School name"
+msgstr "Nome della scuola"
+
+msgid "School name:"
+msgstr "Nome della scuola:"
+
+msgid "Screen Height"
+msgstr "Altezza dello schermo"
+
+msgid "Screen resolution"
+msgstr "Risoluzione dello schermo"
+
+msgid "Screen Width"
+msgstr "Larghezza dello schermo"
+
+msgid "Show fingerprint details"
+msgstr "Mostra i dettagli dell'impronta digitale"
+
+msgid "Something went wrong ..."
+msgstr "Qualcosa è andato storto..."
+
+msgid "Starting..."
+msgstr "Avviamento..."
+
+msgid "System Compatibility"
+msgstr "Compatibilità del sistema"
+
+msgid "The device screen does not meet the minimum resolution of %s!"
+msgstr "Lo schermo del dispositivo non soddisfa la risoluzione minima di %s!"
+
+msgid "The device screen has the minimum required resolution."
+msgstr "Lo schermo del dispositivo ha la risoluzione minima richiesta."
+
+msgid "The device screen resolution meets the requirements."
+msgstr "La risoluzione dello schermo del dispositivo soddisfa i requisiti."
+
+msgid "The readiness check result have been removed"
+msgstr "Il risultato del controllo di preparazione è stato rimosso"
+
+msgid "The readiness check result will be removed. Continue ?"
+msgstr "Il risultato del controllo di preparazione verrà rimosso. Continuare?"
+
+msgid "The selected readiness check results will be removed. Continue ?"
+msgstr "I risultati del controllo di preparazione selezionati verranno rimossi. Continuare?"
+
+msgid "The storage service provided to store the diagnostic results must be upgraded to support reads!"
+msgstr "Il servizio di archiviazione fornito per memorizzare i risultati diagnostici deve essere aggiornato per supportare la lettura!"
+
+msgid "Try a test delivery"
+msgstr "Provate una consegna di una prova"
+
+msgid "Unable to get the workstation name!"
+msgstr "Impossibile ottenere il nome della workstation!"
+
+msgid "Workstation"
+msgstr "Postazione di lavoro"
+
+msgid "Workstation name"
+msgstr "Nome della stazione di lavoro"
+
+msgid "Workstation:"
+msgstr "Postazione di lavoro:"
+
+msgid "Your fingerprint is %s"
+msgstr "L'impronta digitale è %s"
+
+msgid "Your fingerprint is %s. However it seems it has changed since the last check. It could be related to changes in your system."
+msgstr "L'impronta digitale è %s. Tuttavia, sembra che sia cambiata dall'ultimo controllo. Potrebbe essere legato a cambiamenti nel sistema."
+
+msgid "Your fingerprint is %s. However we encountered issue while retrieving the data. Maybe your available disk space is too small"
+msgstr "L'impronta digitale è %s. Tuttavia, abbiamo riscontrato un problema durante il recupero dei dati. Forse lo spazio disponibile su disco è troppo piccolo"
+
+msgid "This browser is supported."
+msgstr "Questo browser è supportato."
+
