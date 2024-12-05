@@ -14,6 +14,7 @@ use oat\taoQtiItem\model\portableElement\exception\PortableElementParserExceptio
 use oat\taoQtiItem\model\portableElement\model\PortableElementModel;
 use oat\taoQtiItem\model\portableElement\model\PortableModelRegistry;
 use oat\taoQtiItem\model\portableElement\PortableElementService;
+use oat\taoQtiItem\model\portableElement\storage\PortableElementRegistry;
 use oat\taoQtiItem\model\qti\interaction\CustomInteraction;
 
 class DowngradePcisToPreviousVersions extends InstallAction
@@ -53,7 +54,7 @@ class DowngradePcisToPreviousVersions extends InstallAction
      *
      * @throws \common_exception_Error
      */
-    public function __invoke($params)
+    public function __invoke($params): Report
     {
         $report = Report::createInfo(
             'Downgrading required PCIs to the versions approved in INVALSI reality'
@@ -107,7 +108,7 @@ class DowngradePcisToPreviousVersions extends InstallAction
      *
      * @return void
      */
-    private function setParams(array $params = [])
+    private function setParams(array $params = []): void
     {
         if (empty($params)) {
             $this->pciPaths = self::DEFAULT_PCI_CORRECT_VERSIONS_PATHS;
@@ -125,7 +126,7 @@ class DowngradePcisToPreviousVersions extends InstallAction
      *
      * @return string
      */
-    private function getPciCommonName(string $pciName)
+    private function getPciCommonName(string $pciName): string
     {
         return ucfirst(
             implode(
@@ -145,9 +146,9 @@ class DowngradePcisToPreviousVersions extends InstallAction
     /**
      * Initialize available PCI registries
      *
-     * @return array
+     * @return PortableElementRegistry[]
      */
-    private function getPciRegistries()
+    private function getPciRegistries(): array
     {
         if (empty ($this->pciRegistries)) {
             $this->pciRegistries = [
@@ -288,9 +289,9 @@ class DowngradePcisToPreviousVersions extends InstallAction
     /**
      * Get available PCI models
      *
-     * @return array
+     * @return PortableElementModel[]
      */
-    protected function getPciModels()
+    protected function getPciModels(): array
     {
         $pciModels = [];
         foreach (PortableModelRegistry::getRegistry()->getModels() as $model) {
@@ -304,11 +305,11 @@ class DowngradePcisToPreviousVersions extends InstallAction
     /**
      * Get service implementation
      *
-     * @return PortableElementService|null
+     * @return PortableElementService
      *
      * @throws \oat\oatbox\service\exception\InvalidServiceManagerException
      */
-    protected function getService()
+    protected function getService(): PortableElementService
     {
         if (!$this->service) {
             $this->service = new PortableElementService();
