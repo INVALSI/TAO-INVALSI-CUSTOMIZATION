@@ -11,6 +11,7 @@ use oat\qtiItemPci\model\PciModel;
 use oat\taoQtiItem\model\portableElement\exception\PortableElementInvalidModelException;
 use oat\taoQtiItem\model\portableElement\exception\PortableElementNotFoundException;
 use oat\taoQtiItem\model\portableElement\exception\PortableElementParserException;
+use oat\taoQtiItem\model\portableElement\model\PortableElementModel;
 use oat\taoQtiItem\model\portableElement\model\PortableModelRegistry;
 use oat\taoQtiItem\model\portableElement\PortableElementService;
 use oat\taoQtiItem\model\qti\interaction\CustomInteraction;
@@ -30,16 +31,28 @@ class DowngradePcisToPreviousVersions extends InstallAction
         self::TEXTREADER_PCI_NAME => './../tools/pciFixes/fixedPcis/fixedTextReader.zip'
     ];
 
-    private bool $debug = false;
-
-    private string $currentPciName;
-
-    private array $pciRegistries;
-
+    /** @var PortableElementService|null $service */
     protected ?PortableElementService $service = null;
 
+    /** @var bool @debug */
+    private bool $debug = false;
+
+    /** @var string $currentPciName */
+    private string $currentPciName;
+
+    /** @var array $pciRegistries */
+    private array $pciRegistries;
+
+    /** @var array $pciPaths */
     private array $pciPaths = [];
 
+    /**
+     * @param $params
+     *
+     * @return Report
+     *
+     * @throws \common_exception_Error
+     */
     public function __invoke($params)
     {
         $report = Report::createInfo(
@@ -87,6 +100,13 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $report;
     }
 
+    /**
+     * Initialize incoming params
+     *
+     * @param array $params Array of params for the downgrader
+     *
+     * @return void
+     */
     private function setParams(array $params = [])
     {
         if (empty($params)) {
@@ -98,6 +118,13 @@ class DowngradePcisToPreviousVersions extends InstallAction
         }
     }
 
+    /**
+     * Get PCI "common name" from the interaction name
+     *
+     * @param string $pciName
+     *
+     * @return string
+     */
     private function getPciCommonName(string $pciName)
     {
         return ucfirst(
@@ -115,6 +142,11 @@ class DowngradePcisToPreviousVersions extends InstallAction
         );
     }
 
+    /**
+     * Initialize available PCI registries
+     *
+     * @return array
+     */
     private function getPciRegistries()
     {
         if (empty ($this->pciRegistries)) {
@@ -126,6 +158,15 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $this->pciRegistries;
     }
 
+    /**
+     * Get available PCI versions on the platform
+     *
+     * @param string $pciCommonName
+     *
+     * @return Report
+     *
+     * @throws \common_exception_Error
+     */
     private function getAvailableVersions(string $pciCommonName): Report
     {
         $report = Report::createInfo(
@@ -155,6 +196,15 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $report;
     }
 
+    /**
+     * Remove all the PCI versions (for the given PCI) available on the platform
+     *
+     * @param string $pciCommonName
+     *
+     * @return Report
+     *
+     * @throws \common_exception_Error
+     */
     private function removeAllPciVersions(string $pciCommonName): Report
     {
         $message = 'Removing all existing versions of %s PCI from registries';
@@ -174,17 +224,14 @@ class DowngradePcisToPreviousVersions extends InstallAction
                         sprintf($message, $pciCommonName, $registryName)
                     );
 
-                    $report->add($subReport);
                 } else {
-                    $registry->removeAllVersions($this->currentPciName);
-
                     $message = 'There are no versions of %s PCI in %s registry';
                     $subReport = Report::createWarning(
                         sprintf($message, $pciCommonName, $registryName)
                     );
 
-                    $report->add($subReport);
                 }
+                $report->add($subReport);
             } catch (\Throwable $e) {
                 $message = 'Failed to remove version of %s PCI from %s registry';
                 $subReport = Report::createError(
@@ -198,6 +245,16 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $report;
     }
 
+    /**
+     * Install PCI from the package
+     *
+     * @param string $pciCommonName
+     * @param string $archivePath
+     *
+     * @return Report
+     *
+     * @throws \oat\taoQtiItem\model\portableElement\exception\PortableElementInconsistencyModelException
+     */
     private function installCorrectVersionOfPci(string $pciCommonName, string $archivePath): Report
     {
         $message = 'Installing needed version of %s PCI from ZIP-package';
@@ -228,6 +285,11 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $report;
     }
 
+    /**
+     * Get available PCI models
+     *
+     * @return array
+     */
     protected function getPciModels()
     {
         $pciModels = [];
@@ -239,6 +301,13 @@ class DowngradePcisToPreviousVersions extends InstallAction
         return $pciModels;
     }
 
+    /**
+     * Get service implementation
+     *
+     * @return PortableElementService|null
+     *
+     * @throws \oat\oatbox\service\exception\InvalidServiceManagerException
+     */
     protected function getService()
     {
         if (!$this->service) {
