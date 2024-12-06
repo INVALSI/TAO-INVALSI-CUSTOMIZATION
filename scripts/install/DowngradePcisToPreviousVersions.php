@@ -28,8 +28,8 @@ class DowngradePcisToPreviousVersions extends InstallAction
     ];
 
     private const DEFAULT_PCI_CORRECT_VERSIONS_PATHS = [
-        self::MATHENTRY_PCI_NAME => './../tools/pciFixes/fixedPcis/fixedMathEntry.zip',
-        self::TEXTREADER_PCI_NAME => './../tools/pciFixes/fixedPcis/fixedTextReader.zip'
+        self::MATHENTRY_PCI_NAME => TAO_INSTALL_PATH . 'taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedMathEntry.zip',
+        self::TEXTREADER_PCI_NAME => TAO_INSTALL_PATH . 'taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedTextReader.zip'
     ];
 
     /** @var PortableElementService|null $service */
