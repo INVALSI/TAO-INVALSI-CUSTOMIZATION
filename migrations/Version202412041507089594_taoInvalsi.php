@@ -33,8 +33,8 @@ final class Version202412041507089594_taoInvalsi extends AbstractMigration
         $downgradeReport = $downgrader(
             [
                 'paths' => [
-                    self::MATHENTRY_PCI_NAME => './taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedMathEntry.zip',
-                    self::TEXTREADER_PCI_NAME => './taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedTextReader.zip'
+                    self::MATHENTRY_PCI_NAME => TAO_INSTALL_PATH . 'taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedMathEntry.zip',
+                    self::TEXTREADER_PCI_NAME => TAO_INSTALL_PATH . 'taoInvalsi/scripts/tools/pciFixes/fixedPcis/fixedTextReader.zip'
                 ]
             ]
         );
