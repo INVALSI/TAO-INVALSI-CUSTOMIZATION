@@ -312,3 +312,6 @@ msgstr "L'impronta digitale è %s. Tuttavia, abbiamo riscontrato un problema dur
 msgid "This browser is supported."
 msgstr "Questo browser è supportato."
 
+msgid "leave empty"
+msgstr "Lasciare vuoto "
+
