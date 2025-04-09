@@ -2,6 +2,17 @@
 use oat\tao\helpers\Layout;
 use oat\tao\model\theme\Theme;
 ?>
+
+<style>
+    #campaign-notice{width:40%;margin:30px auto;padding:10px 10px 0;left:10%;z-index:-1;font-weight:bold;}#campaign-notice p{text-align:center;font-size:1.2rem;line-height:1.5em;color:#767676}
+</style>
+
+<h2 id="campaign-notice">Questa pagina è riservata al personale INVALSI.
+    I link alle piattaforme di somministrazione delle prove per studenti sono, rispettivamente: <br>
+    - Studenti del terzo anno della Scuola secondaria di I grado:  <a href="https://ms8.invalsi.taocloud.org">https://ms8.invalsi.taocloud.org</a> <br>
+    - Studenti del secondo anno scuola secondaria di II grado: <a href="https://ms10.invalsi.taocloud.org">https://ms10.invalsi.taocloud.org</a> <br>
+    - Studenti dell'ultimo anno scuola secondaria di II grado: <a href="https://ms13.invalsi.taocloud.org">https://ms13.invalsi.taocloud.org</a>
+</h2>
 <main id="login-box" class="entry-point entry-point-container">
     <?=Layout::renderThemeTemplate(Theme::CONTEXT_BACKOFFICE, 'login-message')?>
     <div id="login-box-inner-container"></div>
