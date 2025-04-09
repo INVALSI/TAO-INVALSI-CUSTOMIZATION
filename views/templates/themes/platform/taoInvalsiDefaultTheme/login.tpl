@@ -4,7 +4,7 @@ use oat\tao\model\theme\Theme;
 ?>
 
 <style>
-    #campaign-notice{width:80%;margin:30px 25%;padding:10px 10px 0;left:10%;z-index:-1;font-weight:bold;}#campaign-notice p{text-align:center;font-size:1.2rem;line-height:1.5em;color:#767676}
+    #campaign-notice{width:70%;margin:30px 25%;padding:10px 10px 0;left:10%;z-index:-1;font-weight:bold;}#campaign-notice p{text-align:center;font-size:1.2rem;line-height:1.5em;color:#767676}
 </style>
 
 <h2 id="campaign-notice">Questa pagina è riservata al personale INVALSI.
