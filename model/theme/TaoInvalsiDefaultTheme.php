@@ -97,6 +97,13 @@ class TaoInvalsiDefaultTheme extends DefaultTheme
                 );
                 break;
 
+            case 'login':
+                $template = Template::getTemplate(
+                    'themes/platform/' . self::THEME_ID . '/login.tpl',
+                    self::EXTENSION_ID
+                );
+                break;
+
             case 'gdpr' :
                 $template = Template::getTemplate(
                     'themes/platform/' . self::THEME_ID . '/gdpr.tpl',
