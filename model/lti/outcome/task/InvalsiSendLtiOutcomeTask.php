@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace oat\taoInvalsi\model\lti\outcome\task;
 
-use oat\ltiDeliveryProvider\model\execution\implementation\Lti1p3ContextCacheRepository;
+use oat\ltiDeliveryProvider\model\execution\LtiContextRepositoryInterface;
 use oat\ltiDeliveryProvider\model\tasks\SendLtiOutcomeTask;
 use oat\taoDelivery\model\execution\ServiceProxy;
 use oat\taoLti\models\classes\LtiOutcome\LtiOutcomeXmlFactory;
@@ -133,8 +133,10 @@ class InvalsiSendLtiOutcomeTask extends SendLtiOutcomeTask
     {
         $sourcedId = null;
 
-        /** @var Lti1p3ContextCacheRepository $lti1p3ContextService */
-        $lti1p3ContextService = $this->getServiceManager()->get(Lti1p3ContextCacheRepository::class);
+        /** @var LtiContextRepositoryInterface $lti1p3ContextService */
+        $lti1p3ContextService = $this->getServiceManager()
+            ->getContainer()
+            ->get(LtiContextRepositoryInterface::class);
 
         $contextData = $lti1p3ContextService->findByDeliveryExecutionId($deliveryExecutionUri);
 
