@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace oat\taoInvalsi\model\lti\outcome;
 
 use oat\ltiDeliveryProvider\model\LtiOutcomeService;
-use oat\ltiDeliveryProvider\model\tasks\SendLtiOutcomeTask;
 use oat\tao\model\taskQueue\QueueDispatcherInterface;
 use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
 use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionState;
+use oat\taoInvalsi\model\lti\outcome\task\InvalsiSendLtiOutcomeTask;
 use oat\taoLti\models\classes\LtiService;
 use oat\taoLti\models\classes\TaoLtiSession;
 
@@ -37,7 +37,7 @@ class InvalsiLtiOutcomeService extends LtiOutcomeService
                 $params['consumerKey'] = $launchData->getOauthKey();
                 $params['serviceUrl'] = $launchData->getVariable('lis_outcome_service_url');
 
-                $taskQueue->createTask(new SendLtiOutcomeTask(), $params, 'Submit LTI results');
+                $taskQueue->createTask(new InvalsiSendLtiOutcomeTask(), $params, 'Submit LTI results');
             }
         }
     }
