@@ -6,14 +6,57 @@ namespace oat\taoInvalsi\model\lti\outcome\task;
 
 use oat\ltiDeliveryProvider\model\execution\implementation\Lti1p3ContextCacheRepository;
 use oat\ltiDeliveryProvider\model\tasks\SendLtiOutcomeTask;
+use oat\taoDelivery\model\execution\ServiceProxy;
 use oat\taoLti\models\classes\LtiOutcome\LtiOutcomeXmlFactory;
 use oat\taoLti\models\classes\LtiService;
+use oat\taoOutcomeUi\model\ResultsService;
 use oat\taoResultServer\models\classes\ResultAliasServiceInterface;
 use \taoResultServer_models_classes_OutcomeVariable;
+use common_report_Report;
 
 class InvalsiSendLtiOutcomeTask extends SendLtiOutcomeTask
 {
     private const SOURCEDID_VARIABLE = 'lis_result_sourcedid';
+
+    public function __invoke($params)
+    {
+        $report = new common_report_Report(common_report_Report::TYPE_ERROR);
+        $deliveryResultIdentifier = $params['deliveryResultIdentifier'];
+        $consumerKey = $params['consumerKey'];
+        $serviceUrl = $params['serviceUrl'];
+
+        try {
+            $deliveryExecution = ServiceProxy::singleton()->getDeliveryExecution($deliveryResultIdentifier);
+            $resultsService = ResultsService::singleton();
+            $implementation = $resultsService->getReadableImplementation($deliveryExecution->getDelivery());
+            $resultsService->setImplementation($implementation);
+
+            $variables = $resultsService->getVariableDataFromDeliveryResult(
+                $deliveryResultIdentifier,
+                [taoResultServer_models_classes_OutcomeVariable::class]
+            );
+
+            $submitted = 0;
+            /** @var taoResultServer_models_classes_OutcomeVariable $variable */
+            foreach ($variables as $variable) {
+                if (self::VARIABLE_IDENTIFIER == $variable->getIdentifier()) {
+                    $this->sendLtiOutcome($variable, $deliveryResultIdentifier, $consumerKey, $serviceUrl);
+                    $submitted++;
+                    break;
+                }
+            }
+            if (0 === $submitted) {
+                throw new \common_Exception(
+                    'No LTI Outcome has been submitter for execution' . $deliveryResultIdentifier
+                );
+            }
+        } catch (\Exception $exception) {
+            $report->setMessage($exception->getMessage());
+        }
+
+        $report->setType(common_report_Report::TYPE_SUCCESS);
+        return $report;
+    }
 
     /**
      * @param taoResultServer_models_classes_OutcomeVariable $testVariable
