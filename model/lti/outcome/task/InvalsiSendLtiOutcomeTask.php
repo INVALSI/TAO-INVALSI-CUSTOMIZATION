@@ -143,10 +143,10 @@ class InvalsiSendLtiOutcomeTask extends SendLtiOutcomeTask
         if (!is_null($contextData)) {
             $variables = $contextData->getVariables();
             if (!empty($variables)) {
-                $this->logWarning('[DEBUG] launchData variables: ' . json_encode($variables));
+                $this->logWarning('[SendLtiOutcomeTask] launchData variables: ' . json_encode($variables));
                 if ($contextData->hasVariable(self::SOURCEDID_VARIABLE)) {
                     $sourcedId = $variables[self::SOURCEDID_VARIABLE];
-                    $this->logWarning('[DEBUG] launchData decoded data sourcedId: ' . $sourcedId);
+                    $this->logWarning('[SendLtiOutcomeTask] launchData decoded data sourcedId: ' . $sourcedId);
                 }
             }
         }
