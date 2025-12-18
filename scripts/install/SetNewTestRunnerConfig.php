@@ -49,12 +49,21 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
         $config = $qtiTest->getConfig('testRunner');
         $config = array_merge($config, $invalsiConfig);
 
+        unset($config['plugins']['formula']['documentUrlA02_A03_A04']);
+
         $config['plugins']['formula'] = [
             'documentUrlL10' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L10.pdf',
             'documentUrlL13' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13.pdf',
             'documentUrlL13_SLO' => '/taoInvalsi/views/js/runner/plugins/tools/formula/Formulario_L13_SLO.pdf',
             'documentUrlL10_SLO' => 'Formulario_G10_SLO',//this one and the next one - are just the placeholders for two new
-            'documentUrlL10_GER' => 'Formulario_G10_GER' //files, to be filled later, when they'd provided by customer
+            'documentUrlL10_GER' => 'Formulario_G10_GER', //files, to be filled later, when they'd provided by customer
+            'documentUrlA71' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf', //package for activity 71 Jan2020
+            'documentUrlA02A03A04SRD' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf', //package for activity 020304SRD Jan2020
+            'documentUrlA141516' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf', //package for activity 141516 Jan2020
+            'documentUrlA02_A03_A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf', //package for activity 020304 Jan2020
+            'documentUrlA02A03A04' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf',
+            'documentUrlA080910' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA080910.pdf',
+            'documentUrlA09' => '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA09.pdf',
         ];
 
         $config['plugins']['calculator'] = array(
@@ -70,7 +79,7 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
 
         //*** TextHelp Setup
         // - URI of the config file that should contain the right setup for the customer
-        $config['plugins']['textToSpeech']['setupUrl'] = '//taotoolbar.speechstream.net/tao/configinvQA215.js';
+        $config['plugins']['textToSpeech']['setupUrl'] = '//configuration.speechstream.net/oat/inv/v216/config.js';
         // - override math expressions with an alternative text
         $config['plugins']['textToSpeech']['overrideMathExpr'] = "Guarda la formula";
         // - override the default language crosswalk
@@ -90,12 +99,15 @@ class SetNewTestRunnerConfig extends \common_ext_action_InstallAction
 
         $config['bootstrap']['communication'] = [
             'enabled'     => true,
-            'type'        => 'request',
+            'type'        => 'poll',
             'extension'   => 'taoQtiTest',
             'controller'  => 'Runner',
             'action'      => 'messages',
             'syncActions' => [],
-            'params'      => []
+            'params'      => [
+                'interval' => 300, //5 minutes
+                'timeout' => 30,
+            ]
         ];
 
         $qtiTest->setConfig('testRunner', $config);

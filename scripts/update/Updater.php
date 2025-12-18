@@ -54,6 +54,7 @@ use oat\taoDelivery\model\AssignmentService;
 use oat\taoDeliveryRdf\model\GroupAssignment;
 use oat\taoInvalsi\scripts\install\RegisterRdsLaunchLog;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
+use \oat\taoInvalsi\model\export\AllBookletsExport;
 
 class Updater extends common_ext_ExtensionUpdater {
 
@@ -783,10 +784,10 @@ class Updater extends common_ext_ExtensionUpdater {
                 array('extraRoutes' => ['taoInvalsi/Delivery/userMenu?page=testRunner'])
             );
 
-            $this->setVersion('7.5.4');
+            $this->setVersion('7.5.3.1');
         }
 
-        $this->skip('7.5.4', '8.1.3');
+        $this->skip('7.5.3.1', '8.1.3');
 
         //These update is a part of seed file preparation
         if ($this->isVersion('8.1.3')) {
@@ -830,6 +831,84 @@ class Updater extends common_ext_ExtensionUpdater {
             $this->setVersion('8.4.0');
         }
 
-        $this->skip('8.4.0', '9.0.2');
+        $this->skip('8.4.0', '9.0.5');
+
+        if ($this->isVersion('9.0.5')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['textToSpeech']['setupUrl'] = '//configuration.speechstream.net/oat/inv/v216/config.js';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.0');
+        }
+
+        if ($this->isVersion('9.1.0')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            $config['plugins']['formula']['documentUrlA71'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA71.pdf';
+            $config['plugins']['formula']['documentUrlA02A03A04SRD'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304SRD.pdf';
+            $config['plugins']['formula']['documentUrlA141516'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA141516.pdf';
+            $config['plugins']['formula']['documentUrlA02_A03_A04'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.1');
+        }
+
+        if ($this->isVersion('9.1.1')) {
+            $qtiTestService = $this->getServiceManager()->get('taoQtiTest/testRunner');
+            $config = $qtiTestService ->getConfig();
+
+            //removing as we don't need underscores in the testRunner.conf, even if the category in test XML uses them
+            unset($config['plugins']['formula']['documentUrlA02_A03_A04']);
+            $config['plugins']['formula']['documentUrlA02A03A04'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA020304.pdf';
+
+            $config['plugins']['formula']['documentUrlA080910'] = '/taoInvalsi/views/js/runner/plugins/tools/formula/formulaA080910.pdf';
+
+            $qtiTestService->setOption('config', $config);
+            $this->getServiceManager()->register('taoQtiTest/testRunner', $qtiTestService);
+
+            $this->setVersion('9.1.2');
+        }
+
+        $this->skip('9.1.2', '9.1.2.1');
+
+        if ($this->isVersion('9.1.2') || $this->isVersion('9.1.2.1')) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($service->getOptions()));
+            $this->setVersion('10.0.0');
+        }
+
+        if ($this->isVersion('10.0.0')) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            $options = $service->getOptions();
+            $options[AllBookletsExport::OPTION_NUMBER_OF_DAILY_EXPORT] = 1;
+            $options[AllBookletsExport::NOT_REQUIRED_OPTION] = '38798977';
+            $options[AllBookletsExport::NOT_ATTEMPTED_OPTION] = '29787988';
+            $options[AllBookletsExport::NOT_RESPONDED_OPTION] = '17989789';
+            $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, new AllBookletsExport($options));
+            $this->setVersion('10.1.0');
+        }
+
+        if ($this->isVersion('10.1.0') ) {
+            $service = $this->getServiceManager()->get(AllBookletsExport::SERVICE_ID);
+            if (!$service->hasOption(AllBookletsExport::OPTION_ONE_DAY_EXPORT)) {
+                $service->setOption(AllBookletsExport::OPTION_ONE_DAY_EXPORT, true);
+                $this->getServiceManager()->register(AllBookletsExport::SERVICE_ID, $service);
+            }
+            $this->setVersion('10.2.0');
+        }
+        
+        $this->skip('10.2.0', '10.3.1');
+
+        //Updater files are deprecated. Please use migrations.
+        //See: https://github.com/oat-sa/generis/wiki/Tao-Update-Process
+
+        $this->setVersion($this->getExtension()->getManifest()->getVersion());
     }
 }

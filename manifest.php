@@ -41,7 +41,7 @@ return array(
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '9.0.2',
+    'version' => '10.9.1',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -50,7 +50,7 @@ return array(
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
-        'taoTextHelp'     => '>=1.0.0',
+        'taoTextHelp'     => '>=1.3.3',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
@@ -60,7 +60,9 @@ return array(
         'taoDelivery'     => '>=12.3.0',
         'taoClientDiagnostic'  => '>=4.0.0',
         'taoTestRunnerPlugins' => '>=2.0.2',
-        'taoLti'          => '>=4.1.0'
+        'taoResultExports' => '>=0.9.0',
+        'taoLti'          => '>=4.1.0',
+        'taoSystemStatus' => '>=0.13.0',
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
@@ -88,7 +90,8 @@ return array(
             addAssignmentSettings::class,
             SetClientRouterConfig::class,
             EnableGdprMessage::class,
-            RegisterInvalsiTestCategoryPresetProvider::class
+            RegisterInvalsiTestCategoryPresetProvider::class,
+            oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
