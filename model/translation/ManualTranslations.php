@@ -49,7 +49,9 @@ class ManualTranslations
             __('The time limit has been reached for this part of the test.'),
             __('SUBMIT THIS PART'),
             __('SUBMIT THE TEST'),
-            __('CANCEL')
+            __('CANCEL'),
+            __('Preview'),
+            __('Preview (legacy)'),
         ];
     }
 }

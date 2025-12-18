@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * ***********************************************************************
  * INVALSI CONFIDENTIAL
  * __________________
@@ -942,6 +942,6 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from INVALSI.
  *  ************************************************************************
- */@media print{html body .qti-item{display:none}}
+ */@media print{html body .qti-item{display:none}}html body .qti-item span[data-role=tooltip-target],html body .qti-item span.tooltip.tooltip-active[data-identifier^=tltp]{color:#0e5d91;text-decoration:dashed underline #0e5d91;cursor:pointer}html body .qti-item span[data-role=tooltip-target]:after,html body .qti-item span.tooltip.tooltip-active[data-identifier^=tltp]:after{font-family:"tao" !important;speak:never;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;content:"";font-size:.9rem;vertical-align:super;margin-left:2px;text-decoration:none;display:inline-block}html body div.qtip{font-size:10.5px !important;line-height:12px}html body div.qtip.qtip-default{font-family:"Source Sans Pro",sans-serif;background-color:#ffffa3;border:1px solid #f1d031;border-radius:5px;width:90%;margin:0 auto;padding:5px;font-size:10.5px;font-weight:normal !important;color:#555;cursor:text}
 
 /*# sourceMappingURL=theme.css.map */

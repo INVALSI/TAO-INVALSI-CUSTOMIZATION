@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ***********************************************************************
  * INVALSI CONFIDENTIAL
@@ -18,6 +19,7 @@
  */
 
 use oat\tao\scripts\install\SetResourceSelector;
+use oat\taoInvalsi\model\render\ServiceProvider\InvalsiCustomInteractionPostProcessingServiceProvider;
 use oat\taoInvalsi\scripts\install\SetupEventsCapture;
 use oat\taoMonitoring\scripts\install\RegisterAwsFileSystem;
 use oat\taoInvalsi\scripts\install\SetupBookletConfigService;
@@ -35,13 +37,16 @@ use oat\taoInvalsi\scripts\install\addAssignmentSettings;
 use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
+use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
+use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
+use \oat\taoInvalsi\scripts\install\DowngradePcisToPreviousVersions;
 
 return array(
     'name' => 'taoInvalsi',
     'label' => 'TAO INVALSI',
     'description' => 'Custom code for Invalsi',
     'license' => 'Proprietary',
-    'version' => '10.9.1',
+    'version' => '11.6.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
         'generis'         => '>=7.6.0',
@@ -50,7 +55,7 @@ return array(
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
-        'taoTextHelp'     => '>=1.3.3',
+        'taoTextHelp'     => '>=3.0.0',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
@@ -63,14 +68,15 @@ return array(
         'taoResultExports' => '>=0.9.0',
         'taoLti'          => '>=4.1.0',
         'taoSystemStatus' => '>=0.13.0',
+        'taoTestPreviewUILoader' => '*',
     ),
     'managementRole' => 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager',
     'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext'=>'taoInvalsi'))
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#taoInvalsiManager', array('ext' => 'taoInvalsi'))
     ),
     'install' => array(
         'php' => array(
-            __DIR__.'/scripts/install/setThemeConfig.php',
+            __DIR__ . '/scripts/install/setThemeConfig.php',
             __DIR__ . '/scripts/install/addHook.php',
             SetQtiCreatorConfig::class,
             \oat\taoQtiTest\scripts\install\SetNewTestRunner::class,
@@ -92,22 +98,40 @@ return array(
             EnableGdprMessage::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
+            RegisterInvalsiTestCategoryPresetProvider::class,
+            RegisterPreviewButtons::class,
+            [
+                ConfigureTextToSpeechPlugin::class,
+                [
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_URL => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => 'TAOInvalsi390R1',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_GENDER => 'female',
+                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_AUTO => false,
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_TEXT => 'Guarda la formula',
+                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_LANG => 'it-IT',
+                    ConfigureTextToSpeechPlugin::PARAM_CLICK_TO_SPEAK => false,
+                ]
+            ],
+            DowngradePcisToPreviousVersions::class
         )
     ),
     'update' => 'oat\\taoInvalsi\\scripts\\update\\Updater',
-    'uninstall' => array(
-    ),
+    'uninstall' => array(),
     'routes' => array(
         '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
     'constants' => array(
         # views directory
-        "DIR_VIEWS" => dirname(__FILE__).DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR,
+        "DIR_VIEWS" => dirname(__FILE__) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR,
 
         #BASE URL (usually the domain root)
-        'BASE_URL' => ROOT_URL.'taoInvalsi/',
+        'BASE_URL' => ROOT_URL . 'taoInvalsi/',
     ),
     'extra' => array(
-        'structures' => dirname(__FILE__).DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.'structures.xml',
-    )
+        'structures' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
+    ),
+    'containerServiceProviders' => [
+        InvalsiCustomInteractionPostProcessingServiceProvider::class,
+    ],
 );
