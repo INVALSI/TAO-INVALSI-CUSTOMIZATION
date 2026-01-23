@@ -38,7 +38,7 @@ use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
 use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
-// use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
+use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
 use \oat\taoInvalsi\scripts\install\DowngradePcisToPreviousVersions;
 
 return array(
@@ -55,7 +55,7 @@ return array(
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
-       // 'taoTextHelp'     => '>=3.0.0',
+        'taoTextHelp'     => '>=3.0.0',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
