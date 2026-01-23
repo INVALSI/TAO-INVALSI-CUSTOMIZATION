@@ -5,17 +5,17 @@
  * INVALSI CONFIDENTIAL
  * __________________
  *
- *  All Rights Reserved.
+ * All Rights Reserved.
  *
- *  NOTICE:  All information contained herein is, and remains
- *  the property of INVALSI and its suppliers, if any.  The
- *  intellectual and technical concepts contained herein are
- *  proprietary to INVALSI and its suppliers, and are protected
- *  by trade secret or copyright law.
- *  Dissemination of this information or reproduction of this material
- *  is strictly forbidden unless prior written permission is obtained
- *  from INVALSI.
- *  ************************************************************************
+ * NOTICE:  All information contained herein is, and remains
+ * the property of INVALSI and its suppliers, if any.  The
+ * intellectual and technical concepts contained herein are
+ * proprietary to INVALSI and its suppliers, and are protected
+ * by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from INVALSI.
+ * ************************************************************************
  */
 
 use oat\tao\scripts\install\SetResourceSelector;
@@ -38,8 +38,7 @@ use oat\taoInvalsi\scripts\install\SetClientRouterConfig;
 use oat\taoInvalsi\scripts\install\EnableGdprMessage;
 use oat\taoInvalsi\scripts\install\RegisterInvalsiTestCategoryPresetProvider;
 use oat\taoInvalsi\scripts\install\RegisterPreviewButtons;
-use oat\taoTextHelp\scripts\install\ConfigureTextToSpeechPlugin;
-use \oat\taoInvalsi\scripts\install\DowngradePcisToPreviousVersions;
+use oat\taoInvalsi\scripts\install\DowngradePcisToPreviousVersions;
 
 return array(
     'name' => 'taoInvalsi',
@@ -49,13 +48,12 @@ return array(
     'version' => '11.6.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
-        'generis'         => '>=7.6.0',
-        'taoCe'           => '>=5.0.0',
-        'tao'             => '>=22.14.2',
+        'generis'          => '>=7.6.0',
+        'taoCe'            => '>=5.0.0',
+        'tao'              => '>=22.14.2',
         'taoMediaManager' => '*',
         'taoQtiTest'      => '>=29.3.0',
         'taoQtiItem'      => '>=18.0.0',
-        'taoTextHelp'     => '>=3.0.0',
         'taoTests'        => '>=8.0.0',
         'pciSamples'      => '>=1.3.0',
         'taoBooklet'      => '>=2.0.0',
@@ -98,21 +96,7 @@ return array(
             EnableGdprMessage::class,
             RegisterInvalsiTestCategoryPresetProvider::class,
             oat\taoInvalsi\scripts\install\RegisterBookletsExport::class,
-            RegisterInvalsiTestCategoryPresetProvider::class,
             RegisterPreviewButtons::class,
-            [
-                ConfigureTextToSpeechPlugin::class,
-                [
-                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_URL => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
-                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_KEY => 'TAOInvalsi390R1',
-                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_LANG => 'it-IT',
-                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_GENDER => 'female',
-                    ConfigureTextToSpeechPlugin::PARAM_TEXTHELP_AUTO => false,
-                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_TEXT => 'Guarda la formula',
-                    ConfigureTextToSpeechPlugin::PARAM_MATH_OVERRIDE_LANG => 'it-IT',
-                    ConfigureTextToSpeechPlugin::PARAM_CLICK_TO_SPEAK => false,
-                ]
-            ],
             DowngradePcisToPreviousVersions::class
         )
     ),
@@ -122,10 +106,7 @@ return array(
         '/taoInvalsi' => 'oat\\taoInvalsi\\controller'
     ),
     'constants' => array(
-        # views directory
         "DIR_VIEWS" => dirname(__FILE__) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR,
-
-        #BASE URL (usually the domain root)
         'BASE_URL' => ROOT_URL . 'taoInvalsi/',
     ),
     'extra' => array(
