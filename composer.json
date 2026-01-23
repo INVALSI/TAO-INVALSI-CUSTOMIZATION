@@ -27,7 +27,6 @@
     "minimum-stability": "dev",
     "require": {
         "oat-sa/extension-tao-system-status": "^0.13",
-        "oat-sa/extension-tao-texthelp": ">=3.0.0",
         "oat-sa/extension-tao-itemqti": ">=30.16.0",
         "oat-sa/extension-tao-test-preview-ui-loader": ">=1.27.12",
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
