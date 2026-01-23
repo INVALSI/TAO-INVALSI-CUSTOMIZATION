@@ -17,36 +17,23 @@ final class Version202309011032589594_taoInvalsi extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migrate the textToSpeech configuration to the new format';
+        return 'Remove the textToSpeech configuration (previously TextHelp)';
     }
 
     public function up(Schema $schema): void
     {
         $config = $this->getConfig();
 
-        $config['plugins'][self::PLUGIN_ID] = [
-            'providerId' => 'texthelp',
-            'providerConfig' => [
-                'url' => 'https://toolbar.speechstream.net/SpeechStream/3.9.0/speechstream.js',
-                'speechstreamConfig' => 'TAOInvalsi390R1',
-                'disableLangCheck' => false,
-
-                'voiceLanguage' => 'it-IT',
-                'voiceGender' => 'female'
-            ],
-            'startClickToSpeak' => false,
-            'overrideMathExpr' => [
-                'text' => 'Guarda la formula',
-                'language' => 'it-IT'
-            ]
-        ];
-
-        $this->setConfig($config);
+        // Rimuoviamo il plugin dalla configurazione invece di migrarlo
+        if (isset($config['plugins'][self::PLUGIN_ID])) {
+            unset($config['plugins'][self::PLUGIN_ID]);
+            $this->setConfig($config);
+        }
 
         $this->addReport(
             Report::createSuccess(
                 sprintf(
-                    'Configuration for %s successfully migrated.',
+                    'Configuration for %s successfully removed.',
                     self::PLUGIN_ID
                 )
             )
@@ -55,31 +42,8 @@ final class Version202309011032589594_taoInvalsi extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $config = $this->getConfig();
-
-        $config['plugins'][self::PLUGIN_ID] = [
-            'setupUrl' => '//configuration.speechstream.net/oat/inv/v216/config.js',
-            'overrideMathExpr' => 'Guarda la formula',
-            'languagesCrosswalk' => [],
-            'allowVolumeSetting' => false,
-            'allowTextHelpLangCheck' => false,
-            'allowQtiLangCheck' => true,
-            'forceLanguage' => true,
-            'voiceLanguage' => 'it-IT',
-            'voiceGender' => 'female',
-            'voiceIndex' => 0
-        ];
-
-        $this->setConfig($config);
-
-        $this->addReport(
-            Report::createSuccess(
-                sprintf(
-                    'Configuration for %s successfully reverted.',
-                    self::PLUGIN_ID
-                )
-            )
-        );
+        // Non facciamo nulla nel revert per evitare di reinserire TextHelp
+        $this->addReport(Report::createInfo('No revert action performed for textToSpeech.'));
     }
 
     private const CONFIG_FILE = 'testRunner';
